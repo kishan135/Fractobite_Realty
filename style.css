@@ -415,13 +415,13 @@ p + p { margin-block-start: var(--text-gap-small); }
     background: #fffcfa;
     box-shadow: 0 10px 24px #4630210d;
   }
-  .benefit { justify-content: start; gap: clamp(6px, 2.2vw, 16px); padding: clamp(8px, 2vw, 15px) clamp(4px, 1.5vw, 12px); }
+  .benefit { justify-content: start; gap: clamp(8px, 2.4vw, 17px); padding: clamp(12px, 3vw, 19px) clamp(6px, 1.7vw, 13px); }
   .benefit + .benefit { border-color: #e9e2df; }
   .benefit:nth-child(3) { border-left: 0; }
   .benefit:nth-child(n + 3) { border-top: 1px solid #e9e2df; }
-  .benefit > .icon { color: var(--orange); font-size: clamp(1.15rem, 6.2vw, 2rem); }
-  .benefit h2 { font-size: clamp(.65rem, 2.75vw, .85rem); }
-  .benefit p { font-size: clamp(.59rem, 2.45vw, .77rem); margin-top: 2px; line-height: 1.35; }
+  .benefit > .icon { color: var(--orange); font-size: clamp(1.4rem, 7vw, 2.2rem); }
+  .benefit h2 { font-size: clamp(.75rem, 3.2vw, .95rem); }
+  .benefit p { display: none; }
 }
 
 /* Mobile Prime Locations */
