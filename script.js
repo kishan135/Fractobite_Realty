@@ -53,7 +53,7 @@
     if (!image) return;
     const indicators = [...document.querySelectorAll('.hero-dots [aria-pressed]')];
     const autoplay = document.querySelector('.hero-autoplay');
-    const slideInterval = 3500;
+    const slideInterval = 2500;
     let activeSlide = 0;
     let requestedSlide = 0;
     let requestId = 0;
