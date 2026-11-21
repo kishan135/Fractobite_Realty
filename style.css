@@ -567,6 +567,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 
   .brand--footer {
     width: min(63%, 205px);
+    margin-inline: auto;
     padding-top: 0;
     justify-content: start;
   }
@@ -651,6 +652,17 @@ p + p { margin-block-start: var(--text-gap-small); }
 .filter-panel, .page-panel, .directory-card, .disclosure-list > details { border: 1px solid #e9ddd5; border-radius: 18px; background: #fffdfa; }
 .filter-panel { display: flex; flex-wrap: wrap; align-items: end; gap: var(--text-gap-medium); padding: 1rem; margin-bottom: var(--text-gap-medium); }
 .filter-panel label { flex: 1 1 160px; }
+
+@media (max-width: 767px) {
+  #catalog-filters {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  #catalog-filters label { grid-column: 1 / -1; }
+  #catalog-filters .text-link { justify-self: start; }
+}
 .inner-page label { display: grid; gap: var(--text-gap-small); line-height: var(--subheading-line-height); font-size: .83rem; font-weight: 600; }
 .inner-page input, .inner-page select, .inner-page textarea { width: 100%; min-height: 44px; border: 1px solid #c7bbb4; border-radius: 8px; padding: .55rem .7rem; background: #fff; font: inherit; color: inherit; }
 .inner-page textarea { resize: vertical; }
