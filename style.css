@@ -1,31 +1,64 @@
-/* 01. FONT IMPORTS */
+/* 01. LOCAL FONTS */
+/* Preloaded in each page head. Hold glyph paint briefly while Poppins loads. */
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-400.woff2') format('woff2');
   font-style: normal;
   font-weight: 400;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-500.woff2') format('woff2');
   font-style: normal;
   font-weight: 500;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-600.woff2') format('woff2');
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: block;
 }
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-700.woff2') format('woff2');
   font-style: normal;
   font-weight: 700;
-  font-display: swap;
+  font-display: block;
+}
+
+/* Approximate Poppins metrics while the browser reserves space for its glyphs. */
+@font-face {
+  font-family: 'Poppins Metrics Fallback';
+  src: local('Arial'), local('Liberation Sans');
+  font-style: normal;
+  font-weight: 400;
+  size-adjust: 112.0%;
+  ascent-override: 93.75%;
+  descent-override: 31.25%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Poppins Metrics Fallback';
+  src: local('Arial Bold'), local('Liberation Sans Bold');
+  font-style: normal;
+  font-weight: 600;
+  size-adjust: 104.5%;
+  ascent-override: 100.48%;
+  descent-override: 33.49%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Poppins Metrics Fallback';
+  src: local('Arial Bold'), local('Liberation Sans Bold');
+  font-style: normal;
+  font-weight: 700;
+  size-adjust: 105.7%;
+  ascent-override: 99.34%;
+  descent-override: 33.11%;
+  line-gap-override: 0%;
 }
 
 /* 02. ROOT VARIABLES */
@@ -37,7 +70,7 @@
   --line: #d1c8c4;
   --container: min(88%, 1290px);
   --wide: min(91%, 1340px);
-  font-family: Poppins, Arial, sans-serif;
+  font-family: Poppins, 'Poppins Metrics Fallback', Arial, sans-serif;
   color: var(--ink);
   background: var(--paper);
 }
