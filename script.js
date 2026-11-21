@@ -16,24 +16,18 @@
 
   const nav = document.querySelector('.site-nav');
   const menu = document.querySelector('.menu-button');
-  const search = document.querySelector('#property-search');
-  const location = search.elements.location;
-  const searchStatus = search.querySelector('.search-status');
-  const tabs = [...search.querySelectorAll('[data-type]')];
-  const cards = document.querySelector('.property-cards');
-  const previous = document.querySelector('.previous');
-  const next = document.querySelector('.next');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let selectedType = 'Buy';
+  const params = new URLSearchParams(window.location.search);
 
   function initializeContactLinks() {
     document.querySelectorAll('[data-phone]').forEach((link) => {
       link.href = `tel:${contact.phone.replace(/\s/g, '')}`;
       if (link.hasAttribute('data-contact-text')) link.querySelector('span').textContent = contact.phone;
     });
-    const email = document.querySelector('[data-email]');
-    email.href = `mailto:${contact.email}`;
-    email.querySelector('span').textContent = contact.email;
+    document.querySelectorAll('[data-email]').forEach((link) => {
+      link.href = `mailto:${contact.email}`;
+      link.querySelector('span').textContent = contact.email;
+    });
   }
 
   function setMenu(open) {
@@ -56,6 +50,7 @@
 
   function initializeHeroSlider() {
     const image = document.querySelector('.hero-image');
+    if (!image) return;
     const indicators = [...document.querySelectorAll('.hero-dots button')];
     let requestedSlide = 0;
 
@@ -80,43 +75,25 @@
     });
   }
 
-  function selectPropertyType(type) {
-    selectedType = type;
-    tabs.forEach((tab) => tab.setAttribute('aria-pressed', String(tab.dataset.type === type)));
-    searchStatus.textContent = '';
-  }
-
-  function focusSearch() {
-    search.scrollIntoView({ behavior: reducedMotion.matches ? 'instant' : 'smooth', block: 'center' });
-    location.focus({ preventScroll: true });
-  }
-
   function initializePropertySearch() {
-    tabs.forEach((tab) => tab.addEventListener('click', () => selectPropertyType(tab.dataset.type)));
-    location.addEventListener('change', () => { searchStatus.textContent = ''; });
-    search.addEventListener('submit', (event) => {
-      event.preventDefault();
-      searchStatus.textContent = `Demo search for ${selectedType} in ${location.value}. Contact us to discuss available properties.`;
-    });
+    const search = document.querySelector('#property-search');
+    if (!search) return;
 
-    document.querySelectorAll('[data-location]').forEach((button) => {
-      button.addEventListener('click', () => {
-        location.value = button.dataset.location;
-        searchStatus.textContent = `${location.value} selected. Choose a property type or search now.`;
-        focusSearch();
-      });
-    });
-
-    document.querySelectorAll('[data-category]').forEach((button) => {
-      button.addEventListener('click', () => {
-        selectPropertyType(button.dataset.category);
-        searchStatus.textContent = `${selectedType} selected. Choose a location to search.`;
-        focusSearch();
+    const tabs = [...search.querySelectorAll('[data-type]')];
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        search.elements.type.value = tab.dataset.type;
+        tabs.forEach((item) => item.setAttribute('aria-pressed', String(item === tab)));
       });
     });
   }
 
   function initializeCategoryCarousel() {
+    const cards = document.querySelector('.property-cards');
+    if (!cards) return;
+    const previous = document.querySelector('.previous');
+    const next = document.querySelector('.next');
+
     function updateControls() {
       previous.disabled = cards.scrollLeft < 2;
       next.disabled = cards.scrollLeft >= cards.scrollWidth - cards.clientWidth - 2;
@@ -136,29 +113,108 @@
     updateControls();
   }
 
-  function initializeNavigationState() {
-    const links = [...nav.querySelectorAll('a[href^="#"]')];
-    const sections = links.map((link) => document.querySelector(link.hash))
-      .sort((first, second) => first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
-    const footer = document.querySelector('#contact');
+  function selectFromUrl(select, name) {
+    const value = params.get(name);
+    if ([...select.options].some((option) => option.value === value)) select.value = value;
+    return select.value;
+  }
 
-    function update() {
-      const threshold = innerHeight * .38;
-      let active = sections[0];
-      sections.forEach((section) => {
-        if (section.getBoundingClientRect().top <= threshold) active = section;
+  function enquiryUrl(type, location) {
+    const values = new URLSearchParams();
+    if (type) values.set('type', type);
+    if (location) values.set('location', location);
+    return values.size ? `contact.html?${values}` : 'contact.html';
+  }
+
+  function initializeCatalog() {
+    const form = document.querySelector('#catalog-filters');
+    if (!form) return;
+
+    const type = selectFromUrl(form.elements.type, 'type');
+    const location = selectFromUrl(form.elements.location, 'location');
+    const cards = [...document.querySelectorAll('[data-property-type]')];
+    let matches = 0;
+    cards.forEach((card) => {
+      const category = card.dataset.propertyType;
+      const markets = card.dataset.markets.split('|');
+      const matchesLocation = !location || location === 'Across Gujarat' || markets.includes(location);
+      card.hidden = Boolean((type && category !== type) || !matchesLocation);
+      if (!card.hidden) matches += 1;
+      card.querySelector('[data-property-inquiry]').href = enquiryUrl(category, location);
+    });
+
+    const label = matches === 1 ? 'category' : 'categories';
+    document.querySelector('#catalog-status').textContent = `${matches} ${label}${location ? ` for ${location}` : ''}`;
+    document.querySelector('#catalog-empty').hidden = matches !== 0;
+    document.querySelector('#empty-inquiry').href = enquiryUrl(type, location);
+  }
+
+  function initializeLocations() {
+    const location = params.get('location');
+    document.querySelectorAll('[data-market]').forEach((item) => {
+      if (item.dataset.market === location) item.open = true;
+    });
+  }
+
+  function initializeInsights() {
+    const filters = document.querySelector('#guide-filters');
+    if (!filters) return;
+    const search = filters.querySelector('[name="query"]');
+    const topic = filters.querySelector('[name="topic"]');
+    const guides = [...document.querySelectorAll('[data-topic]')];
+
+    function filterGuides() {
+      const terms = search.value.trim().toLowerCase().split(/\s+/);
+      let matches = 0;
+      guides.forEach((guide) => {
+        const matchesTopic = !topic.value || guide.dataset.topic === topic.value;
+        const text = guide.textContent.toLowerCase();
+        guide.hidden = !matchesTopic || !terms.every((term) => text.includes(term));
+        if (!guide.hidden) matches += 1;
       });
-      const footerVisible = footer.getBoundingClientRect().bottom <= innerHeight + 2;
-      if (footerVisible) active = footer;
-      links.forEach((link) => {
-        if (link.hash === `#${active.id}`) link.setAttribute('aria-current', 'location');
-        else link.removeAttribute('aria-current');
-      });
+      document.querySelector('#guide-status').textContent = matches
+        ? `${matches} ${matches === 1 ? 'guide' : 'guides'}`
+        : 'No matching guides. Try another keyword or topic.';
     }
 
-    document.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    search.addEventListener('input', filterGuides);
+    topic.addEventListener('change', filterGuides);
+    filterGuides();
+  }
+
+  function initializeEnquiry() {
+    const form = document.querySelector('#enquiry-form');
+    if (!form) return;
+
+    selectFromUrl(form.elements.type, 'type');
+    selectFromUrl(form.elements.location, 'location');
+    const result = document.querySelector('#enquiry-result');
+    const status = document.querySelector('#enquiry-status');
+    const draft = document.querySelector('#enquiry-draft');
+
+    form.addEventListener('input', () => { result.hidden = true; });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const fields = form.elements;
+      const type = fields.type.selectedOptions[0].textContent.trim();
+      const location = fields.location.selectedOptions[0].textContent.trim();
+      const body = [
+        `Name: ${fields.name.value.trim()}`,
+        `Email: ${fields.email.value.trim()}`,
+        `Property type: ${type}`,
+        `Preferred location: ${location}`,
+        '',
+        fields.requirements.value.trim(),
+      ].join('\r\n');
+      const subject = encodeURIComponent('Property enquiry for Fractobite Realty');
+      document.querySelector('#enquiry-email').href = `mailto:${contact.email}?subject=${subject}&body=${encodeURIComponent(body)}`;
+      draft.value = body;
+      result.hidden = false;
+      status.textContent = 'Your draft is ready. Open your email app or copy the draft.';
+      draft.focus();
+    });
+
+    form.hidden = false;
   }
 
   function initializeDemoLinks() {
@@ -176,6 +232,9 @@
   initializeHeroSlider();
   initializePropertySearch();
   initializeCategoryCarousel();
-  initializeNavigationState();
+  initializeCatalog();
+  initializeLocations();
+  initializeInsights();
+  initializeEnquiry();
   initializeDemoLinks();
 })();

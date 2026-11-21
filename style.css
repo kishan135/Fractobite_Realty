@@ -79,9 +79,8 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.65rem); line-height: 1.07; letter-spacing: 
 .brand--header::before { content: ''; position: absolute; inset: -2px 0 0; border-radius: 0 0 6px 6px; background: linear-gradient(125deg, #ff6503, #f34c02); transform: skewX(-15deg); z-index: -1; }
 .site-nav, .header-actions { display: flex; align-items: center; }
 .site-nav { gap: clamp(13px, 2.65vw, 39px); }
-.site-nav a, .nav-demo { position: relative; padding: .55em 0; font-size: clamp(.67rem, 1.04vw, .92rem); font-weight: 600; white-space: nowrap; }
-.nav-demo { border: 0; background: transparent; }
-.site-nav a:hover, .nav-demo:hover, .site-nav a[aria-current] { color: var(--orange-dark); }
+.site-nav a { position: relative; padding: .55em 0; font-size: clamp(.67rem, 1.04vw, .92rem); font-weight: 600; white-space: nowrap; }
+.site-nav a:hover, .site-nav a[aria-current] { color: var(--orange-dark); }
 .site-nav a[aria-current]::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--orange); }
 .header-actions { gap: .72rem; }
 .phone-button, .menu-button { display: grid; place-items: center; width: 2.65em; height: 1.85em; border: 1px solid #6c6664; border-radius: 11px; color: var(--orange-dark); background: transparent; }
@@ -122,8 +121,6 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.65rem); line-height: 1.07; letter-spacing: 
 .search-location select { min-height: 30px; width: 100%; min-width: 0; border: 0; background: #fff; padding: .35em; color: var(--ink); font-size: clamp(.65rem, .98vw, .84rem); }
 .search-submit { border-radius: 8px; padding: .55em 1.1em; }
 .search-submit .icon { font-size: 1.4em; }
-.search-status { font-size: .75rem; padding: 0 .8rem .65rem; }
-.search-status:empty { display: none; }
 
 /* 09. BENEFITS STRIP */
 .benefits { display: grid; grid-template-columns: repeat(4, 1fr); border-radius: 22px 0 0; margin-top: clamp(8px, 1vw, 14px); padding-block: clamp(18px, 2.05vw, 30px); background: #fffcfa8c; }
@@ -229,7 +226,7 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.65rem); line-height: 1.07; letter-spacing: 
   .menu-button { display: grid; }
   .site-nav { position: absolute; display: none; top: 100%; right: 4.5%; width: min(250px, 91%); background: white; box-shadow: 0 10px 24px #2c1e1922; border-radius: 0 0 12px 12px; padding: .7rem 1rem; align-items: stretch; gap: 0; }
   .site-nav.is-open { display: grid; }
-  .site-nav a, .nav-demo { padding: .65rem .15rem; text-align: left; font-size: .84rem; }
+  .site-nav a { padding: .65rem .15rem; text-align: left; font-size: .84rem; }
   .about-stats { padding-left: 12%; }
   .footer-grid > div { padding-left: 9%; }
 }
@@ -291,4 +288,50 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.65rem); line-height: 1.07; letter-spacing: 
 /* 21. REDUCED MOTION */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+}
+
+/* Interior pages */
+.inner-page { min-height: 55vh; padding-block: clamp(28px, 5vw, 70px); }
+.page-intro { margin-bottom: clamp(20px, 3vw, 42px); }
+.page-intro h1 { max-width: 23ch; font-size: clamp(2rem, 5vw, 3.8rem); line-height: 1.08; letter-spacing: -.05em; }
+.page-intro p { max-width: 69ch; margin-top: .75rem; }
+.inner-page h2 { font-size: clamp(1.25rem, 2.5vw, 1.85rem); }
+.inner-page p, .inner-page li { line-height: 1.6; }
+.inner-page + .site-footer { border-top: 1px solid var(--line); }
+.filter-panel, .page-panel, .directory-card, .disclosure-list > details { border: 1px solid #e9ddd5; border-radius: 18px; background: #fffdfa; }
+.filter-panel { display: flex; flex-wrap: wrap; align-items: end; gap: .9rem; padding: 1rem; margin-bottom: 1rem; }
+.filter-panel label { flex: 1 1 160px; }
+.inner-page label { display: grid; gap: .35rem; font-size: .83rem; font-weight: 600; }
+.inner-page input, .inner-page select, .inner-page textarea { width: 100%; min-height: 44px; border: 1px solid #c7bbb4; border-radius: 8px; padding: .55rem .7rem; background: #fff; font: inherit; color: inherit; }
+.inner-page textarea { resize: vertical; }
+.inner-page .button, .inner-page .text-link { min-height: 44px; white-space: normal; }
+.text-link { display: inline-flex; align-items: center; color: var(--orange-dark); text-decoration: underline; text-underline-offset: .2em; font-weight: 600; font-size: .85rem; overflow-wrap: anywhere; }
+.result-status { min-height: 1.5em; margin-bottom: 1rem; font-size: .88rem; }
+.directory-grid, .page-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 2vw, 24px); }
+.directory-card { overflow: hidden; }
+.directory-card img { aspect-ratio: 2.25; object-fit: cover; }
+.page-panel, .directory-card-body { padding: clamp(15px, 3vw, 28px); }
+.directory-card h2, .guide-card h2 { margin: .3rem 0 .65rem; }
+.directory-card .button { margin-top: .7rem; }
+.inner-page summary { cursor: pointer; color: var(--orange-dark); font-weight: 600; padding-block: .3rem; }
+.inner-page details p { margin-block: .5rem; }
+.empty-result p { margin-block: .65rem; }
+.page-banner { max-height: 310px; aspect-ratio: 3.15; object-fit: cover; object-position: center 33%; border-radius: 20px; margin-bottom: 1.2rem; }
+.page-photo { border-radius: 18px; height: 100%; max-height: 340px; object-fit: cover; }
+.disclosure-list { display: grid; gap: .65rem; }
+.disclosure-list > details { padding: .65rem 1rem; }
+.disclosure-list summary small { margin-left: .35rem; font-weight: 400; color: var(--ink); }
+.page-actions { display: flex; align-items: center; flex-wrap: wrap; gap: .45rem 1rem; }
+.page-section { margin-top: 2rem; }
+.page-section h2 { margin-bottom: .85rem; }
+.process-list { padding-left: 1.25rem; }
+.process-list li + li { margin-top: .55rem; }
+.contact-methods { padding: 0; list-style: none; }
+.enquiry-form, .enquiry-result { display: grid; gap: .8rem; margin-top: 1rem; }
+.enquiry-form .button, .enquiry-result .button { justify-self: start; }
+.inner-page [hidden] { display: none; }
+@media (max-width: 650px) {
+  .directory-grid, .page-split { grid-template-columns: 1fr; }
+  .page-photo { max-height: 220px; }
+  .page-banner { aspect-ratio: 2; }
 }
