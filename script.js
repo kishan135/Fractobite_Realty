@@ -283,6 +283,76 @@
     });
   }
 
+  function initializePageMotion() {
+    window.addEventListener('pagereveal', (event) => {
+      document.documentElement.classList.toggle('has-page-transition', Boolean(event.viewTransition));
+    });
+  }
+
+  function initializeContentMotion() {
+    // Content is visible by default. Only animate elements once they enter the viewport.
+    const groups = [
+      'article', '.benefit', '.about-collage-frame', '.about-stats > div',
+      '.footer-grid > *', '.location-options > li', '.disclosure-list > details',
+      'form', '.locations-inner .button', '.contact-action',
+    ].join(', ');
+    const items = 'h1, h2, h3, p, img:not(.hero-image), main .button';
+
+    if (!reducedMotion.matches && 'IntersectionObserver' in window) {
+      const groupPositions = new Map();
+      const revealDelays = new WeakMap();
+      const initialHeight = document.documentElement.clientHeight;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(({ target, isIntersecting }) => {
+          if (!isIntersecting) return;
+          observer.unobserve(target);
+          if (reducedMotion.matches) return;
+
+          target.style.setProperty('--reveal-delay', revealDelays.get(target));
+          target.classList.add('reveal-in');
+          const finish = (event) => {
+            if (event.target !== target || event.animationName !== 'reveal-up') return;
+            target.classList.remove('reveal-in');
+            target.removeEventListener('animationend', finish);
+            target.removeEventListener('animationcancel', finish);
+          };
+          target.addEventListener('animationend', finish);
+          target.addEventListener('animationcancel', finish);
+        });
+      });
+
+      document.querySelectorAll(`main :is(${groups}, ${items}), .site-footer :is(${groups})`).forEach((item) => {
+        const group = item.closest(groups);
+        if (group && group !== item) return;
+
+        const bounds = item.getBoundingClientRect();
+        const initiallyVisible = bounds.bottom > 0 && bounds.top < initialHeight && bounds.right > 0 && bounds.left < innerWidth;
+        // Cards can stagger on entry while other visible content moves with the page.
+        if (initiallyVisible && !item.matches('article')) return;
+
+        const parent = item.parentElement;
+        const position = groupPositions.get(parent) ?? 0;
+        groupPositions.set(parent, position + 1);
+        revealDelays.set(item, `${(position % 4) * 55}ms`);
+        observer.observe(item);
+      });
+    }
+
+    reducedMotion.addEventListener('change', ({ matches }) => {
+      if (matches) document.querySelectorAll('.reveal-in, .image-loaded').forEach((element) => {
+        element.classList.remove('reveal-in', 'image-loaded');
+      });
+    });
+
+    document.querySelectorAll('main img:not(.hero-image)').forEach((image) => {
+      if (image.complete) return;
+      image.addEventListener('load', () => {
+        if (!reducedMotion.matches) image.classList.add('image-loaded');
+      }, { once: true });
+    });
+  }
+
+  initializePageMotion();
   initializeContactLinks();
   initializeMobileNavigation();
   initializeHeroSlider();
@@ -293,4 +363,5 @@
   initializeInsights();
   initializeEnquiry();
   initializeDemoLinks();
+  initializeContentMotion();
 })();

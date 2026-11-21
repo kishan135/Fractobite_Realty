@@ -338,20 +338,64 @@ h2 { font-size: clamp(1.7rem, 3vw, 2.65rem); line-height: 1.07; letter-spacing: 
   .page-banner { aspect-ratio: 2; }
 }
 
-/* Same-origin page changes keep normal links and browser history. */
+/* Shared motion */
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
 
-  main { view-transition-name: page-content; }
+  main {
+    view-transition-name: page-content;
+    animation: page-in 440ms cubic-bezier(.22, 1, .36, 1);
+  }
+
+  .has-page-transition main { animation: none; }
+  ::view-transition-group(page-content) { animation-duration: 440ms; }
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
-  ::view-transition-old(page-content) { animation: page-out 180ms ease-in both; }
-  ::view-transition-new(page-content) { animation: page-in 300ms ease-out both; }
+  ::view-transition-old(page-content) { animation: page-out 320ms ease both; }
+  ::view-transition-new(page-content) { animation: page-in 440ms cubic-bezier(.22, 1, .36, 1) both; }
+
+  .reveal-in:not(:focus-within) {
+    animation: reveal-up 460ms cubic-bezier(.22, 1, .36, 1) var(--reveal-delay, 0ms) backwards;
+  }
+
+  .image-loaded { animation: image-fade 400ms ease-out; }
+  .inner-page details[open] > :not(summary) { animation: image-fade 300ms ease-out; }
+
+  @media (max-width: 820px) {
+    .site-nav.is-open { animation: reveal-up 300ms cubic-bezier(.22, 1, .36, 1); }
+  }
+
+  :is(.button, .circle, .search-tabs button, .site-nav a, .location-card, .phone-button, .menu-button, .social-links a, .social-links button, .text-link, summary) {
+    transition: color 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, filter 300ms ease;
+  }
+
+  :is(.property-card, .directory-card, .guide-card) { transition: box-shadow 350ms ease; }
+
+  @media (hover: hover) and (pointer: fine) {
+    :is(.property-card, .directory-card, .guide-card):hover {
+      box-shadow: 0 6px 15px #2f171321;
+    }
+
+    :is(.button, .circle, .phone-button, .menu-button, .social-links a, .social-links button):hover {
+      filter: brightness(.96);
+    }
+  }
 
   @keyframes page-out {
-    to { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 0; }
   }
 
   @keyframes page-in {
-    from { opacity: 0; transform: translateX(18px); }
+    from { opacity: 0; translate: 0 10px; }
+    to { opacity: 1; translate: none; }
+  }
+
+  @keyframes reveal-up {
+    from { opacity: 0; translate: 0 10px; }
+    to { opacity: 1; translate: none; }
+  }
+
+  @keyframes image-fade {
+    from { opacity: .25; }
+    to { opacity: 1; }
   }
 }
