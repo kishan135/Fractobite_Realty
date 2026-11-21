@@ -51,28 +51,84 @@
   function initializeHeroSlider() {
     const image = document.querySelector('.hero-image');
     if (!image) return;
-    const indicators = [...document.querySelectorAll('.hero-dots button')];
+    const indicators = [...document.querySelectorAll('.hero-dots [aria-pressed]')];
+    const autoplay = document.querySelector('.hero-autoplay');
+    const slideInterval = 5500;
+    let activeSlide = 0;
     let requestedSlide = 0;
+    let requestId = 0;
+    let timer;
+    let paused = false;
+    let outgoing;
+
+    function scheduleSlide() {
+      clearTimeout(timer);
+      if (paused || reducedMotion.matches || document.hidden) return;
+
+      timer = setTimeout(() => {
+        const next = (requestedSlide + 1) % indicators.length;
+        showSlide(next);
+      }, slideInterval);
+    }
+
+    async function showSlide(index) {
+      clearTimeout(timer);
+      const currentRequest = ++requestId;
+      requestedSlide = index;
+      try {
+        if (index === activeSlide) return;
+
+        const incoming = new Image();
+        incoming.src = `assets/hero/villa-${index + 1}.webp`;
+        await incoming.decode();
+        if (currentRequest !== requestId) return;
+
+        outgoing?.remove();
+        if (!reducedMotion.matches) {
+          const previous = image.cloneNode();
+          previous.classList.add('hero-image--outgoing');
+          previous.removeAttribute('fetchpriority');
+          previous.alt = '';
+          previous.setAttribute('aria-hidden', 'true');
+          image.after(previous);
+          outgoing = previous;
+          const fade = previous.animate([{ opacity: 1 }, { opacity: 0 }], {
+            duration: 650,
+            easing: 'ease-in-out',
+            fill: 'forwards',
+          });
+          fade.onfinish = () => previous.remove();
+        }
+
+        image.src = incoming.src;
+        image.alt = slides[index];
+        activeSlide = index;
+        indicators.forEach((item, position) => item.setAttribute('aria-pressed', String(position === index)));
+      } catch {
+        // Keep the current slide if an image fails to load.
+      } finally {
+        if (currentRequest === requestId) scheduleSlide();
+      }
+    }
+
+    function updateAutoplay() {
+      autoplay.hidden = reducedMotion.matches;
+      autoplay.textContent = paused ? '▶' : 'Ⅱ';
+      autoplay.setAttribute('aria-label', paused ? 'Play automatic villa photos' : 'Pause automatic villa photos');
+      if (reducedMotion.matches) outgoing?.remove();
+      scheduleSlide();
+    }
 
     indicators.forEach((indicator, index) => {
-      indicator.addEventListener('click', async () => {
-        requestedSlide = index;
-        const path = `assets/hero/villa-${index + 1}.webp`;
-        const incoming = new Image();
-        incoming.src = path;
-        try {
-          await incoming.decode();
-        } catch {
-          return;
-        }
-        if (requestedSlide !== index) return;
-
-        image.src = path;
-        image.alt = slides[index];
-        indicators.forEach((item, position) => item.setAttribute('aria-pressed', String(position === index)));
-        if (!reducedMotion.matches) image.animate([{ opacity: .4 }, { opacity: 1 }], { duration: 260 });
-      });
+      indicator.addEventListener('click', () => showSlide(index));
     });
+    autoplay.addEventListener('click', () => {
+      paused = !paused;
+      updateAutoplay();
+    });
+    reducedMotion.addEventListener('change', updateAutoplay);
+    document.addEventListener('visibilitychange', scheduleSlide);
+    updateAutoplay();
   }
 
   function initializePropertySearch() {
