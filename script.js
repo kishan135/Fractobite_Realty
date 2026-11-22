@@ -126,6 +126,130 @@
     updateAutoplay();
   }
 
+  function initializeCatalogCarousel() {
+    const carousel = document.querySelector('.catalog-hero');
+    if (!carousel) return;
+
+    const photos = [...carousel.querySelectorAll('.catalog-slide')];
+    const indicators = [...carousel.querySelectorAll('[data-slide]')];
+    const autoplay = carousel.querySelector('.catalog-autoplay');
+    let current = 0;
+    let requestId = 0;
+    let target = 0;
+    let timer;
+    let paused = false;
+    let hovering = false;
+    let touchStart;
+
+    function prepare(index) {
+      const photo = photos[index];
+      if (!photo.hasAttribute('src')) photo.src = photo.dataset.src;
+      return photo.decode();
+    }
+
+    function nextIndex(index, step = 1) {
+      return (index + step + photos.length) % photos.length;
+    }
+
+    function schedule() {
+      clearTimeout(timer);
+      if (paused || hovering || touchStart || carousel.matches(':focus-within') || document.hidden || reducedMotion.matches) return;
+      timer = setTimeout(() => show(nextIndex(target)), 5000);
+    }
+
+    async function show(index) {
+      clearTimeout(timer);
+      const request = ++requestId;
+      target = index;
+      try {
+        await prepare(index);
+        if (request !== requestId) return;
+
+        if (index !== current) {
+          carousel.querySelector('.catalog-slide.is-previous')?.classList.remove('is-previous');
+          photos[current].classList.remove('is-current', 'is-entering');
+          if (!reducedMotion.matches) {
+            photos[current].classList.add('is-previous');
+            photos[index].classList.add('is-entering');
+          }
+        }
+        indicators[current].setAttribute('aria-pressed', 'false');
+        photos[index].classList.add('is-current');
+        indicators[index].setAttribute('aria-pressed', 'true');
+        current = index;
+      } catch {
+        // Keep the current photo visible if the requested photo fails.
+      } finally {
+        if (request === requestId) {
+          if (!reducedMotion.matches) prepare(nextIndex(index)).catch(() => {});
+          schedule();
+        }
+      }
+    }
+
+    function updateAutoplay() {
+      autoplay.hidden = reducedMotion.matches;
+      autoplay.textContent = paused ? '▶' : 'Ⅱ';
+      autoplay.setAttribute('aria-label', paused ? 'Play automatic property photos' : 'Pause automatic property photos');
+      if (reducedMotion.matches) {
+        carousel.querySelector('.catalog-slide.is-previous')?.classList.remove('is-previous');
+        photos[current].classList.remove('is-entering');
+      } else {
+        prepare(nextIndex(current)).catch(() => {});
+      }
+      schedule();
+    }
+
+    photos.forEach((photo) => {
+      photo.addEventListener('animationend', (event) => {
+        if (event.animationName !== 'motion-fade' || !photo.classList.contains('is-current')) return;
+        photo.classList.remove('is-entering');
+        carousel.querySelector('.catalog-slide.is-previous')?.classList.remove('is-previous');
+      });
+    });
+
+    carousel.querySelector('.catalog-prev').addEventListener('click', () => show(nextIndex(target, -1)));
+    carousel.querySelector('.catalog-next').addEventListener('click', () => show(nextIndex(target)));
+    indicators.forEach((button, index) => button.addEventListener('click', () => show(index)));
+    autoplay.addEventListener('click', () => {
+      paused = !paused;
+      updateAutoplay();
+    });
+
+    carousel.addEventListener('pointerenter', (event) => {
+      if (event.pointerType === 'mouse') hovering = true;
+      schedule();
+    });
+    carousel.addEventListener('pointerleave', () => {
+      hovering = false;
+      schedule();
+    });
+    carousel.addEventListener('focusin', schedule);
+    carousel.addEventListener('focusout', () => queueMicrotask(schedule));
+    carousel.addEventListener('pointerdown', (event) => {
+      if (event.pointerType !== 'touch' || !event.isPrimary || event.target.closest('button')) return;
+      touchStart = { x: event.clientX, y: event.clientY };
+      schedule();
+    });
+    carousel.addEventListener('pointerup', (event) => {
+      if (!touchStart || !event.isPrimary) return;
+      const dx = event.clientX - touchStart.x;
+      const dy = event.clientY - touchStart.y;
+      touchStart = undefined;
+      if (Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy)) show(nextIndex(target, dx < 0 ? 1 : -1));
+      else schedule();
+    });
+    carousel.addEventListener('pointercancel', () => {
+      touchStart = undefined;
+      schedule();
+    });
+
+    reducedMotion.addEventListener('change', updateAutoplay);
+    document.addEventListener('visibilitychange', schedule);
+    carousel.querySelector('.catalog-carousel-controls').hidden = false;
+    updateAutoplay();
+  }
+
   function initializePropertySearch() {
     const search = document.querySelector('#property-search');
     if (!search) return;
@@ -184,20 +308,44 @@
     const type = selectFromUrl(form.elements.type, 'type');
     const location = selectFromUrl(form.elements.location, 'location');
     const cards = [...document.querySelectorAll('[data-property-type]')];
-    let matches = 0;
+    const matchingTypes = new Set();
     cards.forEach((card) => {
       const category = card.dataset.propertyType;
       const markets = card.dataset.markets.split('|');
       const matchesLocation = !location || location === 'Across Gujarat' || markets.includes(location);
-      card.hidden = Boolean((type && category !== type) || !matchesLocation);
-      if (!card.hidden) matches += 1;
+      const matchesType = type ? category === type : Boolean(location) || category !== 'Invest';
+      card.hidden = !matchesType || !matchesLocation;
+      if (!card.hidden) matchingTypes.add(category);
       card.querySelector('[data-property-inquiry]').href = enquiryUrl(category, location);
     });
 
-    const label = matches === 1 ? 'category' : 'categories';
-    document.querySelector('#catalog-status').textContent = `${matches} ${label}${location ? ` for ${location}` : ''}`;
-    document.querySelector('#catalog-empty').hidden = matches !== 0;
+    document.querySelector('.catalog-section .property-directory').hidden = !['Buy', 'Plot', 'Villa'].some((category) => matchingTypes.has(category));
+    document.querySelector('#catalog-commercial').hidden = !matchingTypes.has('Invest');
+    document.querySelector('#catalog-category-heading').hidden = type === 'Invest';
+
+    const offers = [...document.querySelectorAll('[data-offer-type]')];
+    offers.forEach((section) => { section.hidden = !matchingTypes.has(section.dataset.offerType); });
+    document.querySelector('#top-offers').hidden = offers.every((section) => section.hidden);
+    document.querySelector('#catalog-empty').hidden = matchingTypes.size !== 0;
+
+    const count = matchingTypes.size;
+    const label = count === 1 ? 'category' : 'categories';
+    document.querySelector('#catalog-status').textContent = type || location
+      ? `${count} ${label}${location ? ` for ${location}` : ''}`
+      : '';
     document.querySelector('#empty-inquiry').href = enquiryUrl(type, location);
+
+    document.querySelectorAll('[data-catalog-enquiry]').forEach((link) => {
+      const url = new URL(link.href);
+      if (type && !url.searchParams.has('type')) url.searchParams.set('type', type);
+      if (location) url.searchParams.set('location', location);
+      link.href = url.href;
+    });
+    if (location) document.querySelectorAll('.offer-view-all').forEach((link) => {
+      const url = new URL(link.href);
+      url.searchParams.set('location', location);
+      link.href = url.href;
+    });
   }
 
   function initializeLocations() {
@@ -239,6 +387,9 @@
 
     selectFromUrl(form.elements.type, 'type');
     selectFromUrl(form.elements.location, 'location');
+    if (params.get('project') === 'Aakruti Green') {
+      form.elements.requirements.value = 'I would like to enquire about Aakruti Green.';
+    }
     const result = document.querySelector('#enquiry-result');
     const status = document.querySelector('#enquiry-status');
     const draft = document.querySelector('#enquiry-draft');
@@ -344,6 +495,7 @@
   initializeContactLinks();
   initializeMobileNavigation();
   initializeHeroSlider();
+  initializeCatalogCarousel();
   initializePropertySearch();
   initializeCategoryCarousel();
   initializeCatalog();
