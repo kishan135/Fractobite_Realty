@@ -699,6 +699,29 @@ p + p { margin-block-start: var(--text-gap-small); }
   .page-banner { aspect-ratio: 2; }
 }
 
+/* Explore Properties catalog */
+@media (min-width: 640px) {
+  .directory-grid.property-directory {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+  }
+
+  .property-directory .directory-card:not([hidden]),
+  .property-directory .directory-card-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .property-directory .directory-card-body { flex: 1; }
+  .property-directory details { margin-bottom: var(--text-gap-medium); }
+  .property-directory .button { align-self: flex-start; margin-top: auto; }
+}
+
+@media (min-width: 1024px) {
+  .directory-grid.property-directory { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .property-directory .directory-card-body { padding: clamp(16px, 1.8vw, 22px); }
+}
+
 /* Shared motion */
 :root {
   --motion-duration: 480ms;
