@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore project imagery, available details and enquiry options from Fractobite Realty.">
+  <title>Project Details | Fractobite Realty</title>
+  <link rel="icon" type="image/webp" href="assets/logo/fractobite.webp">
+  <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="project.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+<svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></symbol>
+  <symbol id="icon-left" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></symbol>
+  <symbol id="icon-phone" viewBox="0 0 24 24"><path d="M5 3h4l2 5-3 2a13 13 0 0 0 6 6l2-3 5 2v4c0 1-1 2-2 2C10 21 3 14 3 5c0-1 1-2 2-2Z"/></symbol>
+  <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z M12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><path d="M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14Zm5 12 6 6"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M2 11 12 3l10 8M5 9v12h14V9m-9 12v-8h4v8"/></symbol>
+  <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M2 21h20M4 21v-6h4v6m2 0V9h4v12m2 0V3h4v18"/></symbol>
+  <symbol id="icon-layers" viewBox="0 0 24 24"><path d="M2 8 12 3l10 5-10 5L2 8Zm0 4 10 5 10-5M2 16l10 5 10-5"/></symbol>
+  <symbol id="icon-building" viewBox="0 0 24 24"><path d="M2 22h20M4 22V10l5-2v14m0-14V4l6-2v20m0-15 5 2v13M6 13h1m-1 4h1m4-10h2m-2 4h2m-2 4h2m-2 4h2m4-6h1m-1 4h1"/></symbol>
+  <symbol id="icon-diamond" viewBox="0 0 24 24"><path d="M2 8l4-5h12l4 5-10 13L2 8Zm0 0h20M6 3l2 5 4 13 4-13 2-5m-10 5 4-5 4 5"/></symbol>
+  <symbol id="icon-hand" viewBox="0 0 24 24"><path d="M2 12 6 5l4 2m12 5-4-7-4 2-3-1-4 4 2 2 4-2 6 6-2 2-5-4m5 4-2 2-5-4m5 4-2 1-6-5-3-2m15 2 3-3"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24"><path d="M2 5h20v14H2z m0 1 10 8L22 6"/></symbol>
+  <symbol id="icon-instagram" viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm5 5a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm5-1h.01"/></symbol>
+  <symbol id="icon-linkedin" viewBox="0 0 24 24"><path d="M5 9v11m0-15h.01M10 20V9m0 4a4 4 0 0 1 8 0v7"/></symbol>
+  <symbol id="icon-youtube" viewBox="0 0 24 24"><path d="M3 6h18v12H3z m7 3 5 3-5 3Z"/></symbol>
+  <symbol id="icon-facebook" viewBox="0 0 24 24"><path d="M14 22V7c0-3 2-4 5-4m-9 8h8"/></symbol>
+  <symbol id="icon-person" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 0 0-8 0ZM4 21v-2a8 8 0 0 1 16 0v2"/></symbol>
+  <symbol id="icon-document" viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5z m9 0v6h5"/></symbol>
+  <symbol id="icon-road" viewBox="0 0 24 24"><path d="M2 22 8 2m14 20L16 2m-4 0v3m0 3v3m0 3v3m0 3v2M6 22l4-20m8 20L14 2"/></symbol>
+  <symbol id="icon-leaf" viewBox="0 0 24 24"><path d="M20 3c-1 12-6 17-13 15-5-2-5-8 0-11C11 4 15 4 20 3ZM4 21l10-10"/></symbol>
+  <symbol id="icon-size" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M3 5h18v16H3zm0 5h18M8 2v6m8-6v6M7 14h2m3 0h2m3 0h2"/></symbol>
+  <symbol id="icon-run" viewBox="0 0 24 24"><path d="M13 5a2 2 0 1 0 4 0 2 2 0 0 0-4 0m-3 5 4-2 3 5h4m-7-5-3 7 4 2-1 5m-3-7-4 5H3m7-10-4 2"/></symbol>
+  <symbol id="icon-shield" viewBox="0 0 24 24"><path d="M12 2c3 3 6 4 9 4v5c0 5-4 9-9 11-5-2-9-6-9-11V6c3 0 6-1 9-4Z"/></symbol>
+  <symbol id="icon-lamp" viewBox="0 0 24 24"><path d="M12 21V6m-7 0a4 4 0 0 1 7 0 4 4 0 0 1 7 0M8 21h8"/></symbol>
+  <symbol id="icon-drop" viewBox="0 0 24 24"><path d="M12 2c4 6 7 10 7 13a7 7 0 0 1-14 0c0-3 3-7 7-13Zm-3 13a3 3 0 0 0 3 3"/></symbol>
+  <symbol id="icon-power" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-12h-7l1-8Z"/></symbol>
+</svg>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="wide-container header-inner">
+    <a class="brand brand--header" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite.webp" alt="Fractobite Realty" width="650" height="122"></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="properties.html" aria-current="page">Properties</a>
+      <a href="locations.html">Locations</a>
+      <a href="about.html">About Us</a>
+      <a href="insights.html">Insights</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="header-actions">
+      <a class="phone-button" data-phone href="tel:+919876543210" aria-label="Call Fractobite Realty"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></a>
+      <a class="button" href="contact.html">Get in Touch <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+      <button class="menu-button" type="button" aria-label="Menu" aria-controls="site-nav" aria-expanded="false"><svg class="icon" aria-hidden="true"><use href="#icon-menu"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="main-content" class="inner-page project-page">
+  <section class="container page-panel project-unavailable" id="project-unavailable">
+    <h1>Choose a project</h1>
+    <p>Select a featured property to explore its project details.</p>
+    <a class="button" href="properties.html">Explore Properties <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+  </section>
+
+  <div class="container project-detail" hidden>
+    <section class="project-hero" aria-labelledby="project-title">
+      <div class="project-hero-copy">
+        <nav class="project-breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a><span aria-hidden="true">›</span>
+          <a href="properties.html">Properties</a><span aria-hidden="true">›</span>
+          <span aria-current="page" data-project-text="name"></span>
+        </nav>
+        <div class="motion-intro">
+          <p class="eyebrow">Featured Project</p>
+          <h1 id="project-title" data-project-text="name"></h1>
+          <p class="project-pin"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><strong data-project-text="location"></strong></p>
+          <p data-project-text="description"></p>
+        </div>
+        <a class="button project-hero-enquire" href="#project-enquiry">Enquire Now <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+      </div>
+      <div class="project-carousel" role="region" aria-label="Project image carousel" aria-roledescription="carousel">
+        <div class="catalog-hero-images"></div>
+        <div class="catalog-carousel-controls" hidden>
+          <button class="circle catalog-prev" type="button" aria-label="Previous project photo"><svg class="icon" aria-hidden="true"><use href="#icon-left"/></svg></button>
+          <button class="circle catalog-next" type="button" aria-label="Next project photo"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+          <div class="catalog-dots" role="group" aria-label="Choose project photo"></div>
+        </div>
+        <span class="project-image-caption" id="project-hero-caption"></span>
+      </div>
+    </section>
+
+    <section class="project-overview project-section" aria-labelledby="project-overview-title">
+      <div>
+        <header class="project-heading">
+          <p class="eyebrow">About the Project</p>
+          <h2 id="project-overview-title">Project Overview</h2>
+        </header>
+        <p data-project-text="overview"></p>
+        <p class="project-note" id="project-highlights-note"></p>
+        <ul class="project-highlights project-icon-grid" id="project-highlights" aria-describedby="project-highlights-note"></ul>
+      </div>
+      <figure class="project-overview-photo">
+        <img id="project-overview-image" alt="" width="960" height="500" loading="lazy">
+        <figcaption class="project-image-caption" id="project-overview-caption"></figcaption>
+      </figure>
+    </section>
+
+    <section class="project-specifications project-section" aria-labelledby="project-specs-title">
+      <header class="project-heading">
+        <p class="eyebrow">Key Details</p>
+        <h2 id="project-specs-title">Project Specifications</h2>
+      </header>
+      <dl class="project-spec-grid" id="project-specifications"></dl>
+    </section>
+
+    <section class="project-section" aria-labelledby="project-amenities-title">
+      <header class="project-heading">
+        <p class="eyebrow">Amenities</p>
+        <h2 id="project-amenities-title">Amenities &amp; Features</h2>
+      </header>
+      <p class="project-note" id="project-amenities-note"></p>
+      <ul class="project-amenities project-icon-grid" id="project-amenities" aria-describedby="project-amenities-note"></ul>
+    </section>
+
+    <section class="project-gallery project-section" aria-labelledby="project-gallery-title">
+      <header class="project-heading">
+        <p class="eyebrow">Gallery</p>
+        <h2 id="project-gallery-title">Photo Gallery</h2>
+      </header>
+      <p class="project-note" id="project-gallery-note"></p>
+      <div class="project-gallery-layout">
+        <button class="circle project-gallery-prev" type="button" aria-controls="project-gallery-track" aria-label="Previous gallery images"><svg class="icon" aria-hidden="true"><use href="#icon-left"/></svg></button>
+        <div id="project-gallery-track" tabindex="0" role="group" aria-label="Scrollable project gallery"></div>
+        <button class="circle project-gallery-next" type="button" aria-controls="project-gallery-track" aria-label="Next gallery images"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+      </div>
+      <div class="project-gallery-dots" role="group" aria-label="Gallery pages"></div>
+    </section>
+
+    <div class="project-bottom project-section">
+      <section class="project-location" aria-labelledby="project-location-title">
+      <header class="project-heading">
+        <p class="eyebrow">Location</p>
+        <h2 id="project-location-title">Location &amp; Connectivity</h2>
+      </header>
+        <div class="project-location-grid">
+          <div class="project-map" id="project-map">
+            <svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>
+            <strong>Location details coming soon</strong>
+          </div>
+          <div class="project-connectivity">
+            <h3>Key Connectivity</h3>
+            <p id="project-connectivity-note">Nearby landmarks and travel details are to be confirmed.</p>
+            <ul id="project-connectivity-items"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="project-enquiry" id="project-enquiry" aria-labelledby="project-enquiry-title">
+      <header class="project-heading">
+        <p class="eyebrow">Project Enquiry</p>
+        <h2 id="project-enquiry-title">Get Project Details</h2>
+      </header>
+        <form class="enquiry-form" id="enquiry-form" hidden>
+          <label>
+            <span class="project-form-label">Your Name (required)</span>
+            <span class="contact-field"><svg class="icon" aria-hidden="true"><use href="#icon-person"/></svg><input name="name" autocomplete="name" placeholder="Your Name *" maxlength="100" pattern=".*\S.*" required></span>
+          </label>
+          <label>
+            <span class="project-form-label">Phone Number (required)</span>
+            <span class="contact-field"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg><input name="phone" type="tel" autocomplete="tel" placeholder="Phone Number *" maxlength="32" required></span>
+          </label>
+          <label>
+            <span class="project-form-label">Email Address (required)</span>
+            <span class="contact-field"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg><input name="email" type="email" autocomplete="email" placeholder="Email Address *" maxlength="150" required></span>
+          </label>
+          <label>
+            <span class="project-form-label">Select Requirement</span>
+            <span class="dropdown"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><select name="requirement" aria-label="Select Requirement"><option value="">Select Requirement</option><option>Project information</option><option>Site visit</option><option>Investment enquiry</option></select></span>
+          </label>
+          <label>
+            <span class="project-form-label">Your Message</span>
+            <span class="contact-field"><svg class="icon" aria-hidden="true"><use href="#icon-document"/></svg><textarea name="requirements" rows="3" maxlength="1500" placeholder="Your Message"></textarea></span>
+          </label>
+          <button class="button" type="submit">Enquire Now <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+        </form>
+        <div class="enquiry-result" id="enquiry-result" hidden>
+          <p role="status" id="enquiry-status"></p>
+          <label>Draft <textarea id="enquiry-draft" rows="6" readonly></textarea></label>
+          <a class="button button--outline" id="enquiry-email" href="mailto:info@fractobiterealty.com">Open Email App</a>
+        </div>
+      </section>
+
+      <section class="project-similar" aria-labelledby="project-related-title">
+      <header class="project-heading">
+        <p class="eyebrow">Similar Projects</p>
+        <h2 id="project-related-title">Explore Similar Properties</h2>
+      </header>
+        <div class="project-related-grid" id="project-related"></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer wide-container" id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="brand brand--footer" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite.webp" alt="Fractobite Realty" width="650" height="122"></a>
+      <p class="footer-brand-description">Your trusted real estate advisory partner across Gujarat.</p>
+    </div>
+    <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="locations.html">Locations</a><a href="about.html">About Us</a></div>
+    <div><h2>Our Offerings</h2><a href="properties.html?type=Buy">Residential Homes</a><a href="properties.html?type=Plot">Plots &amp; Land</a><a href="properties.html?type=Villa">Villas &amp; Luxury Homes</a></div>
+    <div class="footer-contact"><h2>Contact Us</h2>
+      <a data-phone data-contact-text href="tel:+919876543210"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 98765 43210</span></a>
+      <a data-email href="mailto:info@fractobiterealty.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>info@fractobiterealty.com</span></a>
+      <p><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> <span>Ahmedabad, Gujarat</span></p>
+    </div>
+    <div><h2>Follow Us</h2><div class="social-links">
+      <a href="https://www.instagram.com/fractobiterealty/" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#icon-instagram"/></svg></a>
+      <button type="button" data-demo="LinkedIn" aria-label="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#icon-linkedin"/></svg></button>
+          <button type="button" data-demo="YouTube" aria-label="YouTube"><svg class="icon" aria-hidden="true"><use href="#icon-youtube"/></svg></button>
+          <button type="button" data-demo="Facebook" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="#icon-facebook"/></svg></button>
+    </div></div>
+  </div>
+  <div class="footer-bottom"><p>© 2026 Fractobite Realty. All rights reserved.</p><p>Real Estate Advisory &amp; Channel Partner Across Gujarat.</p></div>
+</footer>
+<dialog class="demo-dialog" aria-labelledby="demo-title">
+  <h2 id="demo-title"></h2>
+  <p>This link is part of the website demo. Its destination will be added when available.</p>
+  <form method="dialog"><button class="button" type="submit">Close</button></form>
+</dialog>
+</body>
+</html>

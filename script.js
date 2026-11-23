@@ -131,10 +131,11 @@
   }
 
   function initializeCatalogCarousel() {
-    const carousel = document.querySelector('.catalog-hero');
+    const carousel = document.querySelector('.catalog-hero, .project-carousel');
     if (!carousel) return;
 
     const photos = [...carousel.querySelectorAll('.catalog-slide')];
+    if (photos.length < 2) return;
     const indicators = [...carousel.querySelectorAll('[data-slide]')];
     const autoplay = carousel.querySelector('.catalog-autoplay');
     let current = 0;
@@ -157,7 +158,7 @@
 
     function schedule() {
       clearTimeout(timer);
-      if (paused || hovering || touchStart || carousel.matches(':focus-within') || document.hidden || reducedMotion.matches) return;
+      if (!autoplay || paused || hovering || touchStart || carousel.matches(':focus-within') || document.hidden || reducedMotion.matches) return;
       timer = setTimeout(() => show(nextIndex(target)), 5000);
     }
 
@@ -178,7 +179,9 @@
           }
         }
         indicators[current].setAttribute('aria-pressed', 'false');
+        photos[current].setAttribute('aria-hidden', 'true');
         photos[index].classList.add('is-current');
+        photos[index].removeAttribute('aria-hidden');
         indicators[index].setAttribute('aria-pressed', 'true');
         current = index;
       } catch {
@@ -192,9 +195,11 @@
     }
 
     function updateAutoplay() {
-      autoplay.hidden = reducedMotion.matches;
-      autoplay.textContent = paused ? '▶' : 'Ⅱ';
-      autoplay.setAttribute('aria-label', paused ? 'Play automatic property photos' : 'Pause automatic property photos');
+      if (autoplay) {
+        autoplay.hidden = reducedMotion.matches;
+        autoplay.textContent = paused ? '▶' : 'Ⅱ';
+        autoplay.setAttribute('aria-label', paused ? 'Play automatic property photos' : 'Pause automatic property photos');
+      }
       if (reducedMotion.matches) {
         carousel.querySelector('.catalog-slide.is-previous')?.classList.remove('is-previous');
         photos[current].classList.remove('is-entering');
@@ -215,7 +220,7 @@
     carousel.querySelector('.catalog-prev').addEventListener('click', () => show(nextIndex(target, -1)));
     carousel.querySelector('.catalog-next').addEventListener('click', () => show(nextIndex(target)));
     indicators.forEach((button, index) => button.addEventListener('click', () => show(index)));
-    autoplay.addEventListener('click', () => {
+    autoplay?.addEventListener('click', () => {
       paused = !paused;
       updateAutoplay();
     });
@@ -341,6 +346,227 @@
     });
   }
 
+  function initializeMobilePropertySliders() {
+    const tracks = document.querySelectorAll('.property-page :is(.property-directory, .offer-grid)');
+    if (!tracks.length || !('IntersectionObserver' in window)) return;
+
+    const config = { breakpoint: 767, interval: 3000, transitionDuration: 450 };
+    const mobile = window.matchMedia(`(max-width: ${config.breakpoint}px)`);
+
+    tracks.forEach((track, index) => {
+      const slider = document.createElement('div');
+      const viewport = document.createElement('div');
+      const controls = document.createElement('div');
+      const dots = document.createElement('div');
+      const autoplay = document.createElement('button');
+      const heading = track.closest('section').getAttribute('aria-labelledby');
+      slider.className = 'property-slider';
+      viewport.className = 'property-slider-viewport';
+      controls.className = 'property-slider-controls';
+      dots.className = 'property-slider-dots';
+      autoplay.className = 'property-slider-autoplay';
+      autoplay.type = 'button';
+      track.id ||= `property-slides-${index + 1}`;
+      autoplay.setAttribute('aria-controls', track.id);
+      controls.hidden = true;
+      slider.style.setProperty('--slide-duration', `${config.transitionDuration}ms`);
+      track.before(slider);
+      viewport.append(track);
+      controls.append(dots, autoplay);
+      slider.append(viewport, controls);
+
+      let cards = [];
+      let active = 0;
+      let position = 0;
+      let inView = false;
+      let paused = false;
+      let timer;
+      let transitionTimer;
+      let gesture;
+      let dragged = false;
+      let hovered = false;
+
+      function schedule() {
+        clearTimeout(timer);
+        if (!mobile.matches || cards.length < 2 || !inView || paused || hovered
+          || gesture || slider.matches(':has(:focus-visible)') || document.hidden || reducedMotion.matches) return;
+        timer = setTimeout(() => move(position + 1), config.interval);
+      }
+
+      function show(positionToShow) {
+        position = positionToShow;
+        track.style.setProperty('--slide-position', position);
+      }
+
+      function settle() {
+        clearTimeout(transitionTimer);
+        track.classList.remove('is-sliding');
+        track.style.removeProperty('--swipe-offset');
+        // Rebase a wraparound on the matching real card before the next move.
+        if (cards.length > 1) show(active + 1);
+      }
+
+      function markActive() {
+        cards.forEach((card, i) => { card.inert = i !== active; });
+        [...dots.children].forEach((button, i) => button.setAttribute('aria-pressed', String(i === active)));
+      }
+
+      function move(next) {
+        if (cards.length < 2) return;
+        clearTimeout(transitionTimer);
+        active = (next + cards.length - 1) % cards.length;
+        markActive();
+        if (reducedMotion.matches) {
+          settle();
+        } else {
+          track.classList.add('is-sliding');
+          track.style.removeProperty('--swipe-offset');
+          show(next);
+          transitionTimer = setTimeout(settle, config.transitionDuration + 75);
+        }
+        schedule();
+      }
+
+      function updateAutoplay() {
+        autoplay.hidden = reducedMotion.matches;
+        autoplay.textContent = paused ? 'Play' : 'Pause';
+        autoplay.setAttribute('aria-label', paused ? 'Play automatic slides' : 'Pause automatic slides');
+        if (reducedMotion.matches) settle();
+        schedule();
+      }
+
+      function copyCard(card) {
+        const copy = card.cloneNode(true);
+        copy.dataset.slideCopy = '';
+        copy.removeAttribute('id');
+        copy.querySelectorAll('[id]').forEach((child) => child.removeAttribute('id'));
+        copy.inert = true;
+        copy.setAttribute('aria-hidden', 'true');
+        copy.classList.remove('motion-reveal');
+        return copy;
+      }
+
+      function refresh() {
+        const previous = cards[active];
+        cards.forEach((card) => { card.inert = false; });
+        track.querySelectorAll(':scope > [data-slide-copy]').forEach((copy) => copy.remove());
+        cards = [...track.children].filter((card) => !card.hidden);
+        active = Math.max(0, cards.indexOf(previous));
+        gesture = undefined;
+        dragged = false;
+        track.style.removeProperty('--swipe-offset');
+        track.classList.remove('is-sliding');
+        clearTimeout(transitionTimer);
+
+        const enabled = mobile.matches && cards.length > 1;
+        slider.classList.toggle('is-mobile-slider', enabled);
+        controls.hidden = !enabled;
+        if (!enabled) {
+          slider.removeAttribute('role');
+          slider.removeAttribute('aria-roledescription');
+          slider.removeAttribute('aria-labelledby');
+          schedule();
+          return;
+        }
+
+        slider.setAttribute('role', 'group');
+        slider.setAttribute('aria-roledescription', 'carousel');
+        if (heading) slider.setAttribute('aria-labelledby', heading);
+        // Inert copies let the first and last cards slide straight into one another.
+        track.prepend(copyCard(cards.at(-1)));
+        track.append(copyCard(cards[0]));
+        dots.replaceChildren(...cards.map((card, i) => {
+          const button = document.createElement('button');
+          const title = card.querySelector('h2, h3, h4')?.textContent.trim();
+          button.type = 'button';
+          button.setAttribute('aria-controls', track.id);
+          button.setAttribute('aria-label', title ? `Show ${title}` : `Show card ${i + 1}`);
+          button.addEventListener('click', () => move(i + 1));
+          return button;
+        }));
+        show(active + 1);
+        markActive();
+        updateAutoplay();
+      }
+
+      track.addEventListener('transitionend', (event) => {
+        if (event.target === track && event.propertyName === 'transform') settle();
+      });
+      autoplay.addEventListener('click', () => {
+        paused = !paused;
+        updateAutoplay();
+      });
+      controls.addEventListener('pointerdown', () => clearTimeout(timer));
+      controls.addEventListener('pointerup', schedule);
+      controls.addEventListener('pointercancel', schedule);
+      slider.addEventListener('focusin', schedule);
+      slider.addEventListener('focusout', () => queueMicrotask(schedule));
+      slider.addEventListener('pointerenter', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        hovered = true;
+        schedule();
+      });
+      slider.addEventListener('pointerleave', (event) => {
+        if (event.pointerType !== 'mouse') return;
+        hovered = false;
+        schedule();
+      });
+
+      viewport.addEventListener('pointerdown', (event) => {
+        dragged = false;
+        if (!mobile.matches || cards.length < 2 || !event.isPrimary || event.pointerType === 'mouse') return;
+        gesture = { x: event.clientX, y: event.clientY };
+        schedule();
+      });
+      viewport.addEventListener('pointermove', (event) => {
+        if (!gesture || !event.isPrimary) return;
+        const dx = event.clientX - gesture.x;
+        const dy = event.clientY - gesture.y;
+        if (!dragged && (Math.abs(dx) < 8 || Math.abs(dx) <= Math.abs(dy))) return;
+        if (!dragged) settle();
+        dragged = true;
+        if (!reducedMotion.matches) {
+          const limit = track.clientWidth;
+          track.style.setProperty('--swipe-offset', `${Math.max(-limit, Math.min(dx, limit))}px`);
+        }
+      });
+      function finishGesture(event) {
+        if (!gesture || !event.isPrimary) return;
+        const dx = event.clientX - gesture.x;
+        gesture = undefined;
+        if (dragged) {
+          const step = event.type === 'pointerup' && Math.abs(dx) >= 42 ? Math.sign(-dx) : 0;
+          move(position + step);
+        } else schedule();
+      }
+      viewport.addEventListener('pointerup', finishGesture);
+      viewport.addEventListener('pointercancel', finishGesture);
+      viewport.addEventListener('click', (event) => {
+        if (!dragged || event.detail === 0) return;
+        dragged = false;
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
+
+      const observer = new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting && entry.intersectionRatio >= .4;
+        schedule();
+      }, { threshold: .4 });
+      observer.observe(viewport);
+      new MutationObserver((changes) => {
+        if (changes.some(({ target, type, addedNodes, removedNodes }) => {
+          if (type === 'attributes') return target.parentElement === track && !target.hasAttribute('data-slide-copy');
+          return target === track && [...addedNodes, ...removedNodes].some((node) =>
+            node instanceof Element && !node.hasAttribute('data-slide-copy'));
+        })) refresh();
+      }).observe(track, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
+      mobile.addEventListener('change', refresh);
+      reducedMotion.addEventListener('change', updateAutoplay);
+      document.addEventListener('visibilitychange', schedule);
+      refresh();
+    });
+  }
+
   function initializeLocations() {
     const directory = document.querySelector('.market-directory');
     if (!directory) return;
@@ -394,10 +620,13 @@
 
   function initializeEnquiry() {
     const form = document.querySelector('#enquiry-form');
-    if (!form) return;
+    if (!form || form.parentElement.closest('[hidden]')) return;
 
-    selectFromUrl(form.elements.type, 'type');
-    selectFromUrl(form.elements.location, 'location');
+    const projectName = form.dataset.projectName;
+    if (!projectName) {
+      selectFromUrl(form.elements.type, 'type');
+      selectFromUrl(form.elements.location, 'location');
+    }
     const project = params.get('project');
     const enquiryProjects = ['Aakruti Green', 'Balaji Upvan', 'Balaji Upvan 5 Star Villa', 'Mirrikh Group'];
     if (enquiryProjects.includes(project)) {
@@ -421,19 +650,24 @@
         return;
       }
       const fields = form.elements;
-      const type = fields.type.selectedOptions[0].textContent.trim();
-      const location = fields.location.selectedOptions[0].textContent.trim();
       const body = [
         `Name: ${fields.name.value.trim()}`,
         `Phone: ${formattedPhone}`,
         `Email: ${fields.email.value.trim()}`,
-        `Property type: ${type}`,
-        `Preferred location: ${location}`,
       ];
+      if (projectName) {
+        body.unshift(`Project: ${projectName}`);
+        if (fields.requirement.value) body.push(`Requirement: ${fields.requirement.value}`);
+      } else {
+        body.push(
+          `Property type: ${fields.type.selectedOptions[0].textContent.trim()}`,
+          `Preferred location: ${fields.location.selectedOptions[0].textContent.trim()}`,
+        );
+      }
       const requirements = fields.requirements.value.trim();
       if (requirements) body.push('', requirements);
       const draftBody = body.join('\r\n');
-      const subject = encodeURIComponent('Property enquiry for Fractobite Realty');
+      const subject = encodeURIComponent(projectName ? `Project enquiry: ${projectName}` : 'Property enquiry for Fractobite Realty');
       document.querySelector('#enquiry-email').href = `mailto:${contact.email}?subject=${subject}&body=${encodeURIComponent(draftBody)}`;
       draft.value = draftBody;
       result.hidden = false;
@@ -686,6 +920,9 @@
       '.motion-intro', 'article', '.benefit', '.about-collage-frame', '.about-stats > div',
       '.footer-grid > *', '.location-options > li', '.disclosure-list > details',
       '.page-panel', 'form', '.contact-action', '.insight-filters',
+      '.project-carousel', '.project-overview-photo', '.project-icon-grid > li',
+      '.project-spec-grid > div', '#project-gallery-track', '.project-map', '.project-connectivity',
+      '.property-slider.is-mobile-slider',
     ].join(', ');
     const items = 'h1, h2, h3, h4, h5, h6, p, img:not(.hero-image), .button';
     const groupPositions = new Map();
@@ -748,6 +985,7 @@
   initializePropertySearch();
   initializeCategoryCarousel();
   initializeCatalog();
+  initializeMobilePropertySliders();
   initializeLocations();
   initializeInsights();
   initializeEnquiry();
