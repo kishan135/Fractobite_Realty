@@ -1733,7 +1733,7 @@ a.contact-method .contact-method-copy > span { font-weight: 600; color: #ff8b27;
 #project-gallery-track img {
   display: block;
   width: 100%;
-  height: clamp(200px, 16vw, 230px);
+  height: clamp(240px, 18vw, 280px);
   object-fit: cover;
   border-radius: 12px;
 }
@@ -1741,6 +1741,16 @@ a.contact-method .contact-method-copy > span { font-weight: 600; color: #ff8b27;
 .project-gallery-dots button { display: grid; place-items: center; width: 25px; height: 28px; padding: 0; border: 0; background: transparent; }
 .project-gallery-dots button::after { content: ''; background: #c6bcb6; }
 .project-gallery-dots button[aria-pressed="true"]::after { background: var(--orange); }
+@media (min-width: 768px) {
+  .project-gallery-layout {
+    --gallery-layout-width: min(94vw, 1440px);
+    margin-inline: calc((100% - var(--gallery-layout-width)) / 2);
+    column-gap: clamp(6px, .6vw, 9px);
+  }
+}
+@media (min-width: 1024px) {
+  .project-gallery-layout { --gallery-layout-width: min(96vw, 1440px); }
+}
 .project-bottom {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
