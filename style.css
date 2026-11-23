@@ -1704,8 +1704,15 @@ a.contact-method .contact-method-copy > span { font-weight: 600; color: #ff8b27;
 .project-spec-grid dt { display: contents; font-weight: 700; }
 .project-spec-grid .icon { grid-row: span 2; align-self: center; }
 .project-spec-grid dd { grid-column: 2; margin: 0; }
-.project-amenities { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.project-amenities { grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 1fr; }
 .project-amenities > li { flex-direction: column; text-align: center; gap: 7px; padding-block: 13px; }
+.project-amenities > li > strong {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  flex: 1;
+  min-block-size: 2lh;
+}
 .project-gallery-layout { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(5px, 1vw, 14px); margin-top: var(--text-gap-small); }
 .project-gallery-layout .circle { width: 36px; height: 36px; }
 .project-gallery-layout .circle:disabled { opacity: .45; cursor: default; }
