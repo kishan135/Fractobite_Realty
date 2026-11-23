@@ -311,28 +311,17 @@
 
     const type = selectFromUrl(form.elements.type, 'type');
     const location = selectFromUrl(form.elements.location, 'location');
-    const cards = [...document.querySelectorAll('[data-property-type]')];
-    const matchingTypes = new Set();
-    cards.forEach((card) => {
-      const category = card.dataset.propertyType;
-      const markets = card.dataset.markets.split('|');
-      const matchesLocation = !location || location === 'Across Gujarat' || markets.includes(location);
-      const matchesType = type ? category === type : Boolean(location) || category !== 'Invest';
-      card.hidden = !matchesType || !matchesLocation;
-      if (!card.hidden) matchingTypes.add(category);
-      card.querySelector('[data-property-inquiry]').href = enquiryUrl(category, location);
-    });
-
-    document.querySelector('.catalog-section .property-directory').hidden = !['Buy', 'Plot', 'Villa'].some((category) => matchingTypes.has(category));
-    document.querySelector('#catalog-commercial').hidden = !matchingTypes.has('Invest');
-    document.querySelector('#catalog-category-heading').hidden = type === 'Invest';
-
     const offers = [...document.querySelectorAll('[data-offer-type]')];
-    offers.forEach((section) => { section.hidden = !matchingTypes.has(section.dataset.offerType); });
-    document.querySelector('#top-offers').hidden = offers.every((section) => section.hidden);
-    document.querySelector('#catalog-empty').hidden = matchingTypes.size !== 0;
+    const count = offers.filter((section) => {
+      const markets = section.dataset.markets.split('|');
+      const matchesLocation = !location || location === 'Across Gujarat' || markets.includes(location);
+      const matchesType = !type || section.dataset.offerType === type;
+      section.hidden = !matchesType || !matchesLocation;
+      return !section.hidden;
+    }).length;
+    document.querySelector('#top-offers').hidden = count === 0;
+    document.querySelector('#catalog-empty').hidden = count !== 0;
 
-    const count = matchingTypes.size;
     const label = count === 1 ? 'category' : 'categories';
     document.querySelector('#catalog-status').textContent = type || location
       ? `${count} ${label}${location ? ` for ${location}` : ''}`
@@ -409,8 +398,10 @@
 
     selectFromUrl(form.elements.type, 'type');
     selectFromUrl(form.elements.location, 'location');
-    if (params.get('project') === 'Aakruti Green') {
-      form.elements.requirements.value = 'I would like to enquire about Aakruti Green.';
+    const project = params.get('project');
+    const enquiryProjects = ['Aakruti Green', 'Balaji Upvan', 'Balaji Upvan 5 Star Villa', 'Mirrikh Group'];
+    if (enquiryProjects.includes(project)) {
+      form.elements.requirements.value = `I would like to enquire about ${project}.`;
     }
     const result = document.querySelector('#enquiry-result');
     const status = document.querySelector('#enquiry-status');
