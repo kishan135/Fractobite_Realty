@@ -356,30 +356,24 @@
     tracks.forEach((track, index) => {
       const slider = document.createElement('div');
       const viewport = document.createElement('div');
-      const controls = document.createElement('div');
       const dots = document.createElement('div');
-      const autoplay = document.createElement('button');
       const heading = track.closest('section').getAttribute('aria-labelledby');
       slider.className = 'property-slider';
       viewport.className = 'property-slider-viewport';
-      controls.className = 'property-slider-controls';
       dots.className = 'property-slider-dots';
-      autoplay.className = 'property-slider-autoplay';
-      autoplay.type = 'button';
+      dots.setAttribute('role', 'group');
+      dots.setAttribute('aria-label', 'Choose a property card');
       track.id ||= `property-slides-${index + 1}`;
-      autoplay.setAttribute('aria-controls', track.id);
-      controls.hidden = true;
+      dots.hidden = true;
       slider.style.setProperty('--slide-duration', `${config.transitionDuration}ms`);
       track.before(slider);
       viewport.append(track);
-      controls.append(dots, autoplay);
-      slider.append(viewport, controls);
+      slider.append(viewport, dots);
 
       let cards = [];
       let active = 0;
       let position = 0;
       let inView = false;
-      let paused = false;
       let timer;
       let transitionTimer;
       let gesture;
@@ -388,7 +382,7 @@
 
       function schedule() {
         clearTimeout(timer);
-        if (!mobile.matches || cards.length < 2 || !inView || paused || hovered
+        if (!mobile.matches || cards.length < 2 || !inView || hovered
           || gesture || slider.matches(':has(:focus-visible)') || document.hidden || reducedMotion.matches) return;
         timer = setTimeout(() => move(position + 1), config.interval);
       }
@@ -427,14 +421,6 @@
         schedule();
       }
 
-      function updateAutoplay() {
-        autoplay.hidden = reducedMotion.matches;
-        autoplay.textContent = paused ? 'Play' : 'Pause';
-        autoplay.setAttribute('aria-label', paused ? 'Play automatic slides' : 'Pause automatic slides');
-        if (reducedMotion.matches) settle();
-        schedule();
-      }
-
       function copyCard(card) {
         const copy = card.cloneNode(true);
         copy.dataset.slideCopy = '';
@@ -460,7 +446,7 @@
 
         const enabled = mobile.matches && cards.length > 1;
         slider.classList.toggle('is-mobile-slider', enabled);
-        controls.hidden = !enabled;
+        dots.hidden = !enabled;
         if (!enabled) {
           slider.removeAttribute('role');
           slider.removeAttribute('aria-roledescription');
@@ -486,19 +472,15 @@
         }));
         show(active + 1);
         markActive();
-        updateAutoplay();
+        schedule();
       }
 
       track.addEventListener('transitionend', (event) => {
         if (event.target === track && event.propertyName === 'transform') settle();
       });
-      autoplay.addEventListener('click', () => {
-        paused = !paused;
-        updateAutoplay();
-      });
-      controls.addEventListener('pointerdown', () => clearTimeout(timer));
-      controls.addEventListener('pointerup', schedule);
-      controls.addEventListener('pointercancel', schedule);
+      dots.addEventListener('pointerdown', () => clearTimeout(timer));
+      dots.addEventListener('pointerup', schedule);
+      dots.addEventListener('pointercancel', schedule);
       slider.addEventListener('focusin', schedule);
       slider.addEventListener('focusout', () => queueMicrotask(schedule));
       slider.addEventListener('pointerenter', (event) => {
@@ -561,7 +543,10 @@
         })) refresh();
       }).observe(track, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden'] });
       mobile.addEventListener('change', refresh);
-      reducedMotion.addEventListener('change', updateAutoplay);
+      reducedMotion.addEventListener('change', () => {
+        if (reducedMotion.matches && slider.classList.contains('is-mobile-slider')) settle();
+        schedule();
+      });
       document.addEventListener('visibilitychange', schedule);
       refresh();
     });
