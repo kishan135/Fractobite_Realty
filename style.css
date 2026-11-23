@@ -68,8 +68,9 @@
   --ink: #151a26;
   --paper: #faf7f5;
   --line: #d1c8c4;
-  --container: min(88%, 1290px);
-  --wide: min(91%, 1340px);
+  --site-max-width: 1340px;
+  --site-gutter: 4.5%;
+  --container: min(calc(100% - 2 * var(--site-gutter)), var(--site-max-width));
   --heading-line-height: 1.15;
   --subheading-line-height: 1.28;
   --body-line-height: 1.58;
@@ -111,7 +112,12 @@ button, select, a { -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
 body { background: radial-gradient(ellipse at 15% 27%, #f5ece7, transparent 31%), var(--paper); }
 .container { width: var(--container); margin-inline: auto; }
-.wide-container { width: var(--wide); margin-inline: auto; }
+@media (768px <= width < 1024px) {
+  :root { --site-gutter: 24px; }
+}
+@media (max-width: 767px) {
+  :root { --site-gutter: clamp(16px, 4.7vw, 20px); }
+}
 .icon-library { position: absolute; width: 0; height: 0; overflow: hidden; }
 .icon { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex: none; vertical-align: middle; }
 .eyebrow { color: var(--orange-dark); font-size: clamp(.64rem, .94vw, .82rem); font-weight: 700; line-height: var(--subheading-line-height); letter-spacing: .23em; text-transform: uppercase; }
@@ -130,7 +136,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 
 /* 05. HEADER */
 .site-header { position: relative; z-index: 2; background: #faf7f6; }
-.header-inner { min-height: clamp(58px, 5.75vw, 83px); display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; }
+.header-inner { width: min(91%, var(--site-max-width)); margin-inline: auto; min-height: clamp(58px, 5.75vw, 83px); display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; }
 .brand { display: flex; align-items: center; justify-content: center; }
 .brand img { width: 100%; height: auto; object-fit: contain; }
 .brand--header {
@@ -169,12 +175,14 @@ p + p { margin-block-start: var(--text-gap-small); }
 
 /* 06. HERO */
 .hero {
+  /* Keep the approved copy and search proportions in the split hero. */
+  --hero-content-width: min(88%, 1290px);
   --hero-copy-share: .42;
   --hero-search-share: .96;
   --hero-search-shift: -.024;
   position: relative;
 }
-.hero-inner { display: grid; grid-template-columns: calc(100% * var(--hero-copy-share)) minmax(0, 1fr); grid-template-areas: 'copy visual' 'search visual'; align-content: center; min-height: clamp(365px, 35.8vw, 515px); padding-block: clamp(24px, 3vw, 44px) clamp(20px, 2vw, 30px); }
+.hero-inner { display: grid; width: var(--hero-content-width); grid-template-columns: calc(100% * var(--hero-copy-share)) minmax(0, 1fr); grid-template-areas: 'copy visual' 'search visual'; align-content: center; min-height: clamp(365px, 35.8vw, 515px); padding-block: clamp(24px, 3vw, 44px) clamp(20px, 2vw, 30px); }
 .hero-copy { grid-area: copy; position: relative; z-index: 1; align-self: end; }
 .hero-eyebrow { color: var(--ink); font-size: clamp(.7rem, 1.15vw, 1rem); margin-bottom: var(--text-gap-medium); }
 .hero-eyebrow span { color: var(--orange-dark); }
@@ -185,10 +193,10 @@ p + p { margin-block-start: var(--text-gap-small); }
 /* 07. HERO IMAGE GEOMETRY */
 .hero-visual {
   /* Use the same capped container, column and panel dimensions as the search. */
-  --hero-search-edge: calc((100% - var(--container)) / 2 +
-    var(--container) * var(--hero-copy-share) * (var(--hero-search-share) + var(--hero-search-shift)));
+  --hero-search-edge: calc((100% - var(--hero-content-width)) / 2 +
+    var(--hero-content-width) * var(--hero-copy-share) * (var(--hero-search-share) + var(--hero-search-shift)));
   position: absolute;
-  inset: 0 calc((100% - var(--wide)) / 2) 0 calc(var(--hero-search-edge) + 22px);
+  inset: 0 calc((100% - var(--container)) / 2) 0 calc(var(--hero-search-edge) + 22px);
 }
 .hero-mask { position: absolute; inset: 0; }
 .hero-image { height: 100%; object-fit: cover; object-position: 57% center; }
@@ -562,7 +570,6 @@ p + p { margin-block-start: var(--text-gap-small); }
   }
 
   .locations-inner {
-    width: calc(100% - clamp(36px, 12vw, 84px));
     grid-template-columns: minmax(0, 1fr);
     gap: clamp(16px, 4.25vw, 32px);
     padding-block: clamp(20px, 5.3vw, 38px) clamp(27px, 7vw, 46px);
@@ -648,7 +655,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 /* Mobile contact banner and shared footer */
 @media (max-width: 767px) {
   .contact-cta {
-    width: calc(100% - 2 * clamp(16px, 5vw, 24px));
     grid-template-columns: minmax(0, 1fr);
     gap: 18px;
     margin-top: 20px;
@@ -672,8 +678,6 @@ p + p { margin-block-start: var(--text-gap-small); }
   .architecture--skyline { width: 37%; right: 0; opacity: .29; }
 
   .site-footer {
-    --footer-inset: clamp(20px, 5.5vw, 24px);
-    width: calc(100% - 2 * var(--footer-inset));
     padding-block: 27px 24px;
     font-size: .875rem;
     line-height: 1.55;
@@ -744,7 +748,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 
 /* Remaining mobile layout */
 @media (max-width: 650px) {
-  :root { --container: 89%; --wide: 92%; --heading-line-height: 1.18; --body-line-height: 1.56; }
+  :root { --heading-line-height: 1.18; --body-line-height: 1.56; }
   .about { grid-template-columns: 1fr; gap: 20px; padding-block: 20px 26px; }
   .about-collage-frame { overflow: clip; }
   .about-collage { width: min(100%, 445px); height: clamp(165px, 49vw, 235px); margin-inline: auto; padding-inline: 12% 10%; }
@@ -1003,7 +1007,6 @@ p + p { margin-block-start: var(--text-gap-small); }
   .offer-section { grid-template-columns: minmax(0, 1fr); }
   .offer-results { grid-template-columns: minmax(0, 1fr); }
   .offer-view-all { grid-column: 1; justify-self: start; }
-  .property-page .catalog-section { margin-inline: calc((100% - 100vw) / 2 + clamp(16px, 4.7vw, 20px)); }
   .property-page :is(.directory-grid.property-directory, .offer-grid) { grid-template-columns: minmax(0, 1fr); }
 
   .property-page :is(.directory-card, .offer-card) :is(img, .catalog-image-pending) {
@@ -1113,7 +1116,7 @@ p + p { margin-block-start: var(--text-gap-small); }
   flex-direction: column;
   justify-content: center;
   min-height: clamp(193px, 18vw, 250px);
-  padding: 21px clamp(6px, 1.55vw, 24px);
+  padding-block: 21px;
 }
 .market-hero .eyebrow { color: #fff; margin-bottom: 4px; }
 .market-hero h1 { font-size: clamp(2.1rem, 3.5vw, 3.4rem); line-height: 1.03; letter-spacing: -.045em; }
@@ -1228,7 +1231,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 @media (max-width: 650px) {
   .market-hero-photo { inset-inline-start: 0; width: 100%; object-position: 63% 25%; mask-image: none; }
   .market-hero::after { background: linear-gradient(90deg, #202a42f0, #202a42a3 64%, #202a4240); }
-  .market-hero-content { padding-inline: 0; }
   .market-hero-arc { left: auto; right: 3%; width: clamp(95px, 28vw, 150px); opacity: .65; }
   .market-feature { aspect-ratio: 1.35; }
   .market-directory .market-row {
@@ -1335,7 +1337,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 
 /* Insights page */
 .insights-page { padding-block: 0; }
-.insights-page > .container { width: var(--wide); }
 .insights-hero .market-hero-content { min-height: clamp(205px, 19vw, 275px); }
 .insights-hero .market-hero-photo { object-position: center 89%; }
 .insights-hero h1 em { color: #ff781e; font-style: normal; }
@@ -1424,7 +1425,6 @@ p + p { margin-block-start: var(--text-gap-small); }
   display: grid;
   grid-template-columns: minmax(0, 45fr) minmax(0, 55fr);
   gap: clamp(14px, 2.15vw, 30px);
-  width: min(94%, 1340px);
   margin-top: clamp(20px, 3.2vw, 45px);
 }
 .contact-info-panel, .contact-form-panel {
@@ -1500,7 +1500,6 @@ a.contact-method .contact-method-copy > span { font-weight: 600; color: #ff8b27;
   display: grid;
   grid-template-columns: 31% minmax(0, 1fr);
   align-items: center;
-  width: min(95%, 1350px);
   margin-block: clamp(19px, 3.5vw, 47px) clamp(25px, 3.4vw, 45px);
   padding: clamp(13px, 1.65vw, 23px) clamp(15px, 3.65vw, 49px);
   border-radius: 19px;
@@ -1513,7 +1512,7 @@ a.contact-method .contact-method-copy > span { font-weight: 600; color: #ff8b27;
 .contact-benefits h3 { font-size: clamp(.75rem, 1.41vw, 1.1rem); line-height: 1.24; letter-spacing: -.025em; }
 
 @media (max-width: 767px) {
-  .contact-layout { width: var(--wide); grid-template-columns: minmax(0, 1fr); }
+  .contact-layout { grid-template-columns: minmax(0, 1fr); }
   .contact-info-copy { padding-inline: clamp(16px, 5vw, 30px); }
   .contact-office { flex: none; aspect-ratio: 1.65; min-height: 0; }
   .contact-form-panel { padding: clamp(15px, 4.5vw, 23px); }
