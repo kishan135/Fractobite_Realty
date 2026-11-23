@@ -323,11 +323,28 @@
     return select.value;
   }
 
-  function enquiryUrl(type, location) {
-    const values = new URLSearchParams();
-    if (type) values.set('type', type);
-    if (location) values.set('location', location);
-    return values.size ? `contact.html?${values}` : 'contact.html';
+  function catalogCard(template, id, project) {
+    const card = template.content.firstElementChild.cloneNode(true);
+    const link = card.querySelector('a');
+    link.href = projectDetailUrl(id);
+    link.setAttribute('aria-label', `View Project: ${project.name}`);
+    card.querySelector('h3, h4').textContent = project.name;
+    card.querySelector('[data-card-location]').textContent = project.location || 'Location to be confirmed';
+    card.querySelector('[data-card-type]').textContent = project.propertyType || 'Property type to be confirmed';
+
+    const image = project.cardImage ?? project.heroImages?.[0];
+    const photo = card.querySelector('img');
+    const note = card.querySelector('[data-card-image-note]');
+    note.hidden = Boolean(image && !image.illustrative);
+    note.textContent = image ? 'Illustrative image' : 'Project image pending';
+    if (image) {
+      photo.src = image.src;
+      photo.alt = image.alt;
+    } else {
+      photo.parentElement.classList.add('catalog-image-pending');
+      photo.remove();
+    }
+    return card;
   }
 
   function initializeCatalog() {
@@ -336,34 +353,56 @@
 
     const type = selectFromUrl(form.elements.type, 'type');
     const location = selectFromUrl(form.elements.location, 'location');
-    const offers = [...document.querySelectorAll('[data-offer-type]')];
-    const count = offers.filter((section) => {
-      const markets = section.dataset.markets.split('|');
-      const matchesLocation = !location || location === 'Across Gujarat' || markets.includes(location);
-      const matchesType = !type || section.dataset.offerType === type;
-      section.hidden = !matchesType || !matchesLocation;
-      return !section.hidden;
-    }).length;
-    document.querySelector('#top-offers').hidden = count === 0;
-    document.querySelector('#catalog-empty').hidden = count !== 0;
+    const market = location && location !== 'Across Gujarat' ? location : '';
+    const categories = { Plot: 'plots', Villa: 'villas', Buy: 'residential' };
+    const projects = Object.entries(propertyProjects).filter(([, project]) => project.name);
+    const featured = document.querySelector('#featured-projects');
+    const featuredTemplate = document.querySelector('#featured-card-template');
+    const offerTemplate = document.querySelector('#offer-card-template');
+    const highlights = type || market ? [] : projects.filter(([, project]) => project.featured);
+    featured.hidden = !highlights.length;
+    featured.querySelector('.property-directory').append(...highlights.map(([id, project]) => (
+      catalogCard(featuredTemplate, id, project)
+    )));
 
-    const label = count === 1 ? 'category' : 'categories';
-    document.querySelector('#catalog-status').textContent = type || location
-      ? `${count} ${label}${location ? ` for ${location}` : ''}`
-      : '';
-    document.querySelector('#empty-inquiry').href = enquiryUrl(type, location);
+    let count = 0;
+    document.querySelectorAll('[data-offer-type]').forEach((section) => {
+      const offerType = section.dataset.offerType;
+      section.hidden = Boolean(type && offerType !== type);
+      if (section.hidden) return;
 
-    document.querySelectorAll('[data-catalog-enquiry]').forEach((link) => {
-      const url = new URL(link.href);
-      if (type && !url.searchParams.has('type')) url.searchParams.set('type', type);
-      if (location) url.searchParams.set('location', location);
-      link.href = url.href;
+      const matches = projects.filter(([, project]) => project.category === categories[offerType]
+        && (!market || project.location === market));
+      const grid = section.querySelector('.offer-grid');
+      count += matches.length;
+      if (matches.length) {
+        grid.append(...matches.map(([id, project]) => catalogCard(offerTemplate, id, project)));
+      } else {
+        const empty = document.createElement('p');
+        const label = section.querySelector('.eyebrow').textContent.trim();
+        empty.className = 'page-panel catalog-category-empty';
+        empty.textContent = `No verified projects in ${label}${market ? ` for ${market}` : ''} are currently listed.`;
+        grid.hidden = true;
+        grid.after(empty);
+      }
+
+      if (location) {
+        const viewAll = section.querySelector('.offer-view-all');
+        const url = new URL(viewAll.href);
+        url.searchParams.set('location', location);
+        viewAll.href = url.href;
+      }
     });
-    if (location) document.querySelectorAll('.offer-view-all').forEach((link) => {
-      const url = new URL(link.href);
-      url.searchParams.set('location', location);
-      link.href = url.href;
-    });
+
+    if (type || location) {
+      document.querySelector('#catalog-status').textContent =
+        `${count} ${count === 1 ? 'project' : 'projects'}${location ? ` for ${location}` : ''}`;
+    }
+    const enquiry = document.querySelector('[data-catalog-enquiry]');
+    const url = new URL(enquiry.href);
+    if (type) url.searchParams.set('type', type);
+    if (location) url.searchParams.set('location', location);
+    enquiry.href = url.href;
   }
 
   function initializeMobilePropertySliders() {
@@ -633,8 +672,7 @@
       selectFromUrl(form.elements.location, 'location');
     }
     const project = params.get('project');
-    const enquiryProjects = ['Aakruti Green', 'Balaji Upvan', 'Balaji Upvan 5 Star Villa', 'Mirrikh Group'];
-    if (enquiryProjects.includes(project)) {
+    if (project && Object.values(propertyProjects).some((record) => (record.name || record.developer) === project)) {
       form.elements.requirements.value = `I would like to enquire about ${project}.`;
     }
     const result = document.querySelector('#enquiry-result');

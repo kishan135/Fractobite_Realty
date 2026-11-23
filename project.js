@@ -3,92 +3,19 @@
 
   const pending = 'To be confirmed';
   const pendingLocation = 'Location to be confirmed';
-  const photo = (src, alt) => ({ src: `assets/${src}.webp`, alt, illustrative: true });
-
-  const gate = photo('projects/gated-entrance', 'Illustrative gated development entrance at sunset');
-  const plots = photo('projects/planned-grounds', 'Illustrative aerial view of landscaped plots');
-  const villa = photo('hero/villa-1', 'Illustrative glass-fronted villa and swimming pool at dusk');
-  const skyline = photo('properties/residential-hero', 'Illustrative apartment towers at sunset');
-
-  // Add approved project facts here. A photo without illustrative: true should be verified.
-  const projects = {
-    'balaji-upvan': {
-      name: 'Balaji Upvan',
-      description: 'Explore the Balaji Upvan project preview and enquire for confirmed property details.',
-      overview: 'This preview uses plotted-development imagery to illustrate the design concept. Official project information, plot sizes, and development status are still to be confirmed.',
-      heroImages: [gate, plots, photo('projects/boulevard', 'Illustrative palm-lined residential boulevard')],
-      overviewImage: plots,
-      gallery: [
-        gate,
-        photo('projects/boulevard', 'Illustrative palm-lined residential boulevard'),
-        photo('projects/garden', 'Illustrative garden path and landscaping'),
-        photo('projects/gazebo', 'Illustrative garden pavilion with seating'),
-        plots,
-        photo('properties/plots', 'Illustrative green plots and access roads'),
-      ],
-      illustrativeHighlights: [
-        ['building', 'Planned Development'],
-        ['leaf', 'Green & Open Spaces'],
-        ['road', 'Connectivity'],
-        ['chart', 'Location Potential'],
-      ],
-      illustrativeAmenities: [
-        ['leaf', 'Landscaped Gardens'],
-        ['run', 'Jogging Track'],
-        ['shield', 'Gated Community'],
-        ['lamp', 'Street Lighting'],
-        ['drop', 'Water Supply'],
-        ['power', 'Power Connectivity'],
-      ],
-      relatedProjectIds: ['balaji-upvan-5-star-villa', 'mirrikh-project'],
-    },
-    'balaji-upvan-5-star-villa': {
-      name: 'Balaji Upvan 5 Star Villa',
-      description: 'Browse a villa design preview and request the approved project information from our team.',
-      overview: 'The gallery illustrates a range of villa architectural styles. A verified site address, floor plans, and specifications are pending.',
-      heroImages: [
-        villa,
-        photo('hero/villa-3', 'Illustrative contemporary villa and pool at twilight'),
-        photo('hero/villa-4', 'Illustrative dark stone villa exterior'),
-      ],
-      overviewImage: photo('hero/villa-2', 'Illustrative white villa beside a pool at sunset'),
-      gallery: [
-        villa,
-        photo('hero/villa-2', 'Illustrative white villa beside a pool at sunset'),
-        photo('hero/villa-3', 'Illustrative contemporary villa and pool at twilight'),
-        photo('hero/villa-4', 'Illustrative dark stone villa exterior'),
-        photo('projects/villa-courtyard', 'Illustrative villa courtyard with a reflecting pool'),
-      ],
-      relatedProjectIds: ['balaji-upvan', 'mirrikh-project'],
-    },
-    'mirrikh-project': {
-      developer: 'Mirrikh Group',
-      description: 'Enquire about Mirrikh Group. The specific project name and verified details are pending.',
-      overview: 'This page reserves a place for a verified Mirrikh Group project. The skyline imagery is for illustration while the project name, property type, and location are confirmed.',
-      heroImages: [
-        skyline,
-        photo('locations/growth-corridors', 'Illustrative residential towers by landscaped water'),
-        photo('about/about-hero', 'Illustrative skyline across the waterfront'),
-      ],
-      overviewImage: photo('locations/growth-corridors', 'Illustrative residential towers by landscaped water'),
-      gallery: [
-        skyline,
-        photo('locations/growth-corridors', 'Illustrative residential towers by landscaped water'),
-        photo('about/about-hero', 'Illustrative skyline across the waterfront'),
-        photo('about/skyline-2', 'Illustrative residential tower at sunset'),
-        photo('about/skyline-3', 'Illustrative apartment architecture at dusk'),
-      ],
-      relatedProjectIds: ['balaji-upvan', 'balaji-upvan-5-star-villa'],
-    },
-  };
-
   const selectedId = new URLSearchParams(window.location.search).get('project');
-  const project = Object.hasOwn(projects, selectedId) ? projects[selectedId] : undefined;
+  const project = Object.hasOwn(propertyProjects, selectedId) ? propertyProjects[selectedId] : undefined;
   if (!project) return;
+  if (!project.name) {
+    document.title = `${project.developer} | Fractobite Realty`;
+    const notice = document.querySelector('#project-unavailable');
+    notice.querySelector('h1').textContent = `${project.developer} project details pending`;
+    notice.querySelector('p').textContent = project.description;
+    return;
+  }
 
   const find = (selector) => document.querySelector(selector);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const nameOf = (record) => record.name || record.developer;
 
   function element(tag, className = '', text = '') {
     const item = document.createElement(tag);
@@ -191,7 +118,7 @@
       : amenities.length ? '' : 'Amenities for this project are to be confirmed.';
 
     const specs = [
-      ['layers', 'Property Type', project.category],
+      ['layers', 'Property Type', project.propertyType],
       ['size', 'Plot Sizes', project.specifications?.sizes],
       ['building', 'Project Status', project.specifications?.status],
       ['calendar', 'Possession', project.specifications?.possession],
@@ -217,7 +144,7 @@
       });
       const frame = element('iframe');
       frame.src = `https://www.openstreetmap.org/export/embed.html?${query}`;
-      frame.title = `Map for ${nameOf(project)}`;
+      frame.title = `Map for ${project.name}`;
       frame.loading = 'lazy';
       find('#project-map').replaceChildren(frame);
     }
@@ -233,10 +160,10 @@
 
   function renderRelated() {
     const grid = find('#project-related');
-    const related = (project.relatedProjectIds ?? []).filter((id) => id !== selectedId && Object.hasOwn(projects, id));
+    const related = (project.relatedProjectIds ?? []).filter((id) => id !== selectedId && propertyProjects[id]?.name);
     if (!related.length) grid.parentElement.hidden = true;
     related.slice(0, 3).forEach((id) => {
-      const other = projects[id];
+      const other = propertyProjects[id];
       const card = element('article', 'project-related-card');
       const img = element('img');
       img.loading = 'lazy';
@@ -254,10 +181,10 @@
       const location = element('p', 'project-pin');
       location.append(icon('pin'), element('span', '', other.location || pendingLocation));
       const link = element('a', 'text-link', 'View Project ');
-      link.href = `project.html?project=${encodeURIComponent(id)}`;
-      link.setAttribute('aria-label', `View Project: ${nameOf(other)}`);
+      link.href = projectDetailUrl(id);
+      link.setAttribute('aria-label', `View Project: ${other.name}`);
       link.append(icon('arrow'));
-      body.append(element('h3', '', nameOf(other)), location, link);
+      body.append(element('h3', '', other.name), location, link);
       card.append(body);
       grid.append(card);
     });
@@ -318,7 +245,7 @@
     measure();
   }
 
-  const name = nameOf(project);
+  const name = project.name;
   const copy = { ...project, name, location: project.location || pendingLocation };
   document.title = `${name} | Fractobite Realty`;
   document.querySelectorAll('[data-project-text]').forEach((node) => {
