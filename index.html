@@ -9,7 +9,7 @@
   <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=site-containers">
+  <link rel="stylesheet" href="style.css?v=prime-locations">
   <script defer src="script.js"></script>
 </head>
 <body>
@@ -175,21 +175,60 @@
     </div>
   </section>
 
-  <section class="locations" id="locations" aria-labelledby="locations-title">
-    <div class="container locations-inner">
-      <div>
-        <p class="eyebrow">Prime <span>Locations</span></p>
-        <h2 id="locations-title">Invest in Gujarat’s<br><span>Growth Corridors</span></h2>
-        <p>Be part of Gujarat’s next big development<br class="desktop-break"> wave with high-potential locations.</p>
-        <a class="button" href="locations.html">Explore Locations <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
-      </div>
-      <ul class="location-options" id="location-options">
-        <li><a class="location-card" href="locations.html?location=Ahmedabad"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><span><strong>Ahmedabad</strong><small>A Growing Urban Hub</small></span><span class="circle"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></span></a></li>
-<li><a class="location-card" href="locations.html?location=Dholera"><svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg><span><strong>Dholera</strong><small>India’s Next Smart City</small></span><span class="circle"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></span></a></li>
-<li><a class="location-card" href="locations.html?location=GIFT+City"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><span><strong>GIFT City</strong><small>Global Finance &amp; Business Hub</small></span><span class="circle"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></span></a></li>
-<li><a class="location-card" href="locations.html?location=Across+Gujarat"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span><strong>Across Gujarat</strong><small>High-Growth Opportunities</small></span><span class="circle"><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></span></a></li>
-      </ul>
+  <section class="prime-locations container" id="locations" aria-labelledby="locations-title">
+    <div class="prime-locations-copy">
+      <p class="eyebrow"><span>Prime</span> Locations</p>
+      <h2 id="locations-title">Invest in Gujarat’s <span>Growth Corridors</span></h2>
+      <p>Be part of Gujarat’s next big development wave with high-potential locations.</p>
+      <a class="button" href="locations.html">Explore Locations <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
     </div>
+
+    <ul class="location-options">
+      <li>
+        <a class="location-card" href="locations.html#market-ahmedabad" aria-labelledby="prime-ahmedabad" aria-describedby="prime-ahmedabad-description">
+          <img src="assets/locations/waterfront.webp" alt="Illustration of Ahmedabad’s riverfront at sunset" loading="lazy" width="836" height="470">
+          <span class="location-card-body">
+            <svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>
+            <strong id="prime-ahmedabad">Ahmedabad</strong>
+            <small id="prime-ahmedabad-description">A Growing Urban Hub</small>
+            <span class="circle" aria-hidden="true"><svg class="icon"><use href="#icon-arrow"/></svg></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="location-card" href="locations.html#market-dholera" aria-labelledby="prime-dholera" aria-describedby="prime-dholera-description">
+          <img src="assets/locations/dholera-planning.webp" alt="Illustration of a planned green development corridor" loading="lazy" width="836" height="470">
+          <span class="location-card-body">
+            <svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg>
+            <strong id="prime-dholera">Dholera</strong>
+            <small id="prime-dholera-description">India’s Next Smart City</small>
+            <span class="circle" aria-hidden="true"><svg class="icon"><use href="#icon-arrow"/></svg></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="location-card" href="locations.html#market-gift-city" aria-labelledby="prime-gift-city" aria-describedby="prime-gift-city-description">
+          <img src="assets/locations/gift-city-skyline.webp" alt="Illustration of modern GIFT City office towers" loading="lazy" width="836" height="470">
+          <span class="location-card-body">
+            <svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg>
+            <strong id="prime-gift-city">GIFT City</strong>
+            <small id="prime-gift-city-description">Global Finance &amp; Business Hub</small>
+            <span class="circle" aria-hidden="true"><svg class="icon"><use href="#icon-arrow"/></svg></span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="location-card" href="locations.html#market-across-gujarat" aria-labelledby="prime-gujarat" aria-describedby="prime-gujarat-description">
+          <img class="location-bridge" src="assets/locations/ahmedabad.webp" alt="Illustration of a Gujarat city skyline and illuminated bridge" loading="lazy" width="1800" height="600">
+          <span class="location-card-body">
+            <svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg>
+            <strong id="prime-gujarat">Across Gujarat</strong>
+            <small id="prime-gujarat-description">High-Growth Opportunities</small>
+            <span class="circle" aria-hidden="true"><svg class="icon"><use href="#icon-arrow"/></svg></span>
+          </span>
+        </a>
+      </li>
+    </ul>
   </section>
 
   <section class="contact-cta container" aria-labelledby="contact-title">
