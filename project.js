@@ -4,14 +4,33 @@
   const pending = 'To be confirmed';
   const pendingLocation = 'Location to be confirmed';
   const selectedId = new URLSearchParams(window.location.search).get('project');
-  const project = Object.hasOwn(propertyProjects, selectedId) ? propertyProjects[selectedId] : undefined;
-  if (!project) return;
-  if (!project.name) {
-    document.title = `${project.developer} | Fractobite Realty`;
+  const record = Object.hasOwn(propertyProjects, selectedId) ? propertyProjects[selectedId] : undefined;
+  if (!record) return;
+  const demo = SHOW_DEMO_PROJECT_DETAILS ? projectDemoDetails[selectedId] : undefined;
+  if (!demo && (!record.name || record.isDemo)) {
+    const title = record.name || record.developer;
+    document.title = `${title} | Fractobite Realty`;
     const notice = document.querySelector('#project-unavailable');
-    notice.querySelector('h1').textContent = `${project.developer} project details pending`;
-    notice.querySelector('p').textContent = project.description;
+    notice.querySelector('h1').textContent = `${title} project details pending`;
+    notice.querySelector('p').textContent = record.isDemo
+      ? 'This sample project is available in demo mode.'
+      : record.description;
     return;
+  }
+
+  const project = {
+    ...record,
+    name: record.name || `${record.developer} — Sample Residential Concept`,
+    description: (record.name && record.description) || demo?.description || 'Enquire for confirmed project details.',
+    overview: record.overview ?? demo?.overview ?? 'Project information is being verified.',
+    heroImages: record.heroImages?.filter((image) => !image.illustrative) ?? [],
+    overviewImage: record.overviewImage?.illustrative ? undefined : record.overviewImage,
+    gallery: record.gallery?.filter((image) => !image.illustrative) ?? [],
+  };
+  if (demo) {
+    if (!project.heroImages.length) project.heroImages = demo.heroImages;
+    project.overviewImage ??= demo.overviewImage;
+    if (!project.gallery.length) project.gallery = demo.gallery;
   }
 
   const find = (selector) => document.querySelector(selector);
@@ -87,7 +106,7 @@
     const gallery = project.gallery ?? [];
     const galleryNote = find('#project-gallery-note');
     galleryNote.textContent = gallery.some((image) => image.illustrative)
-      ? 'Illustrative images. Verified project photos are pending.'
+      ? 'Illustrative images for the client demo.'
       : '';
     if (!gallery.length) {
       galleryNote.textContent = 'Project photos are to be confirmed.';
@@ -106,34 +125,37 @@
   }
 
   function renderSpecifications() {
-    const overviewItems = project.highlights ?? project.illustrativeHighlights ?? [];
-    const amenities = project.amenities ?? project.illustrativeAmenities ?? [];
+    const overviewItems = project.highlights ?? demo?.highlights ?? [];
+    const amenities = project.amenities ?? demo?.amenities ?? [];
     appendIconItems(find('#project-highlights'), overviewItems);
     appendIconItems(find('#project-amenities'), amenities);
-    find('#project-highlights-note').textContent = project.illustrativeHighlights && !project.highlights
-      ? 'Illustrative features. Project details are pending verification.'
+    find('#project-highlights-note').textContent = demo && !project.highlights
+      ? 'Illustrative project features.'
       : overviewItems.length ? '' : 'Project features are to be confirmed.';
-    find('#project-amenities-note').textContent = project.illustrativeAmenities && !project.amenities
-      ? 'Reference examples. Amenities are to be confirmed.'
+    find('#project-amenities-note').textContent = demo && !project.amenities
+      ? 'Illustrative amenities.'
       : amenities.length ? '' : 'Amenities for this project are to be confirmed.';
 
+    const sample = demo?.specifications;
+    const actual = project.specifications;
     const specs = [
-      ['layers', 'Property Type', project.propertyType],
-      ['size', 'Plot Sizes', project.specifications?.sizes],
-      ['building', 'Project Status', project.specifications?.status],
-      ['calendar', 'Possession', project.specifications?.possession],
+      ['layers', 'Property Type', project.isDemo ? undefined : project.propertyType, demo?.propertyType],
+      ['size', actual?.sizeLabel ?? sample?.sizeLabel ?? 'Plot Sizes', actual?.sizes, sample?.sizes],
+      ['building', 'Project Status', actual?.status, sample?.status],
+      ['calendar', 'Possession', actual?.possession, sample?.possession],
     ];
-    specs.forEach(([glyph, label, value]) => {
+    specs.forEach(([glyph, label, value, example]) => {
       const item = element('div');
       const term = element('dt');
       term.append(icon(glyph), element('span', '', label));
-      item.append(term, element('dd', '', value || pending));
+      item.append(term, element('dd', '', value || (example ? `Sample · ${example}` : pending)));
       find('#project-specifications').append(item);
     });
   }
 
   function renderConnectivity() {
     const map = project.map;
+    const mapPanel = find('#project-map');
     if (map?.verified && Number.isFinite(map.latitude) && Number.isFinite(map.longitude)
       && Math.abs(map.latitude) <= 90 && Math.abs(map.longitude) <= 180) {
       const { latitude, longitude } = map;
@@ -146,30 +168,41 @@
       frame.src = `https://www.openstreetmap.org/export/embed.html?${query}`;
       frame.title = `Map for ${project.name}`;
       frame.loading = 'lazy';
-      find('#project-map').replaceChildren(frame);
+      mapPanel.replaceChildren(frame);
+    } else if (demo) {
+      mapPanel.classList.add('project-map--concept');
+      mapPanel.querySelector('strong').textContent = 'Conceptual map';
+      mapPanel.append(element('span', '', `Sample locality · ${demo.location}`));
     }
-    if (!project.connectivity?.length) return;
+    const connections = project.connectivity ?? demo?.connectivity ?? [];
+    if (!connections.length) return;
     const items = find('#project-connectivity-items');
-    project.connectivity.forEach(({ label, detail, glyph = 'pin' }) => {
+    connections.forEach(({ label, detail, glyph = 'pin' }) => {
       const entry = element('li');
       entry.append(icon(glyph), element('span', '', `${label} – ${detail}`));
       items.append(entry);
     });
-    find('#project-connectivity-note').hidden = true;
+    const note = find('#project-connectivity-note');
+    note.hidden = Boolean(project.connectivity);
+    note.textContent = 'Sample Connectivity — Not Verified';
   }
 
   function renderRelated() {
     const grid = find('#project-related');
-    const related = (project.relatedProjectIds ?? []).filter((id) => id !== selectedId && propertyProjects[id]?.name);
+    const demoMatches = demo ? Object.keys(projectDemoDetails).filter((id) =>
+      projectDemoDetails[id].category === demo.category) : [];
+    const related = (demo ? demoMatches : project.relatedProjectIds ?? []).filter((id) =>
+      id !== selectedId && propertyProjects[id]?.name && (demo || !propertyProjects[id].isDemo));
     if (!related.length) grid.parentElement.hidden = true;
     related.slice(0, 3).forEach((id) => {
       const other = propertyProjects[id];
+      const otherDemo = demo ? projectDemoDetails[id] : undefined;
       const card = element('article', 'project-related-card');
       const img = element('img');
       img.loading = 'lazy';
       img.width = 480;
       img.height = 200;
-      const image = other.heroImages?.[0];
+      const image = other.heroImages?.find((photo) => !photo.illustrative) ?? otherDemo?.heroImages[0];
       if (image) {
         const figure = element('figure');
         setImage(img, image);
@@ -179,12 +212,15 @@
       }
       const body = element('div');
       const location = element('p', 'project-pin');
-      location.append(icon('pin'), element('span', '', other.location || pendingLocation));
+      location.append(icon('pin'), element('span', '', other.location
+        || (otherDemo ? `Sample locality · ${otherDemo.location}` : pendingLocation)));
+      const type = element('p', '', (other.isDemo ? undefined : other.propertyType)
+        || (otherDemo ? `Sample · ${otherDemo.propertyType}` : 'Property type to be confirmed'));
       const link = element('a', 'text-link', 'View Project ');
       link.href = projectDetailUrl(id);
       link.setAttribute('aria-label', `View Project: ${other.name}`);
       link.append(icon('arrow'));
-      body.append(element('h3', '', other.name), location, link);
+      body.append(element('h3', '', other.name), location, type, link);
       card.append(body);
       grid.append(card);
     });
@@ -248,8 +284,8 @@
   const name = project.name;
   const copy = {
     ...project,
-    label: project.isDemo ? 'Demo Project' : 'Featured Project',
-    location: project.location || (project.isDemo ? 'Location unspecified' : pendingLocation),
+    label: project.isDemo ? 'Demo Project' : demo ? 'Illustrative Project Preview' : 'Featured Project',
+    location: project.location || (demo ? `Sample locality · ${demo.location}` : pendingLocation),
   };
   document.title = `${name} | Fractobite Realty`;
   document.querySelectorAll('[data-project-text]').forEach((node) => {
@@ -258,9 +294,10 @@
   renderImageSet();
   find('#project-unavailable').hidden = true;
   find('.project-detail').hidden = false;
-  if (project.isDemo) {
-    document.querySelectorAll('[data-hide-for-demo]').forEach((section) => { section.hidden = true; });
-    return;
+  if (demo) {
+    find('#project-demo-note').hidden = false;
+    find('#project-demo-enquiry-note').hidden = false;
+    find('#enquiry-form').dataset.demoProject = '';
   }
 
   find('#enquiry-form').dataset.projectName = name;

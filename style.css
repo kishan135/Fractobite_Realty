@@ -744,6 +744,9 @@ p + p { margin-block-start: var(--text-gap-small); }
 .filter-panel, .page-panel, .directory-card, .disclosure-list > details { border: 1px solid #e9ddd5; border-radius: 18px; background: #fffdfa; }
 .filter-panel { display: flex; flex-wrap: wrap; align-items: end; gap: var(--text-gap-medium); padding: 1rem; margin-bottom: var(--text-gap-medium); }
 .filter-panel label { flex: 1 1 160px; }
+.filter-panel .filter-clear { border-color: #ff5a00; background: #fff; color: var(--orange-dark); }
+.filter-panel .filter-clear:hover { background: #fff3eb; }
+.filter-panel .filter-clear:active { background: #ffe5d5; }
 
 @media (max-width: 767px) {
   #catalog-filters {
@@ -753,7 +756,7 @@ p + p { margin-block-start: var(--text-gap-small); }
   }
 
   #catalog-filters label { grid-column: 1 / -1; }
-  #catalog-filters .text-link { justify-self: start; }
+  #catalog-filters .filter-clear { justify-self: start; }
 }
 .inner-page label { display: grid; gap: var(--text-gap-small); line-height: var(--subheading-line-height); font-size: .83rem; font-weight: 600; }
 .inner-page input, .inner-page select:not(.dropdown > select), .inner-page textarea { width: 100%; min-height: 44px; border: 1px solid #c7bbb4; border-radius: 8px; padding: .55rem .7rem; background: #fff; font: inherit; color: inherit; }
@@ -866,7 +869,7 @@ p + p { margin-block-start: var(--text-gap-small); }
   padding-block: 10px;
   box-shadow: 0 4px 12px #30251d0c;
 }
-.catalog-content #catalog-filters .button, .catalog-content #catalog-filters .text-link { min-height: 38px; }
+.catalog-content #catalog-filters .button { min-height: 38px; }
 
 .catalog-offers { margin-top: var(--text-gap-section); }
 .catalog-section-heading { margin-bottom: var(--text-gap-medium); }
@@ -1743,6 +1746,11 @@ a.contact-method .contact-method-copy > span { font-weight: 600; color: #ff8b27;
 .project-location-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .project-map { display: grid; align-content: center; justify-items: center; text-align: center; gap: 6px; min-height: 120px; padding: 11px; overflow: hidden; background: #f3ebe3; }
 .project-map .icon { color: var(--orange); font-size: 1.6rem; }
+.project-map--concept {
+  background:
+    repeating-linear-gradient(28deg, transparent 0 23px, #fff8f0 24px 29px, transparent 30px 53px),
+    repeating-linear-gradient(108deg, #efe5d9 0 30px, #fff9f3 31px 37px, #efe5d9 38px 62px);
+}
 .project-map:has(iframe) { padding: 0; align-content: stretch; }
 .project-map iframe { display: block; width: 100%; height: 100%; min-height: 160px; border: 0; }
 .project-connectivity { padding: 12px; }

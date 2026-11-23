@@ -333,7 +333,8 @@
       || (project.isDemo ? 'Location unspecified' : 'Location to be confirmed');
     card.querySelector('[data-card-type]').textContent = project.propertyType || 'Property type to be confirmed';
 
-    const image = project.cardImage ?? project.heroImages?.[0];
+    const preferredImage = project.cardImage ?? project.heroImages?.[0];
+    const image = !SHOW_DEMO_PROJECT_DETAILS && preferredImage?.illustrative ? undefined : preferredImage;
     const photo = card.querySelector('img');
     const note = card.querySelector('[data-card-image-note]');
     note.hidden = Boolean(!project.isDemo && image && !image.illustrative);
@@ -352,11 +353,16 @@
     const form = document.querySelector('#catalog-filters');
     if (!form) return;
 
+    form.querySelector('.filter-clear').addEventListener('click', () => {
+      window.location.assign(form.action);
+    });
+
     const type = selectFromUrl(form.elements.type, 'type');
     const location = selectFromUrl(form.elements.location, 'location');
     const market = location && location !== 'Across Gujarat' ? location : '';
     const categories = { Plot: 'plots', Villa: 'villas', Buy: 'residential' };
-    const projects = Object.entries(propertyProjects).filter(([, project]) => project.name);
+    const projects = Object.entries(propertyProjects).filter(([, project]) =>
+      project.name && (SHOW_DEMO_PROJECT_DETAILS || !project.isDemo));
     const featured = document.querySelector('#featured-projects');
     const featuredTemplate = document.querySelector('#featured-card-template');
     const offerTemplate = document.querySelector('#offer-card-template');
@@ -702,6 +708,7 @@
       ];
       if (projectName) {
         body.unshift(`Project: ${projectName}`);
+        if ('demoProject' in form.dataset) body.push('Context: Illustrative project preview');
         if (fields.requirement.value) body.push(`Requirement: ${fields.requirement.value}`);
       } else {
         body.push(
