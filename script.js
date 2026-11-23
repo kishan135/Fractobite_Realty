@@ -16,6 +16,7 @@
 
   const nav = document.querySelector('.site-nav');
   const menu = document.querySelector('.menu-button');
+  const mobileNav = window.matchMedia('(max-width: 767px)');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const params = new URLSearchParams(window.location.search);
 
@@ -37,19 +38,38 @@
   function setMenu(open) {
     menu.setAttribute('aria-expanded', String(open));
     nav.classList.toggle('is-open', open);
+    nav.inert = mobileNav.matches && !open;
   }
 
   function initializeMobileNavigation() {
-    menu.addEventListener('click', () => setMenu(menu.getAttribute('aria-expanded') !== 'true'));
+    const isOpen = () => menu.getAttribute('aria-expanded') === 'true';
+    setMenu(false);
+    menu.addEventListener('click', (event) => {
+      const open = !isOpen();
+      setMenu(open);
+      if (open && mobileNav.matches && event.detail === 0) {
+        nav.querySelector('a')?.focus({ preventScroll: true });
+      }
+    });
     nav.addEventListener('click', (event) => {
       if (event.target.closest('a, button')) setMenu(false);
     });
+    document.addEventListener('pointerdown', (event) => {
+      if (mobileNav.matches && isOpen() && !nav.contains(event.target) && !menu.contains(event.target)) {
+        setMenu(false);
+      }
+    });
+    document.addEventListener('focusin', (event) => {
+      if (mobileNav.matches && isOpen() && !menu.closest('.site-header').contains(event.target)) setMenu(false);
+    });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && menu.getAttribute('aria-expanded') === 'true') {
+      if (event.key === 'Escape' && isOpen()) {
         setMenu(false);
         menu.focus();
       }
     });
+    mobileNav.addEventListener('change', () => setMenu(false));
+    window.addEventListener('pagehide', () => setMenu(false));
   }
 
   function initializeHeroSlider() {
