@@ -31,6 +31,9 @@
   <symbol id="icon-linkedin" viewBox="0 0 24 24"><path d="M5 9v11m0-15h.01M10 20V9m0 4a4 4 0 0 1 8 0v7"/></symbol>
   <symbol id="icon-youtube" viewBox="0 0 24 24"><path d="M3 6h18v12H3z m7 3 5 3-5 3Z"/></symbol>
   <symbol id="icon-facebook" viewBox="0 0 24 24"><path d="M14 22V7c0-3 2-4 5-4m-9 8h8"/></symbol>
+  <symbol id="icon-person" viewBox="0 0 24 24"><path d="M8 7a4 4 0 1 0 8 0 4 4 0 0 0-8 0ZM4 21v-2a8 8 0 0 1 16 0v2"/></symbol>
+  <symbol id="icon-document" viewBox="0 0 24 24"><path d="M5 3h9l5 5v13H5z m9 0v6h5"/></symbol>
+  <symbol id="icon-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
 </svg>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header">
@@ -51,51 +54,113 @@
     </div>
   </div>
 </header>
-<main id="main-content" class="container inner-page">
+<main id="main-content" class="inner-page contact-page">
+  <section class="market-hero contact-hero" aria-labelledby="contact-page-title">
+    <img class="market-hero-photo" src="assets/about/about-hero.webp" alt="" fetchpriority="high" width="1800" height="600">
+    <svg class="market-hero-arc" viewBox="0 0 220 155" aria-hidden="true"><path d="M0 155C41 63 103 13 174 0h46C130 7 64 51 0 155Z"/></svg>
+    <div class="container market-hero-content motion-intro">
+      <p class="eyebrow">Get in Touch</p>
+      <h1 id="contact-page-title">Contact<br><em>Fractobite Realty</em></h1>
+      <p>Tell us what you’re looking for. Use the form to prepare an email draft with your property requirements.</p>
+    </div>
+  </section>
 
-  <header class="page-intro motion-intro">
-    <h1>Contact Fractobite Realty</h1>
-    <p>Tell us what you’re looking for. Use the form to prepare an email draft with your property requirements.</p>
-  </header>
-  <div class="page-split">
-    <section class="page-panel">
-      <h2>Get in touch</h2>
-      <ul class="contact-methods">
-        <li><a class="text-link" data-phone data-contact-text href="tel:+919876543210"><span>+91 98765 43210</span></a></li>
-        <li><a class="text-link" data-email href="mailto:info@fractobiterealty.com"><span>info@fractobiterealty.com</span></a></li>
-        <li>Ahmedabad, Gujarat</li>
-      </ul>
-      <p>Published contact details are demo placeholders. Confirm the recipient before sending.</p>
+  <div class="wide-container contact-layout">
+    <section class="contact-info-panel" aria-labelledby="contact-info-title">
+      <svg class="contact-panel-arc" viewBox="0 0 170 102" aria-hidden="true"><path d="M0 0h68c48 20 83 56 102 102C135 54 74 15 0 0Z"/></svg>
+      <div class="contact-info-copy">
+        <h2 id="contact-info-title">Get In Touch</h2>
+        <p>Reach out to us for property advice, investment guidance, or any real estate queries across Gujarat.</p>
+        <ul class="contact-methods">
+          <li><a class="contact-method" data-phone data-contact-text href="tel:+919876543210">
+            <span class="contact-method-icon"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg></span>
+            <span class="contact-method-copy"><strong>Phone</strong><span data-contact-value>+91 98765 43210</span></span>
+          </a></li>
+          <li><a class="contact-method" data-email href="mailto:info@fractobiterealty.com">
+            <span class="contact-method-icon"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg></span>
+            <span class="contact-method-copy"><strong>Email</strong><span data-contact-value>info@fractobiterealty.com</span></span>
+          </a></li>
+          <li><div class="contact-method">
+            <span class="contact-method-icon"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg></span>
+            <span class="contact-method-copy"><strong>Location</strong><span>Ahmedabad, Gujarat</span></span>
+          </div></li>
+        </ul>
+        <p class="contact-demo-note">Contact details are placeholders. Confirm the recipient before sending.</p>
+      </div>
+      <figure class="contact-office">
+        <img src="assets/about/office-concept.webp" alt="Concept illustration of a modern office reception" width="1020" height="680" loading="lazy">
+        <figcaption>Office concept illustration</figcaption>
+      </figure>
     </section>
-    <section class="page-panel">
-      <h2>Prepare your enquiry</h2>
+
+    <section class="contact-form-panel" aria-labelledby="contact-form-title">
+      <svg class="contact-form-art" viewBox="0 0 130 110" aria-hidden="true"><path d="M5 104h120M16 104V64l27-23v63m0-63 8 5v58m8 0V29l23-19 19 14v80m-19-94v94M23 72l13-10m-13 19 13-10m-13 19 13-10m31-35 10-9m-10 17 10-9m-10 17 10-9m-10 17 10-9m12-27 7 5m-7 4 7 5m-7 4 7 5m-7 4 7 5m8 30V62l12-10 9 8v44m-9-52v52"/></svg>
+      <header>
+        <h2 id="contact-form-title">Prepare Your Enquiry</h2>
+        <p>Tell us about your requirements and we’ll prepare an email draft for you with all the details.</p>
+      </header>
       <noscript><p>Enable JavaScript to prepare an email draft, or use the email link on this page.</p></noscript>
       <form class="enquiry-form" id="enquiry-form" hidden>
-        <label>Name <input name="name" autocomplete="name" maxlength="100" required></label>
-        <label>Email <input name="email" type="email" autocomplete="email" maxlength="150" required></label>
-        <label>Property type
-          <select name="type">
-            <option value="">Any property type</option>
-        <option value="Buy">Residential Homes</option>
-        <option value="Plot">Plots &amp; Land</option>
-        <option value="Villa">Villas &amp; Luxury Homes</option>
-        <option value="Invest">Commercial Properties</option>
-          </select>
+        <label>
+          <span>Name<span class="contact-required" aria-hidden="true">*</span></span>
+          <span class="contact-field">
+            <svg class="icon" aria-hidden="true"><use href="#icon-person"/></svg>
+            <input name="name" autocomplete="name" maxlength="100" pattern=".*\S.*" placeholder="Enter your name" required>
+          </span>
         </label>
-        <label>Preferred location
-          <select name="location">
-            <option value="">Any location</option>
-        <option value="Ahmedabad">Ahmedabad</option>
-        <option value="Dholera">Dholera</option>
-        <option value="GIFT City">GIFT City</option>
-        <option value="Gandhinagar">Gandhinagar</option>
-        <option value="Surat">Surat</option>
-        <option value="Vadodara">Vadodara</option>
-        <option value="Across Gujarat">Across Gujarat</option>
-          </select>
+        <label>
+          <span>Phone Number<span class="contact-required" aria-hidden="true">*</span></span>
+          <span class="contact-field">
+            <svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>
+            <input name="phone" type="tel" autocomplete="tel" maxlength="32" placeholder="Enter your phone number" required>
+          </span>
         </label>
-        <label>Requirements <textarea name="requirements" rows="4" maxlength="1500" required></textarea></label>
-        <button class="button" type="submit">Prepare Email Draft</button>
+        <label class="contact-field-wide">
+          <span>Email<span class="contact-required" aria-hidden="true">*</span></span>
+          <span class="contact-field">
+            <svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg>
+            <input name="email" type="email" autocomplete="email" maxlength="150" placeholder="Enter your email" required>
+          </span>
+        </label>
+        <label>
+          <span>Property Type</span>
+          <span class="contact-field">
+            <svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg>
+            <select name="type">
+              <option value="">Any property type</option>
+              <option value="Buy">Residential Homes</option>
+              <option value="Plot">Plots &amp; Land</option>
+              <option value="Villa">Villas &amp; Luxury Homes</option>
+              <option value="Invest">Commercial Properties</option>
+            </select>
+            <svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg>
+          </span>
+        </label>
+        <label>
+          <span>Preferred Location</span>
+          <span class="contact-field">
+            <svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>
+            <select name="location">
+              <option value="">Any location</option>
+              <option value="Ahmedabad">Ahmedabad</option>
+              <option value="Dholera">Dholera</option>
+              <option value="GIFT City">GIFT City</option>
+              <option value="Gandhinagar">Gandhinagar</option>
+              <option value="Surat">Surat</option>
+              <option value="Vadodara">Vadodara</option>
+              <option value="Across Gujarat">Across Gujarat</option>
+            </select>
+            <svg class="icon" aria-hidden="true"><use href="#icon-chevron"/></svg>
+          </span>
+        </label>
+        <label class="contact-field-wide">
+          <span>Requirements</span>
+          <span class="contact-field">
+            <svg class="icon" aria-hidden="true"><use href="#icon-document"/></svg>
+            <textarea name="requirements" rows="4" maxlength="1500" placeholder="Tell us about your requirements (e.g. buying, investing, preferred area, budget, etc.)"></textarea>
+          </span>
+        </label>
+        <button class="button contact-field-wide" type="submit">Prepare Email Draft <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button>
       </form>
       <div class="enquiry-result" id="enquiry-result" hidden>
         <p role="status" id="enquiry-status"></p>
@@ -104,6 +169,15 @@
       </div>
     </section>
   </div>
+
+  <section class="wide-container contact-benefits" aria-labelledby="contact-benefits-title">
+    <h2 id="contact-benefits-title">Why Contact<br>Fractobite Realty?</h2>
+    <ul>
+      <li><svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg><h3>Expert Guidance</h3></li>
+      <li><svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg><h3>Market Insights</h3></li>
+      <li><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><h3>Personalized Support</h3></li>
+    </ul>
+  </section>
 </main>
 
 <footer class="site-footer wide-container" id="contact">

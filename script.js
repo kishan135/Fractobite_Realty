@@ -22,11 +22,15 @@
   function initializeContactLinks() {
     document.querySelectorAll('[data-phone]').forEach((link) => {
       link.href = `tel:${contact.phone.replace(/\s/g, '')}`;
-      if (link.hasAttribute('data-contact-text')) link.querySelector('span').textContent = contact.phone;
+      if (link.hasAttribute('data-contact-text')) {
+        const value = link.querySelector('[data-contact-value]') ?? link.querySelector('span');
+        value.textContent = contact.phone;
+      }
     });
     document.querySelectorAll('[data-email]').forEach((link) => {
       link.href = `mailto:${contact.email}`;
-      link.querySelector('span').textContent = contact.email;
+      const value = link.querySelector('[data-contact-value]') ?? link.querySelector('span');
+      value.textContent = contact.email;
     });
   }
 
@@ -374,20 +378,24 @@
     if (!filters) return;
     const search = filters.querySelector('[name="query"]');
     const topic = filters.querySelector('[name="topic"]');
-    const guides = [...document.querySelectorAll('[data-topic]')];
+    const guides = [...document.querySelectorAll('[data-topic]')].map((card) => ({
+      card,
+      text: [card.dataset.topic, card.querySelector('h3').textContent, card.querySelector('details p').textContent].join(' ').toLowerCase(),
+    }));
+    const status = document.querySelector('#guide-status');
 
     function filterGuides() {
-      const terms = search.value.trim().toLowerCase().split(/\s+/);
+      const query = search.value.trim().toLowerCase();
+      const terms = query ? query.split(/\s+/) : [];
       let matches = 0;
-      guides.forEach((guide) => {
-        const matchesTopic = !topic.value || guide.dataset.topic === topic.value;
-        const text = guide.textContent.toLowerCase();
-        guide.hidden = !matchesTopic || !terms.every((term) => text.includes(term));
-        if (!guide.hidden) matches += 1;
+      guides.forEach(({ card, text }) => {
+        const matchesTopic = !topic.value || card.dataset.topic === topic.value;
+        card.hidden = !matchesTopic || !terms.every((term) => text.includes(term));
+        if (!card.hidden) matches += 1;
       });
-      document.querySelector('#guide-status').textContent = matches
-        ? `${matches} ${matches === 1 ? 'guide' : 'guides'}`
-        : 'No matching guides. Try another keyword or topic.';
+      if (!query && !topic.value) status.textContent = '';
+      else if (matches) status.textContent = `${matches} ${matches === 1 ? 'guide' : 'guides'}`;
+      else status.textContent = 'No guides found. Try another search or topic.';
     }
 
     search.addEventListener('input', filterGuides);
@@ -408,23 +416,35 @@
     const status = document.querySelector('#enquiry-status');
     const draft = document.querySelector('#enquiry-draft');
 
+    const phone = form.elements.phone;
+    phone.addEventListener('input', () => phone.setCustomValidity(''));
     form.addEventListener('input', () => { result.hidden = true; });
     form.addEventListener('submit', (event) => {
       event.preventDefault();
+      const formattedPhone = phone.value.trim();
+      const phoneShape = formattedPhone.replace(/[ .-]/g, '');
+      const digits = phoneShape.replace(/[^0-9]/g, '');
+      if (!/^\+?(?:[0-9]|\([0-9]{1,5}\))+$/.test(phoneShape) || digits.length < 7 || digits.length > 15) {
+        phone.setCustomValidity('Enter a valid phone number with 7 to 15 digits.');
+        phone.reportValidity();
+        return;
+      }
       const fields = form.elements;
       const type = fields.type.selectedOptions[0].textContent.trim();
       const location = fields.location.selectedOptions[0].textContent.trim();
       const body = [
         `Name: ${fields.name.value.trim()}`,
+        `Phone: ${formattedPhone}`,
         `Email: ${fields.email.value.trim()}`,
         `Property type: ${type}`,
         `Preferred location: ${location}`,
-        '',
-        fields.requirements.value.trim(),
-      ].join('\r\n');
+      ];
+      const requirements = fields.requirements.value.trim();
+      if (requirements) body.push('', requirements);
+      const draftBody = body.join('\r\n');
       const subject = encodeURIComponent('Property enquiry for Fractobite Realty');
-      document.querySelector('#enquiry-email').href = `mailto:${contact.email}?subject=${subject}&body=${encodeURIComponent(body)}`;
-      draft.value = body;
+      document.querySelector('#enquiry-email').href = `mailto:${contact.email}?subject=${subject}&body=${encodeURIComponent(draftBody)}`;
+      draft.value = draftBody;
       result.hidden = false;
       status.textContent = 'Your draft is ready. Open your email app or copy the draft.';
       draft.focus();
@@ -450,7 +470,7 @@
     const groups = [
       '.motion-intro', 'article', '.benefit', '.about-collage-frame', '.about-stats > div',
       '.footer-grid > *', '.location-options > li', '.disclosure-list > details',
-      '.page-panel', 'form', '.contact-action',
+      '.page-panel', 'form', '.contact-action', '.insight-filters',
     ].join(', ');
     const items = 'h1, h2, h3, h4, h5, h6, p, img:not(.hero-image), .button';
     const groupPositions = new Map();

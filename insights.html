@@ -51,46 +51,120 @@
     </div>
   </div>
 </header>
-<main id="main-content" class="container inner-page">
+<main id="main-content" class="inner-page insights-page">
+  <section class="market-hero insights-hero" aria-labelledby="insights-page-title">
+    <img class="market-hero-photo" src="assets/about/about-hero.webp" alt="" fetchpriority="high" width="1800" height="600">
+    <svg class="market-hero-arc" viewBox="0 0 220 155" aria-hidden="true"><path d="M0 155C41 63 103 13 174 0h46C130 7 64 51 0 155Z"/></svg>
+    <div class="container market-hero-content motion-intro">
+      <p class="eyebrow">Real Estate Insights</p>
+      <h1 id="insights-page-title">Property Insights<br>&amp; <em>Buyer Guidance</em></h1>
+      <p>Practical guides to help you evaluate property, prepare for a site visit, and compare ownership costs.</p>
+    </div>
+  </section>
 
-  <header class="page-intro motion-intro">
-    <h1>Property Insights</h1>
-    <p>Practical guides to help you evaluate property, prepare for a site visit, and compare ownership costs.</p>
-  </header>
-  <div class="filter-panel" id="guide-filters">
-    <label>Search guides <input type="search" name="query" placeholder="Try site visit or budget"></label>
-    <label>Topic
-      <select name="topic">
-        <option value="">All topics</option>
-        <option value="buying">Buying</option>
-        <option value="land">Land</option>
-        <option value="investing">Investing</option>
-      </select>
-    </label>
+  <div class="container">
+    <div class="filter-panel insight-filters" id="guide-filters" role="group" aria-label="Filter featured guides">
+      <label>
+        <span>Search guides</span>
+        <span class="insight-field">
+          <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
+          <input type="search" name="query" placeholder="Try site visit or budget">
+        </span>
+      </label>
+      <label>
+        <span>Topic</span>
+        <span class="insight-field">
+          <svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg>
+          <select name="topic">
+            <option value="">All topics</option>
+            <option value="buying">Buying</option>
+            <option value="land">Land</option>
+            <option value="investing">Investing</option>
+          </select>
+        </span>
+      </label>
+    </div>
+
+    <section class="insight-guides" aria-labelledby="insight-guides-title">
+      <header class="market-heading">
+        <p class="eyebrow">Featured Guides</p>
+        <h2 id="insight-guides-title">Explore Our Latest Insights</h2>
+        <p>Actionable real estate guides, tips, and market insights for smarter property decisions.</p>
+      </header>
+      <p class="result-status" id="guide-status" role="status"></p>
+      <div class="insight-grid">
+        <article class="guide-card insight-card" data-topic="buying">
+          <div class="insight-image">
+            <img src="assets/insights/site-visit.webp" alt="Clipboard checklist beside a model house" loading="lazy">
+          </div>
+          <div class="insight-card-content">
+            <p class="eyebrow">Buying</p>
+            <h3 id="insight-guide-1">A checklist for your first site visit</h3>
+            <details>
+              <summary class="button button--outline" aria-labelledby="insight-action-1 insight-guide-1">
+                <span id="insight-action-1">Read guide</span> <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+              </summary>
+              <p>Bring the floor plan and the list of advertised amenities. Check daylight, ventilation, water supply, parking access, and noise at the property. Confirm which parts of the development are ready to use.</p>
+            </details>
+          </div>
+        </article>
+        <article class="guide-card insight-card" data-topic="land">
+          <div class="insight-image">
+            <img src="assets/properties/plots.webp" alt="Aerial illustration of plotted land and roads" loading="lazy">
+            <svg class="insight-map-pin" viewBox="0 0 24 32" aria-hidden="true"><path d="M12 1C5.9 1 1 5.9 1 12c0 8 11 19 11 19s11-11 11-19C23 5.9 18.1 1 12 1Z"/><circle cx="12" cy="12" r="4"/></svg>
+          </div>
+          <div class="insight-card-content">
+            <p class="eyebrow">Land</p>
+            <h3 id="insight-guide-2">Questions to ask before shortlisting a plot</h3>
+            <details>
+              <summary class="button button--outline" aria-labelledby="insight-action-2 insight-guide-2">
+                <span id="insight-action-2">Read guide</span> <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+              </summary>
+              <p>Ask for current title records, approved land use, survey boundaries, legal access, and availability of utilities. Compare the documents with the physical site and seek independent legal review.</p>
+            </details>
+          </div>
+        </article>
+        <article class="guide-card insight-card" data-topic="investing">
+          <div class="insight-image">
+            <img src="assets/properties/commercial.webp" alt="Illustration of a modern glass office building" loading="lazy">
+          </div>
+          <div class="insight-card-content">
+            <p class="eyebrow">Investing</p>
+            <h3 id="insight-guide-3">How to compare commercial spaces</h3>
+            <details>
+              <summary class="button button--outline" aria-labelledby="insight-action-3 insight-guide-3">
+                <span id="insight-action-3">Read guide</span> <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+              </summary>
+              <p>Compare usable floor area, fit-out costs, access, permitted use, maintenance, and lease conditions. Calculate the costs of owning the space during a vacancy.</p>
+            </details>
+          </div>
+        </article>
+        <article class="guide-card insight-card" data-topic="buying">
+          <div class="insight-image">
+            <img src="assets/insights/property-budget.webp" alt="Stacked coins beside a wooden house model" loading="lazy">
+          </div>
+          <div class="insight-card-content">
+            <p class="eyebrow">Buying</p>
+            <h3 id="insight-guide-4">Budget beyond the quoted property price</h3>
+            <details>
+              <summary class="button button--outline" aria-labelledby="insight-action-4 insight-guide-4">
+                <span id="insight-action-4">Read guide</span> <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg>
+              </summary>
+              <p>Set aside an estimate for registration, taxes, maintenance deposits, legal checks, and finishing costs. Ask for an itemized cost sheet and verify which costs apply to your purchase.</p>
+            </details>
+          </div>
+        </article>
+      </div>
+    </section>
   </div>
-  <p class="result-status" id="guide-status" role="status"></p>
-  <div class="directory-grid">
-    <article class="guide-card page-panel" data-topic="buying">
-      <p class="eyebrow">Buying</p>
-      <h2>A checklist for your first site visit</h2>
-      <details><summary>Read guide</summary><p>Bring the floor plan and the list of advertised amenities. Check daylight, ventilation, water supply, parking access, and noise at the property. Confirm which parts of the development are ready to use.</p></details>
-    </article>
-    <article class="guide-card page-panel" data-topic="land">
-      <p class="eyebrow">Land</p>
-      <h2>Questions to ask before shortlisting a plot</h2>
-      <details><summary>Read guide</summary><p>Ask for current title records, approved land use, survey boundaries, legal access, and availability of utilities. Compare the documents with the physical site and seek independent legal review.</p></details>
-    </article>
-    <article class="guide-card page-panel" data-topic="investing">
-      <p class="eyebrow">Investing</p>
-      <h2>How to compare commercial spaces</h2>
-      <details><summary>Read guide</summary><p>Compare usable floor area, fit-out costs, access, permitted use, maintenance, and lease conditions. Calculate the costs of owning the space during a vacancy.</p></details>
-    </article>
-    <article class="guide-card page-panel" data-topic="buying">
-      <p class="eyebrow">Buying</p>
-      <h2>Budget beyond the quoted property price</h2>
-      <details><summary>Read guide</summary><p>Set aside an estimate for registration, taxes, maintenance deposits, legal checks, and finishing costs. Ask for an itemized cost sheet and verify which costs apply to your purchase.</p></details>
-    </article>
-  </div>
+
+  <section class="wide-container catalog-cta insights-cta" aria-labelledby="insights-cta-title">
+    <div>
+      <h2 id="insights-cta-title">Want More Real Estate Insights?</h2>
+      <p>Get expert guidance, market updates, and practical tips tailored for Gujarat.</p>
+    </div>
+    <a class="button" href="contact.html">Talk to Our Experts <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+  </section>
 </main>
 
 <footer class="site-footer wide-container" id="contact">
