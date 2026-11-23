@@ -133,24 +133,29 @@ p + p { margin-block-start: var(--text-gap-small); }
 .header-inner { min-height: clamp(58px, 5.75vw, 83px); display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; }
 .brand { display: flex; align-items: center; justify-content: center; }
 .brand img { width: 100%; height: auto; object-fit: contain; }
-.brand--header { align-self: flex-start; width: clamp(154px, 17.75vw, 255px); padding: clamp(12px, 1.22vw, 18px) clamp(20px, 2.38vw, 34px); position: relative; isolation: isolate; }
-.brand--header::after { content: ''; width: 100%; aspect-ratio: 650 / 122; }
+.brand--header {
+  align-self: flex-start;
+  width: clamp(160px, 18vw, 255px);
+  aspect-ratio: 3.8;
+  position: relative;
+}
 .brand--header-art {
+  --brand-angle: 10deg;
+  --brand-bleed: 5%;
   position: absolute;
   inset: -2px 0 0;
   overflow: hidden;
   border-radius: 0 0 6px 6px;
-  transform: skewX(-15deg);
+  transform: skewX(calc(-1 * var(--brand-angle)));
 }
 /* Keep the angular frame while the opposite skew preserves the artwork's proportions. */
 .brand--header-art img {
-  --brand-bleed: clamp(14px, 1.65vw, 24px);
   width: calc(100% + var(--brand-bleed));
   height: 100%;
   margin-inline: calc(var(--brand-bleed) / -2);
   object-fit: cover;
   object-position: center 49%;
-  transform: skewX(15deg);
+  transform: skewX(var(--brand-angle));
 }
 .site-nav, .header-actions { display: flex; align-items: center; }
 .site-nav { gap: clamp(13px, 2.65vw, 39px); }
@@ -334,8 +339,7 @@ p + p { margin-block-start: var(--text-gap-small); }
   }
   .brand--header {
     align-self: center;
-    width: clamp(120px, 37vw, 190px);
-    padding: clamp(8px, 2.1vw, 10px) clamp(14px, 4.8vw, 23px);
+    width: clamp(140px, 42vw, 190px);
   }
   .header-actions { margin-left: auto; gap: clamp(8px, 2.5vw, 14px); }
   .header-actions > .button { display: none; }
