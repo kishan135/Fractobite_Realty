@@ -141,8 +141,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 .brand img { width: 100%; height: auto; object-fit: contain; }
 :is(.brand--header-art, .brand--footer img) { border-radius: 5px; }
 .brand--header {
-  align-self: flex-start;
-  width: clamp(160px, 18vw, 255px);
+  width: clamp(145px, 15.5vw, 218px);
   aspect-ratio: 3.8;
   position: relative;
 }
@@ -446,10 +445,7 @@ p + p { margin-block-start: var(--text-gap-small); }
     padding-block: 8px 12px;
     gap: 12px;
   }
-  .brand--header {
-    align-self: center;
-    width: clamp(140px, 42vw, 190px);
-  }
+  .brand--header { width: clamp(130px, 39vw, 174px); }
   .header-actions { margin-left: auto; gap: clamp(8px, 2.5vw, 14px); }
   .header-actions > .button { display: none; }
   .phone-button, .menu-button {
