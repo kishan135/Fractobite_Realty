@@ -209,6 +209,13 @@ p + p { margin-block-start: var(--text-gap-small); }
     pointer-events: none;
   }
 }
+@media (min-width: 1024px) {
+  .hero-visual { inset-block-start: clamp(14px, 1.25vw, 22px); }
+  #hero-frame-shape {
+    /* A single curve joins the bottom edge and diagonal with matching tangents. */
+    d: path("M .305 0 H .977 Q 1 0 1 .035 V .965 Q 1 1 .977 1 H .046 C .008 1 -.008 .916 .008 .862 L .248 .054 C .260 .014 .282 0 .305 0 Z");
+  }
+}
 .hero-image--outgoing { position: absolute; inset: 0; pointer-events: none; }
 .hero-dots { position: absolute; right: 7%; bottom: 2%; display: flex; align-items: center; gap: 4px; }
 .hero-dots button { display: grid; place-items: center; width: 16px; min-height: 22px; padding: 0; background: transparent; border: 0; }
