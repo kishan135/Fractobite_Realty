@@ -172,14 +172,21 @@
     } else if (demo) {
       mapPanel.classList.add('project-map--concept');
       mapPanel.querySelector('strong').textContent = 'Conceptual map';
-      mapPanel.append(element('span', '', `Sample locality · ${demo.location}`));
+      mapPanel.append(
+        element('span', '', demo.location),
+        element('small', '', 'Sample location — not verified'),
+      );
     }
     const connections = project.connectivity ?? demo?.connectivity ?? [];
     if (!connections.length) return;
     const items = find('#project-connectivity-items');
     connections.forEach(({ label, detail, glyph = 'pin' }) => {
       const entry = element('li');
-      entry.append(icon(glyph), element('span', '', `${label} – ${detail}`));
+      const badge = element('span', 'project-connectivity-icon');
+      badge.append(icon(glyph));
+      const copy = element('span', 'project-connectivity-copy');
+      copy.append(element('span', '', label), element('strong', '', detail));
+      entry.append(badge, copy);
       items.append(entry);
     });
     const note = find('#project-connectivity-note');
