@@ -35,6 +35,15 @@
 
   const find = (selector) => document.querySelector(selector);
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const preview = find('#project-image-dialog');
+  let previewTrigger;
+  preview.addEventListener('close', () => {
+    previewTrigger?.focus({ preventScroll: true });
+    previewTrigger = undefined;
+  });
+  preview.addEventListener('click', (event) => {
+    if (event.target === preview) preview.close();
+  });
 
   function element(tag, className = '', text = '') {
     const item = document.createElement(tag);
@@ -57,6 +66,26 @@
     if (!image) return;
     img.alt = image.alt;
     img.src = image.src;
+  }
+
+  function imagePreviewButton(className, img, image, title, label) {
+    const trigger = element('button', className);
+    trigger.type = 'button';
+    trigger.setAttribute('aria-label', label);
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-controls', preview.id);
+    trigger.addEventListener('click', () => {
+      previewTrigger = trigger;
+      find('#project-image-title').textContent = title;
+      find('#project-image-note').hidden = !image.illustrative;
+      setImage(preview.querySelector('img'), image);
+      preview.showModal();
+    });
+    setImage(img, image);
+    const zoom = icon('search');
+    zoom.classList.add('project-preview-icon');
+    trigger.append(img, zoom);
+    return trigger;
   }
 
   function appendIconItems(container, items) {
@@ -114,13 +143,13 @@
       find('.project-gallery-dots').hidden = true;
     }
     const track = find('#project-gallery-track');
-    gallery.forEach((image) => {
+    gallery.forEach((image, index) => {
       const img = element('img');
       img.loading = 'lazy';
       img.width = 640;
       img.height = 300;
-      setImage(img, image);
-      track.append(img);
+      track.append(imagePreviewButton('project-gallery-image', img, image,
+        `${project.name} · Photo ${index + 1}`, `Preview gallery photo ${index + 1}: ${image.alt}`));
     });
   }
 
@@ -196,15 +225,6 @@
 
   function renderRelated() {
     const grid = find('#project-related');
-    const preview = find('#project-image-dialog');
-    let previewTrigger;
-    preview.addEventListener('close', () => {
-      previewTrigger?.focus({ preventScroll: true });
-      previewTrigger = undefined;
-    });
-    preview.addEventListener('click', (event) => {
-      if (event.target === preview) preview.close();
-    });
     const demoMatches = demo ? Object.keys(projectDemoDetails).filter((id) =>
       projectDemoDetails[id].category === demo.category) : [];
     const related = (demo ? demoMatches : project.relatedProjectIds ?? []).filter((id) =>
@@ -221,23 +241,8 @@
       const image = other.heroImages?.find((photo) => !photo.illustrative) ?? otherDemo?.heroImages[0];
       if (image) {
         const figure = element('figure');
-        const trigger = element('button', 'project-related-preview');
-        trigger.type = 'button';
-        trigger.setAttribute('aria-label', `Preview image of ${other.name}`);
-        trigger.setAttribute('aria-haspopup', 'dialog');
-        trigger.setAttribute('aria-controls', preview.id);
-        trigger.addEventListener('click', () => {
-          previewTrigger = trigger;
-          find('#project-image-title').textContent = other.name;
-          find('#project-image-note').hidden = !image.illustrative;
-          setImage(preview.querySelector('img'), image);
-          preview.showModal();
-        });
-        setImage(img, image);
-        const zoom = icon('search');
-        zoom.classList.add('project-preview-icon');
-        trigger.append(img, zoom);
-        figure.append(trigger);
+        figure.append(imagePreviewButton('project-related-preview', img, image,
+          other.name, `Preview image of ${other.name}`));
         if (image.illustrative) {
           const label = other.isDemo ? 'Demo project · Illustrative image' : 'Illustrative image';
           figure.append(element('figcaption', 'project-image-caption', label));
@@ -266,11 +271,15 @@
 
   function initializeGallery() {
     const track = find('#project-gallery-track');
-    if (!track.firstElementChild) return;
+    const slides = [...track.children];
+    if (!slides.length) return;
     const prev = find('.project-gallery-prev');
     const next = find('.project-gallery-next');
     const dots = find('.project-gallery-dots');
     let stops = [0];
+    let active = 0;
+    let visible = 0;
+    let width = 0;
 
     function currentStop() {
       return stops.reduce((best, stop, index) => (
@@ -284,30 +293,38 @@
     }
 
     function sync() {
-      const current = currentStop();
-      prev.disabled = current === 0;
-      next.disabled = current === stops.length - 1;
-      [...dots.children].forEach((dot, index) => dot.setAttribute('aria-pressed', String(index === current)));
+      active = currentStop();
+      prev.disabled = active === 0;
+      next.disabled = active === stops.length - 1;
+      [...dots.children].forEach((dot, index) => dot.setAttribute('aria-pressed', String(index === active)));
     }
 
     function measure() {
-      const max = Math.max(0, track.scrollWidth - track.clientWidth);
-      const first = track.firstElementChild.getBoundingClientRect();
-      const gap = parseFloat(getComputedStyle(track).columnGap);
-      const step = first.width + gap;
-      stops = [0];
-      for (let position = step; position > 0 && position < max - 2; position += step) stops.push(position);
-      if (max > 2) stops.push(max);
+      const perView = Number(getComputedStyle(track).getPropertyValue('--gallery-cards'));
+      const count = Math.min(perView, slides.length);
+      if (track.clientWidth === width && count === visible) return;
+      width = track.clientWidth;
+      visible = count;
+      track.style.setProperty('--gallery-visible', visible);
+
+      // Stop at the last starting slide that can still fill the viewport.
+      const start = slides[0].getBoundingClientRect().left;
+      stops = slides.slice(0, slides.length - visible + 1).map((slide) =>
+        slide.getBoundingClientRect().left - start);
       if (dots.children.length !== stops.length) {
         dots.replaceChildren(...stops.map((_, index) => {
           const dot = element('button');
           dot.type = 'button';
-          dot.setAttribute('aria-label', `Show gallery position ${index + 1}`);
           dot.addEventListener('click', () => navigate(index));
           return dot;
         }));
       }
+      [...dots.children].forEach((dot, index) => {
+        dot.setAttribute('aria-label', visible === 1 ? `Show gallery photo ${index + 1}`
+          : `Show gallery photos ${index + 1}–${index + visible}`);
+      });
       dots.hidden = stops.length === 1;
+      track.scrollTo({ left: stops[Math.min(active, stops.length - 1)], behavior: 'instant' });
       sync();
     }
 
