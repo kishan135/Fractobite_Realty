@@ -246,18 +246,27 @@
   }
 
   const name = project.name;
-  const copy = { ...project, name, location: project.location || pendingLocation };
+  const copy = {
+    ...project,
+    label: project.isDemo ? 'Demo Project' : 'Featured Project',
+    location: project.location || (project.isDemo ? 'Location unspecified' : pendingLocation),
+  };
   document.title = `${name} | Fractobite Realty`;
   document.querySelectorAll('[data-project-text]').forEach((node) => {
     node.textContent = copy[node.dataset.projectText] || pending;
   });
-  find('#enquiry-form').dataset.projectName = name;
   renderImageSet();
+  find('#project-unavailable').hidden = true;
+  find('.project-detail').hidden = false;
+  if (project.isDemo) {
+    document.querySelectorAll('[data-hide-for-demo]').forEach((section) => { section.hidden = true; });
+    return;
+  }
+
+  find('#enquiry-form').dataset.projectName = name;
   renderSpecifications();
   renderConnectivity();
   renderRelated();
-  find('#project-unavailable').hidden = true;
-  find('.project-detail').hidden = false;
   initializeGallery();
 
   find('.project-hero-enquire').addEventListener('click', (event) => {

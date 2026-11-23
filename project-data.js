@@ -7,6 +7,39 @@ const propertyProjects = (() => {
   const plots = photo('projects/planned-grounds', 'Illustrative aerial view of landscaped plots');
   const villa = photo('hero/villa-1', 'Illustrative glass-fronted villa and swimming pool at dusk');
 
+  function demo(name, category, propertyType, image) {
+    return {
+      name: `${name} — Demo`,
+      category,
+      propertyType,
+      isDemo: true,
+      cardImage: image,
+      heroImages: [image],
+      overviewImage: image,
+      description: `Illustrative ${propertyType.toLowerCase()} concept for the client demo.`,
+      overview: 'This sample shows how a project listing will look. It does not represent an available property.',
+    };
+  }
+
+  const demoProjects = {
+    'greenfield-plots': demo('Greenfield Plots', 'plots', 'Residential plots',
+      photo('properties/plots', 'Illustrative view of landscaped land parcels')),
+    'sunrise-land-estate': demo('Sunrise Land Estate', 'plots', 'Land development',
+      photo('locations/dholera-planning', 'Illustrative aerial view of a planned land development')),
+    'royal-palm-villas': demo('Royal Palm Villas', 'villas', 'Luxury villas',
+      photo('properties/villas', 'Illustrative villa with a swimming pool')),
+    'elite-luxury-villas': demo('Elite Luxury Villas', 'villas', 'Luxury villas',
+      photo('hero/villa-3', 'Illustrative contemporary villa at dusk')),
+    'grand-villa-estate': demo('The Grand Villa Estate', 'villas', 'Luxury villas',
+      villa),
+    'urban-heights-residency': demo('Urban Heights Residency', 'residential', 'Residential apartments',
+      photo('properties/residential', 'Illustrative apartment towers')),
+    'skyline-residency': demo('Skyline Residency', 'residential', 'Residential apartments',
+      photo('about/skyline-1', 'Illustrative high-rise residential skyline')),
+    'greenview-apartments': demo('Greenview Apartments', 'residential', 'Residential apartments',
+      photo('locations/growth-corridors', 'Illustrative residential towers beside landscaped grounds')),
+  };
+
   // Add approved project facts here. A photo without illustrative: true should be verified.
   return {
     'balaji-upvan': {
@@ -80,6 +113,7 @@ const propertyProjects = (() => {
       category: null,
       description: 'A specific Mirrikh Group project has yet to be identified. Project details will appear here once confirmed.',
     },
+    ...demoProjects,
   };
 })();
 

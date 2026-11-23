@@ -329,14 +329,15 @@
     link.href = projectDetailUrl(id);
     link.setAttribute('aria-label', `View Project: ${project.name}`);
     card.querySelector('h3, h4').textContent = project.name;
-    card.querySelector('[data-card-location]').textContent = project.location || 'Location to be confirmed';
+    card.querySelector('[data-card-location]').textContent = project.location
+      || (project.isDemo ? 'Location unspecified' : 'Location to be confirmed');
     card.querySelector('[data-card-type]').textContent = project.propertyType || 'Property type to be confirmed';
 
     const image = project.cardImage ?? project.heroImages?.[0];
     const photo = card.querySelector('img');
     const note = card.querySelector('[data-card-image-note]');
-    note.hidden = Boolean(image && !image.illustrative);
-    note.textContent = image ? 'Illustrative image' : 'Project image pending';
+    note.hidden = Boolean(!project.isDemo && image && !image.illustrative);
+    note.textContent = project.isDemo ? 'Demo Project' : image ? 'Illustrative image' : 'Project image pending';
     if (image) {
       photo.src = image.src;
       photo.alt = image.alt;
@@ -672,7 +673,8 @@
       selectFromUrl(form.elements.location, 'location');
     }
     const project = params.get('project');
-    if (project && Object.values(propertyProjects).some((record) => (record.name || record.developer) === project)) {
+    if (project && Object.values(propertyProjects).some((record) =>
+      !record.isDemo && (record.name || record.developer) === project)) {
       form.elements.requirements.value = `I would like to enquire about ${project}.`;
     }
     const result = document.querySelector('#enquiry-result');
