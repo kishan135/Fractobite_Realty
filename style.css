@@ -178,12 +178,25 @@ p + p { margin-block-start: var(--text-gap-small); }
 .hero-copy > p:last-child { margin-top: var(--text-gap-medium); font-size: clamp(.72rem, 1.24vw, 1.07rem); }
 
 /* 07. HERO IMAGE GEOMETRY */
-.hero-visual { position: absolute; inset: 0 0 0 40.8%; }
-.hero-mask { position: absolute; inset: 0; background: linear-gradient(var(--orange) 71%, transparent 83%); clip-path: shape(from 26% 0, line to 100% 0, line to 100% 100%, line to 10% 100%, curve to 2% 83% with 3% 100% / -1% 92%, close); }
-.hero-image { height: 100%; object-fit: cover; object-position: 57% center; clip-path: shape(from calc(26% + 2px) 0, line to 100% 0, line to 100% 100%, line to 10% 100%, curve to calc(2% + 2px) 83% with 3% 100% / calc(-1% + 2px) 92%, close); }
-@supports not (clip-path: shape(from 0 0, line to 100% 0, close)) {
-  .hero-mask { clip-path: polygon(26% 0, 100% 0, 100% 100%, 10% 100%, 2% 95%, 1% 86%); }
-  .hero-image { clip-path: polygon(calc(26% + 2px) 0, 100% 0, 100% 100%, 10% 100%, 2.4% 95%, 1.4% 86%); }
+.hero-visual { position: absolute; inset: 0 calc((100% - var(--wide)) / 2) 0 40.8%; }
+.hero-mask { position: absolute; inset: 0; }
+.hero-image { height: 100%; object-fit: cover; object-position: 57% center; }
+.hero-outline { display: none; }
+@media (min-width: 768px) {
+  .hero-mask { clip-path: url(#hero-frame-clip); }
+  .hero-outline {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--orange);
+    /* The shared clip keeps only the inner half of this outline. */
+    stroke-width: 3.5px;
+    pointer-events: none;
+  }
 }
 .hero-image--outgoing { position: absolute; inset: 0; pointer-events: none; }
 .hero-dots { position: absolute; right: 7%; bottom: 2%; display: flex; align-items: center; gap: 4px; }
