@@ -189,6 +189,15 @@
 
   function renderRelated() {
     const grid = find('#project-related');
+    const preview = find('#project-image-dialog');
+    let previewTrigger;
+    preview.addEventListener('close', () => {
+      previewTrigger?.focus({ preventScroll: true });
+      previewTrigger = undefined;
+    });
+    preview.addEventListener('click', (event) => {
+      if (event.target === preview) preview.close();
+    });
     const demoMatches = demo ? Object.keys(projectDemoDetails).filter((id) =>
       projectDemoDetails[id].category === demo.category) : [];
     const related = (demo ? demoMatches : project.relatedProjectIds ?? []).filter((id) =>
@@ -205,9 +214,27 @@
       const image = other.heroImages?.find((photo) => !photo.illustrative) ?? otherDemo?.heroImages[0];
       if (image) {
         const figure = element('figure');
+        const trigger = element('button', 'project-related-preview');
+        trigger.type = 'button';
+        trigger.setAttribute('aria-label', `Preview image of ${other.name}`);
+        trigger.setAttribute('aria-haspopup', 'dialog');
+        trigger.setAttribute('aria-controls', preview.id);
+        trigger.addEventListener('click', () => {
+          previewTrigger = trigger;
+          find('#project-image-title').textContent = other.name;
+          find('#project-image-note').hidden = !image.illustrative;
+          setImage(preview.querySelector('img'), image);
+          preview.showModal();
+        });
         setImage(img, image);
-        figure.append(img);
-        if (image.illustrative) figure.append(element('figcaption', 'project-image-caption', 'Illustrative image'));
+        const zoom = icon('search');
+        zoom.classList.add('project-preview-icon');
+        trigger.append(img, zoom);
+        figure.append(trigger);
+        if (image.illustrative) {
+          const label = other.isDemo ? 'Demo project · Illustrative image' : 'Illustrative image';
+          figure.append(element('figcaption', 'project-image-caption', label));
+        }
         card.append(figure);
       }
       const body = element('div');
@@ -220,7 +247,11 @@
       link.href = projectDetailUrl(id);
       link.setAttribute('aria-label', `View Project: ${other.name}`);
       link.append(icon('arrow'));
-      body.append(element('h3', '', other.name), location, type, link);
+      const heading = element('h3');
+      const titleLink = element('a', '', other.name);
+      titleLink.href = link.href;
+      heading.append(titleLink);
+      body.append(heading, location, type, link);
       card.append(body);
       grid.append(card);
     });

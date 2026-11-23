@@ -202,17 +202,28 @@
           <a class="button button--outline" id="enquiry-email" href="mailto:info@fractobiterealty.com">Open Email App</a>
         </div>
       </section>
+    </div>
 
-      <section class="project-similar" aria-labelledby="project-related-title">
+    <section class="project-similar project-section" aria-labelledby="project-related-title">
       <header class="project-heading">
         <p class="eyebrow">Similar Projects</p>
         <h2 id="project-related-title">Explore Similar Properties</h2>
       </header>
-        <div class="project-related-grid" id="project-related"></div>
-      </section>
-    </div>
+      <div class="project-related-grid" id="project-related"></div>
+    </section>
   </div>
 </main>
+
+<dialog class="project-image-dialog" id="project-image-dialog" aria-labelledby="project-image-title">
+  <div class="project-image-toolbar">
+    <h2 id="project-image-title">Project image preview</h2>
+    <form method="dialog">
+      <button class="button button--outline" type="submit" autofocus>Close</button>
+    </form>
+  </div>
+  <img alt="">
+  <p id="project-image-note" hidden>Illustrative image</p>
+</dialog>
 
 <footer class="site-footer wide-container" id="contact">
   <div class="footer-grid">
