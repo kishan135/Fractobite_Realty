@@ -838,7 +838,7 @@ p + p { margin-block-start: var(--text-gap-small); }
   .offer-section { row-gap: var(--text-gap-small); padding-top: 10px; }
   .offer-results { display: contents; }
   .offer-view-all { grid-area: 1 / 1 / 2 / -1; }
-  .offer-intro { grid-area: 2 / 1; }
+  .offer-intro { grid-area: 2 / 1; align-self: center; }
   .offer-grid { grid-area: 2 / 2; }
 }
 
