@@ -1855,6 +1855,24 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
 .project-enquiry .contact-field textarea { min-height: clamp(82px, 7.2vw, 108px); }
 .project-enquiry .enquiry-form > .button { justify-self: stretch; margin-top: 4px; }
 
+@media (min-width: 1024px) {
+  .project-enquiry {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(24px, 1.85vw, 28px);
+  }
+  .project-enquiry .enquiry-form {
+    --dropdown-height: 50px;
+    flex: 1;
+    grid-template-rows: repeat(4, auto) minmax(min-content, 1fr) auto;
+    gap: clamp(14px, 1.12vw, 18px);
+  }
+  .project-enquiry .contact-field input { min-height: var(--dropdown-height); }
+  .project-enquiry .contact-field:has(input) > .icon { top: 50%; translate: 0 -50%; }
+  .project-enquiry .enquiry-form textarea { height: 100%; min-height: 160px; }
+}
+
 @media (max-width: 900px) {
   .project-amenities { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   #project-gallery-track { --gallery-cards: 3; }
