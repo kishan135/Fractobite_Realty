@@ -861,6 +861,156 @@ p + p { margin-block-start: var(--text-gap-small); }
   .catalog-cta { align-items: flex-start; flex-direction: column; }
 }
 
+/* Locations page */
+.locations-page { padding-block: 0; }
+.market-hero { position: relative; isolation: isolate; overflow: hidden; background: #25334d; color: #fff; }
+.market-hero-photo, .market-hero::after { position: absolute; inset: 0; width: 100%; height: 100%; }
+.market-hero-photo {
+  z-index: -3;
+  inset-inline-start: 22%;
+  width: 78%;
+  object-fit: cover;
+  object-position: center 14%;
+  mask-image: linear-gradient(90deg, transparent, #000 24%);
+}
+.market-hero::after {
+  content: '';
+  z-index: -2;
+  background: linear-gradient(90deg, #202a42ec 0%, #202a42c2 25%, #25284042 55%, transparent 78%);
+}
+.market-hero-arc { position: absolute; z-index: -1; top: 0; left: 44%; width: clamp(130px, 19vw, 275px); height: auto; fill: var(--orange); }
+.market-hero-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: clamp(193px, 18vw, 250px);
+  padding: 21px clamp(6px, 1.55vw, 24px);
+}
+.market-hero .eyebrow { color: #fff; margin-bottom: 4px; }
+.market-hero h1 { font-size: clamp(2.1rem, 3.5vw, 3.4rem); line-height: 1.03; letter-spacing: -.045em; }
+.market-hero h1 + p { max-width: 38ch; margin-top: 9px; font-size: clamp(.81rem, 1.15vw, 1rem); }
+
+.market-discovery, .market-benefits, .market-highlights { margin-top: clamp(22px, 2.8vw, 40px); }
+.market-heading { margin-bottom: var(--text-gap-medium); }
+.market-heading h2 { margin-block: 3px 4px; font-size: clamp(1.38rem, 2.6vw, 2.12rem); line-height: 1.12; }
+.market-heading p:not(.eyebrow) { font-size: clamp(.81rem, 1.16vw, .98rem); }
+
+.market-layout { display: grid; grid-template-columns: 39% minmax(0, 1fr); gap: clamp(14px, 2vw, 28px); align-items: start; }
+.market-feature {
+  display: grid;
+  align-items: end;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 1.15;
+  border-radius: 17px;
+  background: #25334d;
+  color: #fff;
+}
+.market-feature img, .market-feature::before { position: absolute; inset: 0; width: 100%; height: 100%; }
+.market-feature img { z-index: -2; object-fit: cover; object-position: center; }
+.market-feature::before { content: ''; z-index: -1; background: linear-gradient(0deg, #110c08ea, #140e0878 30%, transparent 66%); }
+.market-feature-content { padding: clamp(15px, 1.9vw, 27px); }
+.market-feature h3 { font-size: clamp(1.3rem, 2.3vw, 2rem); line-height: 1.08; letter-spacing: -.045em; }
+.market-feature p { margin-top: 7px; max-width: 34ch; font-size: clamp(.78rem, 1.05vw, .9rem); }
+.market-feature-content::after { content: ''; display: block; height: 2px; margin-top: 11px; background: linear-gradient(90deg, var(--orange) 34%, #fff5 34%); }
+
+.market-directory { gap: clamp(5px, .55vw, 8px); }
+.market-directory > .market-entry {
+  padding: 0;
+  border-color: #e8ddd7;
+  border-radius: 19px;
+  background: #fffcfa;
+  box-shadow: 0 4px 9px #36221b13;
+  scroll-margin-top: 10px;
+}
+.market-directory .market-row {
+  display: grid;
+  grid-template-columns: 1.1em minmax(0, 26%) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(5px, .9vw, 12px);
+  min-height: clamp(39px, 3.6vw, 52px);
+  padding: 5px clamp(9px, 1.5vw, 20px);
+  border-radius: inherit;
+  color: var(--ink);
+}
+.market-row::-webkit-details-marker { display: none; }
+.market-row::marker { content: ''; }
+.market-row > .icon, .market-highlight-body > .icon { color: var(--orange); }
+.market-name { font-size: clamp(.82rem, 1.42vw, 1.17rem); font-weight: 700; line-height: 1.22; letter-spacing: -.035em; }
+.market-summary { padding-inline-start: clamp(7px, 1vw, 14px); border-inline-start: 1px solid var(--orange); font-size: clamp(.74rem, 1vw, .92rem); font-weight: 400; line-height: 1.25; }
+.market-row .circle, .market-highlight .circle { width: 25px; height: 25px; color: var(--orange-dark); }
+.market-entry[open] .market-row .circle { transform: rotate(90deg); }
+.market-entry:target, .market-entry[open] { border-color: #e6a383; }
+.market-directory .market-entry > p { margin: 0; }
+.market-entry > p, .market-entry > .page-actions { padding: 5px clamp(12px, 1.5vw, 20px) 10px; }
+.market-entry > p { font-size: .84rem; }
+.market-entry > .page-actions { padding-top: 0; }
+
+.market-benefits {
+  display: grid;
+  grid-template-columns: 34% minmax(0, 1fr);
+  align-items: center;
+  gap: var(--text-gap-medium);
+  padding: clamp(14px, 1.45vw, 21px) clamp(16px, 2.15vw, 31px);
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fbefe7, #faf1eb);
+}
+.market-benefits .market-heading { margin-bottom: 0; }
+.market-benefits h2 { font-size: clamp(1.25rem, 2.12vw, 1.85rem); }
+.market-benefit-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 0; margin: 0; list-style: none; }
+.market-benefit-grid li { display: grid; justify-items: center; align-content: center; gap: 7px; padding: 3px 8px; text-align: center; }
+.market-benefit-grid li + li { border-inline-start: 1px solid var(--line); }
+.market-benefit-grid .icon { color: var(--orange); font-size: clamp(1.9rem, 3.3vw, 2.9rem); }
+.market-benefit-grid h3 { font-size: clamp(.76rem, 1.26vw, 1.05rem); line-height: 1.23; letter-spacing: -.025em; }
+
+.market-highlight-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.65vw, 24px); }
+.market-highlight { overflow: hidden; border: 1px solid #e9ddd5; border-radius: 15px; background: #fffcfa; box-shadow: 0 4px 12px #30251d0b; }
+.market-highlight > a { display: block; height: 100%; }
+.market-highlight > a:focus-visible { outline-offset: -3px; }
+.market-highlight img { width: 100%; height: auto; aspect-ratio: 2.75; object-fit: cover; }
+.market-highlight-body { display: grid; grid-template-columns: 1em minmax(0, 1fr) auto; align-items: start; gap: 8px; padding: 10px clamp(10px, 1.25vw, 18px); }
+.market-highlight-body .circle { align-self: center; }
+.market-highlight h3 { font-size: clamp(.95rem, 1.45vw, 1.19rem); letter-spacing: -.03em; }
+.market-highlight p { margin-top: 2px; font-size: clamp(.75rem, .92vw, .9rem); line-height: 1.4; }
+
+.market-cta {
+  margin-top: clamp(25px, 3.7vw, 53px);
+  background: linear-gradient(90deg, #ba3b04 0%, #d64c0fdc 48%, #a134258a 100%),
+    url('assets/properties/residential-hero.webp') right 67% / cover;
+}
+.market-cta .button { border-radius: 99px; }
+
+@media (max-width: 850px) {
+  .market-layout { grid-template-columns: minmax(0, 1fr); }
+  .market-feature { aspect-ratio: 1.7; }
+  .market-feature img { object-position: center 57%; }
+  .market-benefits { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 650px) {
+  .market-hero-photo { inset-inline-start: 0; width: 100%; object-position: 63% 25%; mask-image: none; }
+  .market-hero::after { background: linear-gradient(90deg, #202a42f0, #202a42a3 64%, #202a4240); }
+  .market-hero-content { padding-inline: 0; }
+  .market-hero-arc { left: auto; right: 3%; width: clamp(95px, 28vw, 150px); opacity: .65; }
+  .market-feature { aspect-ratio: 1.35; }
+  .market-directory .market-row {
+    grid-template-columns: 1.1em minmax(0, 1fr) auto;
+    padding-block: 8px;
+    column-gap: 8px;
+    row-gap: 2px;
+  }
+  .market-row > .icon, .market-row .circle { grid-row: 1 / 3; }
+  .market-row .circle { grid-column: 3; }
+  .market-name, .market-summary { grid-column: 2; }
+  .market-summary { border: 0; padding: 0; }
+  .market-benefit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .market-benefit-grid li { padding-block: 9px; }
+  .market-benefit-grid li:nth-child(3) { border-inline-start: 0; }
+  .market-benefit-grid li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .market-highlight-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* Shared motion */
 :root {
   --motion-duration: 480ms;
@@ -887,6 +1037,10 @@ p + p { margin-block-start: var(--text-gap-small); }
       calc(var(--motion-order, 0) * var(--motion-stagger)) backwards;
   }
 
+  .market-row, .market-highlight, .market-highlight .circle {
+    transition: background-color var(--motion-duration) var(--motion-ease), box-shadow var(--motion-duration) var(--motion-ease);
+  }
+
   .catalog-slide.is-entering { animation: motion-fade var(--motion-duration) var(--motion-ease); }
   .offer-image img { transition: scale var(--motion-duration) var(--motion-ease); }
   .hero-image--outgoing { animation: motion-fade var(--motion-duration) var(--motion-ease) reverse both; }
@@ -911,6 +1065,9 @@ p + p { margin-block-start: var(--text-gap-small); }
   }
 
   @media (hover: hover) and (pointer: fine) {
+    .market-row:hover { background-color: #fff0e7; }
+    .market-highlight:hover { box-shadow: 0 5px 16px #30251d1e; }
+    .market-highlight:hover .circle { background-color: #fff0e7; }
     .property-page .directory-card:hover { translate: 0 -2px; }
     .offer-card:hover .offer-image img { scale: 1.04; }
 

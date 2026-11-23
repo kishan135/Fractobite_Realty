@@ -349,9 +349,23 @@
   }
 
   function initializeLocations() {
-    const location = params.get('location');
-    document.querySelectorAll('[data-market]').forEach((item) => {
-      if (item.dataset.market === location) item.open = true;
+    const directory = document.querySelector('.market-directory');
+    if (!directory) return;
+    const entries = [...directory.querySelectorAll('[data-market]')];
+
+    function openLinkedMarket() {
+      const hash = window.location.hash;
+      const market = entries.find((entry) => hash
+        ? `#${entry.id}` === hash
+        : entry.dataset.market === params.get('location'));
+      if (market) market.open = true;
+    }
+
+    openLinkedMarket();
+    window.addEventListener('hashchange', openLinkedMarket);
+    document.querySelector('.market-highlight-grid').addEventListener('click', (event) => {
+      const link = event.target.closest('a');
+      if (link?.hash === window.location.hash) openLinkedMarket();
     });
   }
 
