@@ -79,24 +79,30 @@
   <div class="container catalog-content">
     <form class="filter-panel" id="catalog-filters" action="properties.html" method="get">
       <label>Property type
-        <select name="type">
-          <option value="">All property types</option>
-          <option value="Buy">Residential Homes</option>
-          <option value="Plot">Plots &amp; Land</option>
-          <option value="Villa">Villas &amp; Luxury Homes</option>
-        </select>
+        <span class="dropdown">
+          <svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg>
+          <select name="type" aria-label="Property type">
+            <option value="">All property types</option>
+            <option value="Buy">Residential Homes</option>
+            <option value="Plot">Plots &amp; Land</option>
+            <option value="Villa">Villas &amp; Luxury Homes</option>
+          </select>
+        </span>
       </label>
       <label>Location
-        <select name="location">
-          <option value="">All locations</option>
-          <option value="Ahmedabad">Ahmedabad</option>
-          <option value="Dholera">Dholera</option>
-          <option value="GIFT City">GIFT City</option>
-          <option value="Gandhinagar">Gandhinagar</option>
-          <option value="Surat">Surat</option>
-          <option value="Vadodara">Vadodara</option>
-          <option value="Across Gujarat">Across Gujarat</option>
-        </select>
+        <span class="dropdown">
+          <svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>
+          <select name="location" aria-label="Location">
+            <option value="">All locations</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+            <option value="Dholera">Dholera</option>
+            <option value="GIFT City">GIFT City</option>
+            <option value="Gandhinagar">Gandhinagar</option>
+            <option value="Surat">Surat</option>
+            <option value="Vadodara">Vadodara</option>
+            <option value="Across Gujarat">Across Gujarat</option>
+          </select>
+        </span>
       </label>
       <button class="button" type="submit">Apply Filters</button>
       <a class="text-link" href="properties.html">Clear filters</a>

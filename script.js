@@ -444,6 +444,230 @@
     form.hidden = false;
   }
 
+  function initializeDropdowns() {
+    if (typeof HTMLElement.prototype.showPopover !== 'function') return;
+    const fields = [...document.querySelectorAll('.dropdown > select')];
+    if (!fields.length) return;
+
+    const list = document.createElement('div');
+    list.className = 'dropdown-menu';
+    list.id = 'dropdown-options';
+    list.popover = 'manual';
+    list.setAttribute('role', 'listbox');
+    document.body.append(list);
+
+    const dropdowns = [];
+    let openField;
+    let activeIndex = -1;
+    let typed = '';
+    let lastTyped = 0;
+
+    function sync(field) {
+      field.trigger.textContent = field.select.selectedOptions[0]?.textContent || '';
+      if (field.select.validity.valid) field.trigger.removeAttribute('aria-invalid');
+    }
+
+    function close() {
+      if (!openField) return;
+      list.hidePopover();
+      openField.wrapper.removeAttribute('data-open');
+      openField.trigger.setAttribute('aria-expanded', 'false');
+      openField.trigger.removeAttribute('aria-activedescendant');
+      openField = undefined;
+    }
+
+    function positionList() {
+      if (!openField) return;
+      const rect = openField.trigger.getBoundingClientRect();
+      const viewport = window.visualViewport;
+      const left = viewport?.offsetLeft ?? 0;
+      const top = viewport?.offsetTop ?? 0;
+      const right = left + (viewport?.width ?? document.documentElement.clientWidth);
+      const bottom = top + (viewport?.height ?? document.documentElement.clientHeight);
+      if (rect.bottom <= top || rect.top >= bottom) {
+        close();
+        return;
+      }
+
+      const gap = 5;
+      const inset = 8;
+      const width = Math.min(rect.width, right - left - inset * 2);
+      const preferred = Math.min(282, list.children.length * 44 + 12);
+      const below = bottom - rect.bottom - gap - inset;
+      const above = rect.top - top - gap - inset;
+      const flip = below < preferred && above > below;
+      list.style.width = `${width}px`;
+      list.style.left = `${Math.max(left + inset, Math.min(rect.left, right - inset - width))}px`;
+      list.style.maxHeight = `${Math.max(0, Math.min(preferred, flip ? above : below))}px`;
+      list.style.top = `${flip ? rect.top - gap - list.offsetHeight : rect.bottom + gap}px`;
+    }
+
+    function activate(index) {
+      if (index < 0 || index >= list.children.length) return;
+      const option = list.children[index];
+      list.children[activeIndex]?.classList.remove('is-active');
+      activeIndex = index;
+      option.classList.add('is-active');
+      openField.trigger.setAttribute('aria-activedescendant', option.id);
+      const rect = option.getBoundingClientRect();
+      const menuRect = list.getBoundingClientRect();
+      if (rect.top < menuRect.top) list.scrollTop -= menuRect.top - rect.top;
+      else if (rect.bottom > menuRect.bottom) list.scrollTop += rect.bottom - menuRect.bottom;
+    }
+
+    function open(field) {
+      if (field.select.disabled) return;
+      close();
+      sync(field);
+      openField = field;
+      activeIndex = -1;
+      typed = '';
+      list.setAttribute('aria-label', field.trigger.getAttribute('aria-label'));
+      list.replaceChildren(...[...field.select.options].map((option, index) => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-option';
+        item.id = `dropdown-option-${index}`;
+        item.dataset.index = index;
+        item.textContent = option.textContent;
+        item.setAttribute('role', 'option');
+        item.setAttribute('aria-selected', String(option.selected));
+        if (option.disabled) item.setAttribute('aria-disabled', 'true');
+        return item;
+      }));
+      field.wrapper.setAttribute('data-open', '');
+      field.trigger.setAttribute('aria-expanded', 'true');
+      list.showPopover();
+      positionList();
+      if (openField) activate(field.select.selectedIndex);
+    }
+
+    function selectOption(index) {
+      if (!openField) return;
+      const field = openField;
+      const { select, trigger } = field;
+      const option = select.options[index];
+      if (!option || option.disabled) return;
+      const changed = select.selectedIndex !== index;
+      select.selectedIndex = index;
+      sync(field);
+      close();
+      trigger.focus({ preventScroll: true });
+      if (changed) {
+        select.dispatchEvent(new Event('input', { bubbles: true }));
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    }
+
+    function onKeyDown(event, field) {
+      const { key } = event;
+      if (key === 'Tab') {
+        if (openField === field) {
+          selectOption(activeIndex);
+          close();
+        }
+        return;
+      }
+      if (key === 'Escape' && openField === field) {
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+        return;
+      }
+      if (key === 'Enter' || key === ' ') {
+        event.preventDefault();
+        if (openField === field) selectOption(activeIndex);
+        else open(field);
+        return;
+      }
+
+      const navigation = ['ArrowUp', 'ArrowDown', 'Home', 'End'].includes(key);
+      const character = key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey;
+      if (!navigation && !character) return;
+      event.preventDefault();
+      const wasOpen = openField === field;
+      if (!wasOpen) open(field);
+      if (openField !== field) return;
+
+      const available = [...field.select.options].flatMap((option, index) => option.disabled ? [] : [index]);
+      if (key === 'Home') activate(available[0]);
+      else if (key === 'End') activate(available.at(-1));
+      else if (navigation && wasOpen) {
+        const step = key === 'ArrowDown' ? 1 : -1;
+        const position = available.indexOf(activeIndex);
+        activate(available[Math.min(available.length - 1, Math.max(0, position + step))]);
+      } else if (character) {
+        const now = performance.now();
+        const letter = key.toLowerCase();
+        typed = now - lastTyped > 600 || typed === letter ? letter : typed + letter;
+        lastTyped = now;
+        const start = available.indexOf(activeIndex);
+        const ordered = [...available.slice(start + 1), ...available.slice(0, start + 1)];
+        const match = ordered.find((index) => field.select.options[index].textContent.trim().toLowerCase().startsWith(typed));
+        if (match !== undefined) activate(match);
+      }
+    }
+
+    fields.forEach((select) => {
+      if (select.multiple || select.size > 1 || select.disabled) return;
+      const trigger = document.createElement('span');
+      trigger.className = 'dropdown-control';
+      trigger.tabIndex = 0;
+      trigger.setAttribute('role', 'combobox');
+      trigger.setAttribute('aria-label', select.getAttribute('aria-label'));
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.setAttribute('aria-controls', list.id);
+      if (select.required) trigger.setAttribute('aria-required', 'true');
+      const field = { select, trigger, wrapper: select.parentElement };
+
+      trigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        trigger.focus({ preventScroll: true });
+        if (openField === field) close();
+        else open(field);
+      });
+      trigger.addEventListener('keydown', (event) => onKeyDown(event, field));
+      select.addEventListener('change', () => sync(field));
+      select.addEventListener('invalid', (event) => {
+        event.preventDefault();
+        trigger.setAttribute('aria-invalid', 'true');
+        trigger.focus();
+        open(field);
+      });
+      select.labels[0]?.addEventListener('click', (event) => {
+        if (field.wrapper.contains(event.target)) return;
+        event.preventDefault();
+        trigger.focus();
+      });
+      select.after(trigger);
+      select.hidden = true;
+      sync(field);
+      dropdowns.push(field);
+    });
+
+    list.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse' && event.target.closest('.dropdown-option')) event.preventDefault();
+    });
+    list.addEventListener('click', (event) => {
+      const option = event.target.closest('.dropdown-option');
+      if (option) selectOption(Number(option.dataset.index));
+    });
+    document.addEventListener('pointerdown', (event) => {
+      if (openField && !list.contains(event.target) && !openField.wrapper.contains(event.target)) close();
+    });
+    document.addEventListener('focusin', (event) => {
+      if (openField && event.target !== openField.trigger && !list.contains(event.target)) close();
+    });
+    document.addEventListener('scroll', (event) => {
+      if (!list.contains(event.target)) positionList();
+    }, true);
+    window.addEventListener('resize', positionList);
+    window.visualViewport?.addEventListener('resize', positionList);
+    window.visualViewport?.addEventListener('scroll', positionList);
+    window.addEventListener('pageshow', () => dropdowns.forEach(sync));
+    window.addEventListener('pagehide', close);
+    document.addEventListener('reset', () => requestAnimationFrame(() => dropdowns.forEach(sync)));
+  }
+
   function initializeDemoLinks() {
     const dialog = document.querySelector('.demo-dialog');
     document.querySelectorAll('[data-demo]').forEach((button) => {
@@ -528,5 +752,6 @@
   initializeInsights();
   initializeEnquiry();
   initializeDemoLinks();
+  initializeDropdowns();
   initializeContentMotion();
 })();
