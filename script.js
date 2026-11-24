@@ -172,6 +172,7 @@
     const carousel = document.querySelector('.catalog-hero, .project-carousel');
     if (!carousel) return;
 
+    const interval = carousel.classList.contains('catalog-hero') ? 2500 : 5000;
     const photos = [...carousel.querySelectorAll('.catalog-slide')];
     if (photos.length < 2) return;
     const indicators = [...carousel.querySelectorAll('[data-slide]')];
@@ -197,7 +198,7 @@
     function schedule() {
       clearTimeout(timer);
       if (!autoplay || paused || hovering || touchStart || carousel.matches(':focus-within') || document.hidden || reducedMotion.matches) return;
-      timer = setTimeout(() => show(nextIndex(target)), 5000);
+      timer = setTimeout(() => show(nextIndex(target)), interval);
     }
 
     async function show(index) {
@@ -255,8 +256,8 @@
       });
     });
 
-    carousel.querySelector('.catalog-prev').addEventListener('click', () => show(nextIndex(target, -1)));
-    carousel.querySelector('.catalog-next').addEventListener('click', () => show(nextIndex(target)));
+    carousel.querySelector('.catalog-prev')?.addEventListener('click', () => show(nextIndex(target, -1)));
+    carousel.querySelector('.catalog-next')?.addEventListener('click', () => show(nextIndex(target)));
     indicators.forEach((button, index) => button.addEventListener('click', () => show(index)));
     autoplay?.addEventListener('click', () => {
       paused = !paused;
@@ -972,6 +973,38 @@
     document.addEventListener('reset', () => requestAnimationFrame(() => dropdowns.forEach(sync)));
   }
 
+  function initializeFooter() {
+    const footer = document.querySelector('.site-footer');
+    if (!footer) return;
+    footer.innerHTML = `
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a class="brand brand--footer" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite-official.jpg" alt="Fractobite Realty" width="1240" height="1240"></a>
+      <p class="footer-brand-description">Your trusted real estate advisory partner across Gujarat.</p>
+    </div>
+    <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="locations.html">Locations</a><a href="about.html">About Us</a></div>
+    <div><h2>Our Services</h2><a href="properties.html?type=Buy">Residential Homes</a><a href="properties.html?type=Plot">Plots &amp; Land</a><a href="properties.html?type=Villa">Villas &amp; Luxury Homes</a><a href="about.html#about-services-title">Real Estate Advisory</a></div>
+    <div class="footer-contact"><h2>Get in Touch</h2>
+      <a data-phone data-contact-text href="tel:+919876543210"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 98765 43210</span></a>
+      <a data-email href="mailto:info@fractobiterealty.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>info@fractobiterealty.com</span></a>
+      <p><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> <span>Ahmedabad, Gujarat</span></p>
+    </div>
+    <div><h2>Follow Us</h2><div class="social-links">
+      <a href="https://www.instagram.com/fractobiterealty/" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#icon-instagram"/></svg></a>
+      <button type="button" data-demo="LinkedIn" aria-label="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#icon-linkedin"/></svg></button>
+          <button type="button" data-demo="YouTube" aria-label="YouTube"><svg class="icon" aria-hidden="true"><use href="#icon-youtube"/></svg></button>
+          <button type="button" data-demo="Facebook" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="#icon-facebook"/></svg></button>
+    </div></div>
+  </div>
+  <div class="container footer-skyline" aria-hidden="true">
+    <svg viewBox="0 0 160 36" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M4 34h152M19 34V21h18v13m8 0V12l20-6v28m9 0V3h18v31m9 0V16h17v18m8 0V23h15v11M51 16h8m-8 6h8m-8 6h8m21-18h6m-6 6h6m-6 6h6m-6 6h6m21-5h5m-5 5h5"/>
+    </svg>
+  </div>
+  <div class="container footer-bottom"><p>© 2026 Fractobite Realty. All rights reserved.</p></div>
+    `;
+  }
+
   function initializeDemoLinks() {
     const dialog = document.querySelector('.demo-dialog');
     document.querySelectorAll('[data-demo]').forEach((button) => {
@@ -1048,6 +1081,7 @@
     });
   }
 
+  initializeFooter();
   initializeContactLinks();
   initializeMobileNavigation();
   alignHeroImage();
