@@ -137,12 +137,12 @@ p + p { margin-block-start: var(--text-gap-small); }
 /* 05. HEADER */
 .site-header { position: relative; z-index: 2; background: #faf7f6; }
 .header-inner { width: min(91%, var(--site-max-width)); margin-inline: auto; min-height: clamp(58px, 5.75vw, 83px); display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; }
-.brand { display: flex; align-items: center; justify-content: center; }
+.brand { --brand-aspect: 3.8; display: flex; align-items: center; justify-content: center; }
 .brand img { width: 100%; height: auto; object-fit: contain; }
 :is(.brand--header-art, .brand--footer img) { border-radius: 5px; }
 .brand--header {
   width: clamp(145px, 15.5vw, 218px);
-  aspect-ratio: 3.8;
+  aspect-ratio: var(--brand-aspect);
   position: relative;
 }
 .brand--header-art {
@@ -171,10 +171,12 @@ p + p { margin-block-start: var(--text-gap-small); }
   --hero-content-width: min(88%, 1290px);
   --hero-copy-share: .42;
   --hero-search-share: .96;
-  --hero-search-shift: -.024;
   position: relative;
 }
 .hero-inner { display: grid; width: var(--hero-content-width); grid-template-columns: calc(100% * var(--hero-copy-share)) minmax(0, 1fr); grid-template-areas: 'copy visual' 'search visual'; align-content: center; min-height: clamp(365px, 35.8vw, 515px); padding-block: clamp(24px, 3vw, 44px) clamp(20px, 2vw, 30px); }
+@media (min-width: 768px) {
+  .hero-inner { margin-inline-start: calc((100% - var(--container)) / 2); }
+}
 .hero-copy { grid-area: copy; position: relative; z-index: 1; align-self: end; }
 .hero-eyebrow { color: var(--ink); font-size: clamp(.7rem, 1.15vw, 1rem); margin-bottom: var(--text-gap-medium); }
 .hero-eyebrow span { color: var(--orange-dark); }
@@ -184,11 +186,11 @@ p + p { margin-block-start: var(--text-gap-small); }
 
 /* 07. HERO IMAGE GEOMETRY */
 .hero-visual {
-  /* Use the same capped container, column and panel dimensions as the search. */
-  --hero-search-edge: calc((100% - var(--hero-content-width)) / 2 +
-    var(--hero-content-width) * var(--hero-copy-share) * (var(--hero-search-share) + var(--hero-search-shift)));
+  /* Keep the approved image inset tied to the original centered split. */
+  --hero-visual-start: calc((100% - var(--hero-content-width)) / 2 +
+    var(--hero-content-width) * var(--hero-copy-share) * .936);
   position: absolute;
-  inset: 0 calc((100% - var(--container)) / 2) 0 calc(var(--hero-search-edge) + 22px);
+  inset: 0 calc((100% - var(--container)) / 2) 0 calc(var(--hero-visual-start) + 22px);
 }
 .hero-mask { position: absolute; inset: 0; }
 .hero-image { height: 100%; object-fit: cover; object-position: 57% center; }
@@ -226,7 +228,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 .hero-dots .hero-autoplay[hidden] { display: none; }
 
 /* 08. SEARCH INTERFACE */
-.property-search { grid-area: search; position: relative; z-index: 1; align-self: start; width: calc(100% * var(--hero-search-share)); margin-top: var(--text-gap-section); margin-left: calc(100% * var(--hero-search-shift)); border-radius: 13px; background: #fff; box-shadow: 0 10px 27px #46302118; }
+.property-search { grid-area: search; position: relative; z-index: 1; align-self: start; width: calc(100% * var(--hero-search-share)); margin-top: var(--text-gap-section); border-radius: 13px; background: #fff; box-shadow: 0 10px 27px #46302118; }
 .search-tabs { display: grid; grid-template-columns: repeat(3, 1fr); }
 .search-tabs button { display: flex; align-items: center; justify-content: center; gap: .55em; border: 0; border-radius: 12px 12px 0 0; background: linear-gradient(#fff, #f4f1f0); padding: .88em .15em; font-size: clamp(.65rem, 1.03vw, .88rem); line-height: var(--subheading-line-height); font-weight: 700; }
 .search-tabs .icon { font-size: 1.5em; }
@@ -395,7 +397,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 .brand--footer { width: 75%; padding-top: .65em; }
 .footer-grid .footer-brand-description { display: none; }
 .brand--footer img {
-  aspect-ratio: 650 / 122;
+  aspect-ratio: var(--brand-aspect);
   object-fit: cover;
   object-position: center 49%;
 }
