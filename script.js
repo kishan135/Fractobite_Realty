@@ -72,6 +72,24 @@
     window.addEventListener('pagehide', () => setMenu(false));
   }
 
+  function alignHeroImage() {
+    const eyebrow = document.querySelector('.hero-eyebrow');
+    if (!eyebrow) return;
+
+    const copy = eyebrow.closest('.hero-copy');
+    const hero = copy.closest('.hero');
+    const visual = hero.querySelector('.hero-visual');
+    const align = () => {
+      // Layout offsets exclude the intro animation's temporary transform.
+      visual.style.setProperty('--hero-image-top', `${copy.offsetTop + eyebrow.offsetTop}px`);
+    };
+
+    align();
+    const observer = new ResizeObserver(align);
+    observer.observe(hero);
+    observer.observe(copy);
+  }
+
   function initializeHeroSlider() {
     const image = document.querySelector('.hero-image');
     if (!image) return;
@@ -1032,6 +1050,7 @@
 
   initializeContactLinks();
   initializeMobileNavigation();
+  alignHeroImage();
   initializeHeroSlider();
   initializeCatalogCarousel();
   initializePropertySearch();

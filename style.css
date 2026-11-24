@@ -226,10 +226,10 @@ p + p { margin-block-start: var(--text-gap-small); }
 @media (min-width: 1024px) {
   .hero-visual {
     --hero-bottom-crop: 5.2%;
-    inset-block-start: clamp(14px, 1.25vw, 22px);
+    inset-block-start: var(--hero-image-top, clamp(14px, 1.25vw, 22px));
   }
   #hero-frame-shape {
-    /* Crop the original canvas at 94.8%, keeping the diagonal and both top corners in place. */
+    /* Keep the bottom crop and share this contour between the image and outline. */
     d: path("M .305 0 H .977 Q 1 0 1 .035 V .913 Q 1 .948 .977 .948 H .040 C .014 .948 -.0035 .9008 .0105 .8536 L .248 .054 C .260 .014 .282 0 .305 0 Z");
   }
 }
