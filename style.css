@@ -195,9 +195,10 @@ p + p { margin-block-start: var(--text-gap-small); }
 .hero-copy { grid-area: copy; position: relative; z-index: 1; align-self: end; }
 .hero-eyebrow { color: var(--ink); font-size: clamp(.7rem, 1.15vw, 1rem); margin-bottom: var(--text-gap-medium); }
 .hero-eyebrow span { color: var(--brand-orange); }
-.hero h1 { font-size: clamp(2.45rem, 4.2vw, 3.78rem); line-height: var(--hero-line-height); font-weight: 700; letter-spacing: -.052em; color: #282525; }
+.hero-heading { font-size: clamp(2.45rem, 4.2vw, 3.78rem); line-height: var(--hero-line-height); font-weight: 700; letter-spacing: -.052em; }
+.hero h1 { color: #282525; }
 .hero h1 span { color: var(--brand-orange); }
-.hero-copy > p:last-child { margin-top: var(--text-gap-medium); font-size: clamp(.72rem, 1.24vw, 1.07rem); }
+.hero-description { margin-top: var(--text-gap-medium); font-size: clamp(.72rem, 1.24vw, 1.07rem); }
 
 /* 07. HERO IMAGE GEOMETRY */
 .hero-visual {
@@ -653,11 +654,8 @@ p + p { margin-block-start: var(--text-gap-small); }
   .hero-copy { margin-inline: 4.5%; }
   .hero-eyebrow { font-size: clamp(.64rem, 2.8vw, .92rem); margin-bottom: clamp(10px, 2.6vw, 18px); }
   .hero-eyebrow span { color: var(--brand-orange); }
-  .hero h1 {
-    font-size: clamp(2rem, 9.1vw, 3.4rem);
-    letter-spacing: -.04em;
-    color: var(--ink);
-  }
+  .hero-heading { font-size: clamp(2rem, 9.1vw, 3.4rem); letter-spacing: -.04em; }
+  .hero h1 { color: var(--ink); }
 
   .hero h1::after {
     content: '';
@@ -669,7 +667,7 @@ p + p { margin-block-start: var(--text-gap-small); }
     background: var(--brand-orange);
   }
 
-  .hero-copy > p:last-child {
+  .hero-description {
     margin-top: clamp(8px, 2.5vw, 15px);
     font-size: clamp(.75rem, 3.25vw, .97rem);
     line-height: var(--body-line-height);
@@ -728,7 +726,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 .page-intro { margin-bottom: clamp(20px, 3vw, 42px); }
 .page-intro h1 { max-width: 23ch; font-size: clamp(2rem, 5vw, 3.8rem); letter-spacing: -.05em; }
 .page-intro p { max-width: 69ch; margin-top: var(--text-gap-medium); }
-.inner-page h2 { font-size: clamp(1.25rem, 2.5vw, 1.85rem); }
+.inner-page h2:not(.contact-cta h2) { font-size: clamp(1.25rem, 2.5vw, 1.85rem); }
 .filter-panel, .page-panel, .directory-card, .disclosure-list > details { border: 1px solid #e9ddd5; border-radius: 18px; background: #fffdfa; }
 .filter-panel { display: flex; flex-wrap: wrap; align-items: end; gap: var(--form-gap); padding: 1rem; margin-bottom: var(--text-gap-medium); }
 .filter-panel label { flex: 1 1 160px; }
@@ -906,24 +904,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 .offer-card .circle { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; color: var(--brand-orange); font-size: .8rem; }
 .offer-card a:hover .circle, .offer-card a:focus-visible .circle { color: #fff; background: var(--brand-orange); }
 
-.catalog-cta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--text-gap-medium);
-  margin-block: var(--section-gap) var(--text-gap-medium);
-  padding: clamp(14px, 2vw, 25px) clamp(16px, 3vw, 42px);
-  border-radius: 19px;
-  color: #fff;
-  background: linear-gradient(90deg, #a83200 0%, #bc3c04ed 45%, #97330091 100%),
-    url('assets/properties/residential-hero.webp') right 67% / cover;
-}
-.catalog-cta h2 { font-size: clamp(1.3rem, 2.25vw, 1.95rem); line-height: var(--heading-line-height); }
-.catalog-cta p { margin-top: var(--text-gap-small); font-size: clamp(.8rem, 1.2vw, 1rem); }
-.catalog-cta .button .icon { color: inherit; }
-.catalog-cta .button { flex: none; background: #fff; color: var(--brand-orange); }
-.catalog-cta .button:hover { background: #ffefe6; }
-
 .property-slider, .property-slider-viewport { display: contents; }
 
 @media (width > 768px) {
@@ -1045,9 +1025,6 @@ p + p { margin-block-start: var(--text-gap-small); }
     background: #c6bcb6;
   }
   .property-slider-dots button[aria-pressed="true"]::after { width: 16px; background: var(--brand-orange); }
-}
-@media (max-width: 639px) {
-  .catalog-cta { align-items: flex-start; flex-direction: column; }
 }
 
 /* Locations page */
@@ -1338,12 +1315,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 .insight-card summary::-webkit-details-marker { display: none; }
 .insight-card summary::marker { content: ''; }
 .insight-card details[open] summary .icon { transform: rotate(90deg); }
-
-.insights-cta {
-  background: linear-gradient(90deg, #bb3d05 0%, #d75012ed 48%, #9f332789 100%),
-    url('assets/properties/residential-hero.webp') right 67% / cover;
-}
-.insights-cta .button { border-radius: 99px; }
 
 @media (max-width: 850px) {
   .insight-grid { grid-template-columns: minmax(0, 1fr); }

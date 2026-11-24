@@ -5,12 +5,12 @@
   padding-bottom: var(--section-gap);
 }
 .dholera-page :is(#overview, #opportunities, #official-resources) { scroll-margin-top: var(--text-gap-section); }
-.dholera-page h2, .dholera-hero h1, .dholera-hero .dholera-tagline {
+.dholera-page h2:not(.contact-cta h2) {
   font-family: Georgia, "Times New Roman", serif;
   letter-spacing: -.04em;
 }
-.dholera-page h2 { font-size: clamp(1.7rem, 2.85vw, 2.65rem); line-height: 1.08; }
-.dholera-page h2::after {
+.dholera-page h2:not(.contact-cta h2) { font-size: clamp(1.7rem, 2.85vw, 2.65rem); line-height: 1.08; }
+.dholera-page h2:not(.contact-cta h2)::after {
   content: "";
   display: block;
   width: 44px;
@@ -28,23 +28,16 @@
   gap: clamp(12px, 1.75vw, 24px);
 }
 .dholera-hero > div { align-self: center; padding-block: clamp(18px, 2.5vw, 38px); }
-.dholera-hero h1 { font-size: clamp(2.7rem, 5.8vw, 5.55rem); line-height: 1; }
-.dholera-hero .eyebrow { margin-bottom: var(--text-gap-small); }
-.dholera-hero .dholera-tagline {
-  color: var(--brand-orange);
-  font-size: clamp(2rem, 4.2vw, 4rem);
-  font-weight: 700;
-  font-style: italic;
-  line-height: .99;
-  margin-bottom: var(--text-gap-medium);
-}
-.dholera-hero p:last-of-type { max-width: 36ch; }
+.dholera-tagline { color: var(--brand-orange); }
+.dholera-hero .hero-description { max-width: 36ch; }
 .dholera-actions { display: flex; flex-wrap: wrap; gap: var(--text-gap-small); margin-top: var(--text-gap-medium); }
-.dholera-page .button { min-height: 44px; white-space: normal; }
+.dholera-actions .button, .dholera-opportunity .button { min-height: 44px; white-space: normal; }
 .dholera-hero-photo {
   position: relative;
   isolation: isolate;
-  min-height: clamp(285px, 31vw, 470px);
+  /* Keep the image near its approved desktop height when the heading wraps. */
+  block-size: clamp(400px, 32vw, 475px);
+  align-self: start;
   margin: 0;
   display: grid;
 }
@@ -173,20 +166,15 @@
 .dholera-opportunity { display: flex; flex-direction: column; gap: var(--text-gap-small); min-width: 0; }
 .dholera-opportunity :is(.dholera-card, .offer-card) { flex: 1; }
 
-.dholera-visit {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.8fr) auto;
-  align-items: center;
-  gap: var(--text-gap-medium);
-  margin-top: var(--dholera-section-gap);
-  padding: var(--text-gap-large);
-  border-radius: 16px;
-  background: #b93708;
-  color: #fff;
+:is([aria-labelledby="developments-title"], #official-resources) .dholera-card-body {
+  padding-block: 10px;
 }
-.dholera-visit h2 { display: flex; align-items: center; gap: 12px; font-size: clamp(1.45rem, 2.35vw, 2.2rem); }
-.dholera-visit h2::after { content: none; }
-.dholera-visit .button { background: #fff5eb; color: var(--ink); }
+.dholera-opportunity .dholera-card-body {
+  align-items: center;
+  gap: 16px;
+  padding-block: 18px;
+  text-align: center;
+}
 
 @media (max-width: 1024px) {
   .dholera-updates-heading { grid-template-columns: 1fr; gap: 8px; }
@@ -195,9 +183,9 @@
   .dholera-facts dl > div:nth-child(3) { border: 0; padding-left: 0; }
 }
 @media (max-width: 768px) {
-  .dholera-hero, .dholera-trends, .dholera-overview, .dholera-rail, .dholera-visit { grid-template-columns: minmax(0, 1fr); }
+  .dholera-hero, .dholera-trends, .dholera-overview, .dholera-rail { grid-template-columns: minmax(0, 1fr); }
   .dholera-hero > div { padding-bottom: 0; }
-  .dholera-hero-photo { min-height: 0; aspect-ratio: 1.9; }
+  .dholera-hero-photo { block-size: auto; aspect-ratio: 1.9; }
   .dholera-hero-photo img { width: 100%; border-radius: 18px; }
   .dholera-hero-photo::before { content: none; }
   .dholera-grid--two, .dholera-grid--three, .dholera-grid:not(.dholera-facts dl) { grid-template-columns: minmax(0, 1fr); }
@@ -205,7 +193,6 @@
   .dholera-facts .icon { grid-row: auto; margin-bottom: 6px; }
   .dholera-overview > p { border: 0; padding: 0; }
   .dholera-overview img { border-radius: 14px; }
-  .dholera-visit .button { justify-self: start; }
 }
 @media (max-width: 420px) {
   .dholera-updates .dholera-card { grid-template-columns: minmax(0, 1fr); }
