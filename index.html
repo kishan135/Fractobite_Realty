@@ -9,7 +9,7 @@
   <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=dholera-navigation">
+  <link rel="stylesheet" href="style.css?v=desktop-hero-diagonal">
   <script defer src="script.js?v=dholera-navigation"></script>
 </head>
 <body>
@@ -64,6 +64,16 @@
       </div>
       <div class="hero-visual">
         <img class="hero-image" src="assets/hero/villa-1.webp" alt="Contemporary villa with a reflecting pool at dusk" fetchpriority="high">
+        <svg class="hero-outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <defs>
+            <path id="hero-frame-shape" vector-effect="non-scaling-stroke"
+              d="M .305 0 H .977 Q 1 0 1 .03692 V .96308 Q 1 1 .977 1 H .040 C .014 1 -.0035 .95021 .0105 .90042 L .248 .05696 C .260 .01477 .282 0 .305 0 Z"/>
+            <clipPath id="hero-frame-clip" clipPathUnits="objectBoundingBox">
+              <use href="#hero-frame-shape"/>
+            </clipPath>
+          </defs>
+          <use href="#hero-frame-shape"/>
+        </svg>
         <div class="hero-dots" role="group" aria-label="Villa photos">
           <button type="button" aria-label="Villa photo 1" aria-pressed="true"></button>
           <button type="button" aria-label="Villa photo 2" aria-pressed="false"></button>

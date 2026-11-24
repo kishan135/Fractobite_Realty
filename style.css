@@ -208,7 +208,26 @@ p + p { margin-block-start: var(--text-gap-small); }
 }
 .hero-image { position: absolute; inset: 0; height: 100%; object-fit: cover; object-position: center; }
 .hero-image--outgoing { position: absolute; inset: 0; pointer-events: none; }
+.hero-outline { display: none; }
 .hero-dots { position: absolute; right: 7%; bottom: 4%; display: flex; align-items: center; gap: 4px; }
+@media (min-width: 1024px) {
+  .hero-visual { border-radius: 0; clip-path: url(#hero-frame-clip); }
+  .hero-image { object-position: 57% center; }
+  .hero-outline {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: var(--brand-orange);
+    /* The shared clip retains the inner half of the stroke. */
+    stroke-width: 3.5px;
+    pointer-events: none;
+  }
+  .hero-dots { z-index: 2; }
+}
 .hero-dots button { display: grid; place-items: center; width: 16px; min-height: 22px; padding: 0; background: transparent; border: 0; }
 .hero-dots button::after { content: ''; width: 100%; height: 3px; border-radius: 3px; background: #fff; }
 .hero-dots button[aria-pressed="true"]::after { background: var(--brand-orange); }
