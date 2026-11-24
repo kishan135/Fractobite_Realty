@@ -996,11 +996,6 @@
           <button type="button" data-demo="Facebook" aria-label="Facebook"><svg class="icon" aria-hidden="true"><use href="#icon-facebook"/></svg></button>
     </div></div>
   </div>
-  <div class="container footer-skyline" aria-hidden="true">
-    <svg viewBox="0 0 160 36" fill="none" stroke="currentColor" stroke-width="1.2">
-      <path d="M4 34h152M19 34V21h18v13m8 0V12l20-6v28m9 0V3h18v31m9 0V16h17v18m8 0V23h15v11M51 16h8m-8 6h8m-8 6h8m21-18h6m-6 6h6m-6 6h6m-6 6h6m21-5h5m-5 5h5"/>
-    </svg>
-  </div>
   <div class="container footer-bottom"><p>© 2026 Fractobite Realty. All rights reserved.</p></div>
     `;
   }
