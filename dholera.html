@@ -9,8 +9,8 @@
   <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=shared-hero-cta">
-  <link rel="stylesheet" href="dholera.css?v=compact-cards">
+  <link rel="stylesheet" href="style.css?v=shared-hero-frame">
+  <link rel="stylesheet" href="dholera.css?v=compact-info-frame">
   <script defer src="project-data.js"></script>
   <script defer src="script.js?v=dholera-navigation"></script>
   <script defer src="dholera-price-data.js"></script>
@@ -70,8 +70,18 @@
         <a class="button button--outline" href="#overview">Explore Dholera</a>
       </div>
     </div>
-    <figure class="dholera-hero-photo">
+    <figure class="dholera-hero-photo hero-media">
       <img src="assets/locations/dholera-industrial-concept.webp" alt="Concept illustration of tree-lined roads and industrial buildings in a planned district" width="1600" height="681" fetchpriority="high">
+      <svg class="hero-outline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <path id="hero-frame-shape" vector-effect="non-scaling-stroke"
+            d="M .305 0 H .977 Q 1 0 1 .03692 V .96308 Q 1 1 .977 1 H .040 C .014 1 -.0035 .95021 .0105 .90042 L .248 .05696 C .260 .01477 .282 0 .305 0 Z"/>
+          <clipPath id="hero-frame-clip" clipPathUnits="objectBoundingBox">
+            <use href="#hero-frame-shape"/>
+          </clipPath>
+        </defs>
+        <use href="#hero-frame-shape"/>
+      </svg>
       <figcaption>AI-generated industrial district concept</figcaption>
     </figure>
   </section>
@@ -139,29 +149,29 @@
     </figure>
   </section>
 
-  <section class="container dholera-section dholera-overview" id="overview" aria-labelledby="overview-title">
+  <section class="container dholera-section dholera-info dholera-overview" id="overview" aria-labelledby="overview-title">
     <h2 id="overview-title">What Is Dholera SIR?</h2>
     <p>Dholera SIR is a planned Special Investment Region in Gujarat. It brings industrial and urban development into a regional planning framework. For any parcel, check current zoning, permitted use, title, and confirmed access before deciding whether it suits your plans.</p>
     <figure><img src="assets/locations/dholera-planning.webp" alt="Illustrative aerial view of roads and parcels in a planned region" width="800" height="450" loading="lazy"><figcaption>Illustrative planning imagery</figcaption></figure>
   </section>
 
-  <section class="container dholera-section dholera-rail" aria-labelledby="why-title">
+  <section class="container dholera-section dholera-info dholera-rail" aria-labelledby="why-title">
     <header class="dholera-section-heading"><h2 id="why-title">Why Explore Dholera?</h2></header>
     <div class="dholera-grid">
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg><h3>Growth Potential</h3><p>Compare current demand, transaction evidence, and the development timeline before assessing an opportunity.</p></article>
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><h3>Industrial Development</h3><p>Track announced projects and check which facilities are operating before relying on them in a decision.</p></article>
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><h3>Infrastructure Connectivity</h3><p>Check usable road access, utility availability, and the distance to services for the specific site.</p></article>
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><h3>Long-Term Planning</h3><p>Review zoning, approvals, and delivery phases against your intended use and holding period.</p></article>
+      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg><h3>Growth Potential</h3></article>
+      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><h3>Industrial Development</h3></article>
+      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><h3>Infrastructure Connectivity</h3></article>
+      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><h3>Long-Term Planning</h3></article>
     </div>
   </section>
 
-  <section class="container dholera-section dholera-rail" aria-labelledby="developments-title">
-    <header class="dholera-section-heading"><h2 id="developments-title">Key Developments at Dholera</h2><p>Current milestones are pending verification. The images illustrate the topics.</p></header>
+  <section class="container dholera-section dholera-info dholera-rail" aria-labelledby="developments-title">
+    <header class="dholera-section-heading"><h2 id="developments-title">Key Developments at Dholera</h2></header>
     <div class="dholera-grid">
-      <article class="dholera-card"><img src="assets/locations/growth-corridors.webp" alt="Illustrative developed landscape" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Airport Development</h3><a class="text-link" href="https://www.aai.aero/" target="_blank" rel="noopener noreferrer">Airports Authority of India ↗</a></div></article>
-      <article class="dholera-card"><img src="assets/locations/dholera-planning.webp" alt="Illustrative multi-lane road corridor" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Ahmedabad–Dholera Expressway</h3><a class="text-link" href="https://nhai.gov.in/" target="_blank" rel="noopener noreferrer">National Highways Authority of India ↗</a></div></article>
-      <article class="dholera-card"><img src="assets/about/skyline-1.webp" alt="Illustrative modern commercial buildings" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Semiconductor Initiatives</h3><a class="text-link" href="https://www.pib.gov.in/" target="_blank" rel="noopener noreferrer">Press Information Bureau ↗</a></div></article>
-      <article class="dholera-card"><img src="assets/projects/boulevard.webp" alt="Illustrative landscaped road" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Smart-City Infrastructure</h3><a class="text-link" href="https://www.nicdc.in/" target="_blank" rel="noopener noreferrer">National Industrial Corridor Development Corporation ↗</a></div></article>
+      <article class="dholera-card"><img src="assets/locations/growth-corridors.webp" alt="Illustrative developed landscape" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Airport Development</h3></div></article>
+      <article class="dholera-card"><img src="assets/locations/dholera-planning.webp" alt="Illustrative multi-lane road corridor" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Ahmedabad–Dholera Expressway</h3></div></article>
+      <article class="dholera-card"><img src="assets/about/skyline-1.webp" alt="Illustrative modern commercial buildings" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Semiconductor Initiatives</h3></div></article>
+      <article class="dholera-card"><img src="assets/projects/boulevard.webp" alt="Illustrative landscaped road" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Smart-City Infrastructure</h3></div></article>
     </div>
   </section>
 

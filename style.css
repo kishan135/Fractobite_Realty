@@ -181,13 +181,16 @@ p + p { margin-block-start: var(--text-gap-small); }
 .menu-button { display: none; align-self: center; }
 
 /* 06. HERO */
-.hero { --hero-copy-width: min(36.96vw, 541.8px); }
+.hero, .dholera-hero {
+  --hero-copy-width: min(36.96vw, 541.8px);
+  /* Account for the homepage search panel's 96% width when setting clearance. */
+  --hero-column-gap: calc(clamp(32px, 3vw, 40px) - var(--hero-copy-width) * .04);
+}
 .hero-inner {
   display: grid;
   grid-template-columns: var(--hero-copy-width) minmax(0, 1fr);
   grid-template-areas: 'copy visual' 'search visual';
-  /* Account for the search panel's 96% width when setting its clearance. */
-  column-gap: calc(clamp(32px, 3vw, 40px) - var(--hero-copy-width) * .04);
+  column-gap: var(--hero-column-gap);
   align-content: center;
   min-height: clamp(365px, 35.8vw, 515px);
   padding-block: clamp(24px, 3vw, 44px) clamp(20px, 2vw, 30px);
@@ -201,8 +204,8 @@ p + p { margin-block-start: var(--text-gap-small); }
 .hero-description { margin-top: var(--text-gap-medium); font-size: clamp(.72rem, 1.24vw, 1.07rem); }
 
 /* 07. HERO IMAGE GEOMETRY */
-.hero-visual {
-  grid-area: visual;
+.hero-visual { grid-area: visual; }
+.hero-media {
   position: relative;
   overflow: hidden;
   border-radius: 18px;
@@ -212,7 +215,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 .hero-outline { display: none; }
 .hero-dots { position: absolute; right: 7%; bottom: 4%; display: flex; align-items: center; gap: 4px; }
 @media (min-width: 1024px) {
-  .hero-visual { border-radius: 0; clip-path: url(#hero-frame-clip); }
+  .hero-media { border-radius: 0; clip-path: url(#hero-frame-clip); }
   .hero-image { object-position: 57% center; }
   .hero-outline {
     position: absolute;
@@ -673,7 +676,7 @@ p + p { margin-block-start: var(--text-gap-small); }
     line-height: var(--body-line-height);
   }
 
-  .hero-visual { aspect-ratio: 2 / 1; border-radius: 16px; }
+  .hero-media { aspect-ratio: 2 / 1; border-radius: 16px; }
 
   .hero-dots { right: 4%; bottom: 4%; gap: 5px; }
   .hero-dots button { width: clamp(15px, 4.6vw, 24px); min-height: 24px; }
