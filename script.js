@@ -72,24 +72,6 @@
     window.addEventListener('pagehide', () => setMenu(false));
   }
 
-  function alignHeroImage() {
-    const eyebrow = document.querySelector('.hero-eyebrow');
-    if (!eyebrow) return;
-
-    const copy = eyebrow.closest('.hero-copy');
-    const hero = copy.closest('.hero');
-    const visual = hero.querySelector('.hero-visual');
-    const align = () => {
-      // Layout offsets exclude the intro animation's temporary transform.
-      visual.style.setProperty('--hero-image-top', `${copy.offsetTop + eyebrow.offsetTop}px`);
-    };
-
-    align();
-    const observer = new ResizeObserver(align);
-    observer.observe(hero);
-    observer.observe(copy);
-  }
-
   function initializeHeroSlider() {
     const image = document.querySelector('.hero-image');
     if (!image) return;
@@ -172,7 +154,7 @@
     const carousel = document.querySelector('.catalog-hero, .project-carousel');
     if (!carousel) return;
 
-    const interval = carousel.classList.contains('catalog-hero') ? 2500 : 5000;
+    const interval = carousel.classList.contains('catalog-hero') ? 2500 : 2000;
     const photos = [...carousel.querySelectorAll('.catalog-slide')];
     if (photos.length < 2) return;
     const indicators = [...carousel.querySelectorAll('[data-slide]')];
@@ -256,8 +238,6 @@
       });
     });
 
-    carousel.querySelector('.catalog-prev')?.addEventListener('click', () => show(nextIndex(target, -1)));
-    carousel.querySelector('.catalog-next')?.addEventListener('click', () => show(nextIndex(target)));
     indicators.forEach((button, index) => button.addEventListener('click', () => show(index)));
     autoplay?.addEventListener('click', () => {
       paused = !paused;
@@ -366,6 +346,27 @@
       photo.remove();
     }
     return card;
+  }
+
+  function initializeDholeraListings() {
+    const template = document.querySelector('#dholera-project-card');
+    if (!template) return;
+
+    const listings = Object.entries(propertyProjects).filter(([, project]) =>
+      project.name && !project.isDemo && /^Dholera(?: SIR)?(?:,|$)/i.test(project.location ?? ''));
+    const propertyTypes = {
+      residential: /^residential plots?$/i,
+      industrial: /^industrial (?:land|plots?)$/i,
+      villa: /^villa plots?$/i,
+    };
+    document.querySelectorAll('[data-dholera-type]').forEach((section) => {
+      const type = propertyTypes[section.dataset.dholeraType];
+      const matches = listings.filter(([, project]) => type.test(project.propertyType ?? ''));
+      if (!matches.length) return;
+
+      const heading = section.querySelector('h3');
+      section.replaceChildren(heading, ...matches.map(([id, project]) => catalogCard(template, id, project)));
+    });
   }
 
   function initializeCatalog() {
@@ -696,6 +697,9 @@
     if (!projectName) {
       selectFromUrl(form.elements.type, 'type');
       selectFromUrl(form.elements.location, 'location');
+      if (form.elements.location.value === 'Dholera' && params.get('intent') === 'site-visit') {
+        form.elements.requirements.value = 'I would like to request a Dholera site visit.';
+      }
     }
     const project = params.get('project');
     if (project && Object.values(propertyProjects).some((record) =>
@@ -1079,12 +1083,12 @@
   initializeFooter();
   initializeContactLinks();
   initializeMobileNavigation();
-  alignHeroImage();
   initializeHeroSlider();
   initializeCatalogCarousel();
   initializePropertySearch();
   initializeCategoryCarousel();
   initializeCatalog();
+  initializeDholeraListings();
   initializeMobilePropertySliders();
   initializeLocations();
   initializeInsights();

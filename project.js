@@ -121,6 +121,12 @@
       dot.setAttribute('aria-pressed', String(index === 0));
       dots.append(dot);
     });
+    if (heroImages.length > 1) {
+      const autoplay = element('button', 'catalog-autoplay', 'Ⅱ');
+      autoplay.type = 'button';
+      autoplay.setAttribute('aria-label', 'Pause automatic project photos');
+      dots.append(autoplay);
+    }
     const caption = find('#project-hero-caption');
     caption.textContent = heroImages.length ? 'Illustrative imagery' : 'Project photos coming soon';
     caption.hidden = heroImages.length > 0 && !heroImages.some((image) => image.illustrative);
@@ -255,7 +261,7 @@
         || (otherDemo ? `Sample locality · ${otherDemo.location}` : pendingLocation)));
       const type = element('p', '', (other.isDemo ? undefined : other.propertyType)
         || (otherDemo ? `Sample · ${otherDemo.propertyType}` : 'Property type to be confirmed'));
-      const link = element('a', 'text-link', 'View Project ');
+      const link = element('a', 'button project-related-action', 'View Project ');
       link.href = projectDetailUrl(id);
       link.setAttribute('aria-label', `View Project: ${other.name}`);
       link.append(icon('arrow'));

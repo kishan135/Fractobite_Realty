@@ -1,0 +1,82 @@
+.dholera-page { padding-block: var(--text-gap-section) var(--section-gap); }
+.dholera-page :is(#overview, #opportunities) { scroll-margin-top: var(--text-gap-section); }
+.dholera-hero, .dholera-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: center;
+  gap: var(--section-gap);
+}
+.dholera-hero h1 { font-size: clamp(2.6rem, 7vw, 6rem); line-height: 1.1; letter-spacing: -.055em; }
+.dholera-hero .eyebrow, .dholera-tagline { margin-bottom: var(--text-gap-small); }
+.dholera-hero .dholera-tagline { color: var(--brand-orange); font-size: clamp(1.3rem, 3vw, 2.55rem); font-weight: 700; line-height: 1.2; }
+.dholera-hero p:last-of-type { max-width: 46ch; }
+.dholera-actions { display: flex; flex-wrap: wrap; gap: var(--text-gap-small); margin-top: var(--text-gap-large); }
+.dholera-page .button { min-height: 44px; white-space: normal; }
+.dholera-hero-photo, .dholera-overview figure { position: relative; margin: 0; }
+.dholera-hero-photo img, .dholera-overview img { height: auto; object-fit: cover; }
+.dholera-hero-photo img { aspect-ratio: 1.5; border-radius: 36px 18px 36px 18px; }
+.dholera-overview img { aspect-ratio: 1.8; border-radius: 18px; }
+.dholera-page figure:has(> img) figcaption { margin-top: var(--text-gap-tight); font-size: .75rem; }
+
+.dholera-section { margin-top: var(--section-gap); }
+.dholera-section-heading { margin-bottom: var(--text-gap-large); }
+.dholera-section-heading p, .dholera-overview h2 + p { margin-top: var(--text-gap-medium); max-width: 66ch; }
+.dholera-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--text-gap-medium);
+}
+.dholera-grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.dholera-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dholera-card, .dholera-facts, .dholera-chart {
+  border: 1px solid #fae6d9;
+  border-radius: 18px;
+  background: #fff0e6;
+}
+.dholera-card { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+.dholera-card > img { height: auto; aspect-ratio: 2.2; object-fit: cover; }
+.dholera-card-body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: var(--text-gap-small); padding: var(--text-gap-large); }
+.dholera-card-body > .icon, .dholera-facts .icon { color: var(--brand-orange); font-size: 1.65rem; }
+.dholera-card-body :is(.button, .text-link) { margin-top: auto; }
+.dholera-card-body .text-link { padding-block: var(--text-gap-small); }
+.dholera-facts, .dholera-chart { padding: var(--text-gap-large); }
+.dholera-facts dl { margin-top: var(--text-gap-large); }
+.dholera-facts dt { margin-top: var(--text-gap-tight); font-weight: 700; }
+.dholera-facts dd, .dholera-note { font-size: .875rem; }
+.dholera-overview h2 { padding-bottom: var(--text-gap-small); border-bottom: 2px solid var(--brand-orange); }
+
+.dholera-chart { margin: 0; }
+.dholera-bars {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(6px, 2vw, 24px);
+  list-style: none;
+  padding: 0;
+  margin-block: var(--text-gap-large);
+  text-align: center;
+}
+.dholera-bars li { display: grid; grid-template-rows: clamp(125px, 16vw, 220px) auto; justify-items: center; align-items: end; gap: var(--text-gap-tight); font-size: .8rem; }
+.dholera-bar {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  padding-top: 6px;
+  width: min(100%, 110px);
+  height: calc(var(--bar) / 180 * 100%);
+  border-radius: 6px 6px 0 0;
+  background: var(--ink);
+  color: #fff;
+  font-weight: 600;
+}
+.dholera-bars li:last-child .dholera-bar { background: var(--brand-orange); color: var(--ink); }
+.dholera-opportunity { display: flex; flex-direction: column; gap: var(--text-gap-small); min-width: 0; }
+.dholera-opportunity > h3 { margin-top: var(--text-gap-small); }
+.dholera-opportunity .offer-card { flex: 1; }
+
+@media (max-width: 1024px) {
+  .dholera-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 768px) {
+  .dholera-hero, .dholera-overview { grid-template-columns: minmax(0, 1fr); gap: var(--text-gap-large); }
+  .dholera-grid--two, .dholera-grid--three, .dholera-grid:not(.dholera-facts dl) { grid-template-columns: minmax(0, 1fr); }
+}
