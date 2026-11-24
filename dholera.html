@@ -10,7 +10,7 @@
   <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css?v=dholera-navigation">
-  <link rel="stylesheet" href="dholera.css">
+  <link rel="stylesheet" href="dholera.css?v=editorial-layout">
   <script defer src="project-data.js"></script>
   <script defer src="script.js?v=dholera-navigation"></script>
 </head>
@@ -69,15 +69,16 @@
       </div>
     </div>
     <figure class="dholera-hero-photo">
-      <img src="assets/locations/dholera-planning.webp" alt="Illustrative aerial view of a broad road crossing a planned development area" width="1200" height="800" fetchpriority="high">
-      <figcaption>Illustrative infrastructure imagery</figcaption>
+      <img src="assets/locations/dholera-industrial-concept.webp" alt="Concept illustration of tree-lined roads and industrial buildings in a planned district" width="1600" height="681" fetchpriority="high">
+      <figcaption>AI-generated industrial district concept</figcaption>
     </figure>
   </section>
 
-  <section class="container dholera-section" aria-labelledby="updates-title">
-    <header class="dholera-section-heading">
+  <section class="container dholera-section dholera-updates" aria-labelledby="updates-title">
+    <header class="dholera-section-heading dholera-updates-heading">
       <h2 id="updates-title">Government Vision &amp; Updates</h2>
       <p>Explore government announcements and infrastructure initiatives shaping the development of Dholera SIR.</p>
+      <a class="text-link" href="#official-resources">View Official Resources <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
     </header>
     <div class="dholera-grid dholera-grid--two">
       <article class="dholera-card">
@@ -102,7 +103,7 @@
   </section>
 
   <section class="container dholera-section dholera-facts" aria-labelledby="facts-title">
-    <h2 id="facts-title">Dholera at a Glance</h2>
+    <h2 class="dholera-visually-hidden" id="facts-title">Dholera at a Glance</h2>
     <dl class="dholera-grid">
       <div><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><dt>Region</dt><dd>Dholera, Gujarat</dd></div>
       <div><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><dt>Designation</dt><dd>Special Investment Region</dd></div>
@@ -111,13 +112,17 @@
     </dl>
   </section>
 
-  <section class="container dholera-section" aria-labelledby="trends-title">
+  <section class="container dholera-section dholera-trends" aria-labelledby="trends-title">
     <header class="dholera-section-heading">
-      <h2 id="trends-title">Dholera Land Price Trends</h2>
+      <p class="eyebrow">The Investment Case</p>
+      <h2 id="trends-title">Dholera Land Price <em>Trends</em></h2>
       <p>Infrastructure plans can influence interest in a location. Compare evidence for individual parcels and distinguish asking prices from completed transactions.</p>
     </header>
     <figure class="dholera-chart">
-      <figcaption><strong>Demonstration chart · Sample index only</strong><p>These illustrative values are neither historical prices nor a forecast. The sample starts at 100 in 2021.</p></figcaption>
+      <figcaption>
+        <strong>Demonstration chart · Sample index only</strong>
+        <p>Illustrative values only. They do not represent historical prices or a forecast. The sample starts at 100 in 2021.</p>
+      </figcaption>
       <ol class="dholera-bars" aria-label="Illustrative index values by year">
         <li style="--bar: 100"><span class="dholera-bar"><span>100</span></span><span>2021</span></li>
         <li style="--bar: 115"><span class="dholera-bar"><span>115</span></span><span>2022</span></li>
@@ -130,15 +135,12 @@
   </section>
 
   <section class="container dholera-section dholera-overview" id="overview" aria-labelledby="overview-title">
-    <div>
-      <p class="eyebrow">The Region</p>
-      <h2 id="overview-title">What Is Dholera SIR?</h2>
-      <p>Dholera SIR is a planned Special Investment Region in Gujarat. It brings industrial and urban development into a regional planning framework. For any parcel, check current zoning, permitted use, title, and confirmed access before deciding whether it suits your plans.</p>
-    </div>
+    <h2 id="overview-title">What Is Dholera SIR?</h2>
+    <p>Dholera SIR is a planned Special Investment Region in Gujarat. It brings industrial and urban development into a regional planning framework. For any parcel, check current zoning, permitted use, title, and confirmed access before deciding whether it suits your plans.</p>
     <figure><img src="assets/locations/dholera-planning.webp" alt="Illustrative aerial view of roads and parcels in a planned region" width="800" height="450" loading="lazy"><figcaption>Illustrative planning imagery</figcaption></figure>
   </section>
 
-  <section class="container dholera-section" aria-labelledby="why-title">
+  <section class="container dholera-section dholera-rail" aria-labelledby="why-title">
     <header class="dholera-section-heading"><h2 id="why-title">Why Explore Dholera?</h2></header>
     <div class="dholera-grid">
       <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg><h3>Growth Potential</h3><p>Compare current demand, transaction evidence, and the development timeline before assessing an opportunity.</p></article>
@@ -148,7 +150,7 @@
     </div>
   </section>
 
-  <section class="container dholera-section" aria-labelledby="developments-title">
+  <section class="container dholera-section dholera-rail" aria-labelledby="developments-title">
     <header class="dholera-section-heading"><h2 id="developments-title">Key Developments at Dholera</h2><p>Current milestones are pending verification. The images illustrate the topics.</p></header>
     <div class="dholera-grid">
       <article class="dholera-card"><img src="assets/locations/growth-corridors.webp" alt="Illustrative developed landscape" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Airport Development</h3><p>Check airport authority notices for construction and commissioning updates.</p><a class="text-link" href="https://www.aai.aero/" target="_blank" rel="noopener noreferrer">Airports Authority of India ↗</a></div></article>
@@ -158,7 +160,7 @@
     </div>
   </section>
 
-  <section class="container dholera-section" aria-labelledby="resources-title">
+  <section class="container dholera-section dholera-rail" id="official-resources" aria-labelledby="resources-title">
     <header class="dholera-section-heading"><h2 id="resources-title">Official Resources</h2></header>
     <div class="dholera-grid dholera-grid--three">
       <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><h3>Industrial Corridors</h3><p>National industrial corridor plans and project information.</p><a class="text-link" href="https://www.nicdc.in/" target="_blank" rel="noopener noreferrer">Visit NICDC ↗</a></article>
@@ -170,9 +172,9 @@
   <section class="container dholera-section" id="opportunities" aria-labelledby="opportunities-title">
     <header class="dholera-section-heading"><h2 id="opportunities-title">Explore Investment Opportunities</h2><p>Ask our team to confirm current listings, permitted land use, and availability.</p></header>
     <div class="dholera-grid dholera-grid--three" id="dholera-listings">
-      <section class="dholera-opportunity" data-dholera-type="residential"><div class="dholera-card dholera-card-body"><h3>Residential Plots</h3><p>Request verified plot options and permitted residential uses.</p><a class="button button--outline" href="contact.html?location=Dholera&amp;type=Plot#enquiry-form">Ask about residential plots</a></div></section>
-      <section class="dholera-opportunity" data-dholera-type="industrial"><div class="dholera-card dholera-card-body"><h3>Industrial Land</h3><p>Ask about potential sites and permitted industrial uses.</p><a class="button button--outline" href="contact.html?location=Dholera#enquiry-form">Ask about industrial land</a></div></section>
-      <section class="dholera-opportunity" data-dholera-type="villa"><div class="dholera-card dholera-card-body"><h3>Villa Plots</h3><p>Request availability and confirm what can be built on each plot.</p><a class="button button--outline" href="contact.html?location=Dholera&amp;type=Plot#enquiry-form">Ask about villa plots</a></div></section>
+      <section class="dholera-opportunity" data-dholera-type="residential"><div class="dholera-card"><img src="assets/properties/plots.webp" alt="Illustrative aerial view of land parcels" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Residential Plots</h3><p>Request verified plot options and permitted residential uses.</p><a class="button button--outline" href="contact.html?location=Dholera&amp;type=Plot#enquiry-form">Ask about residential plots</a></div></div></section>
+      <section class="dholera-opportunity" data-dholera-type="industrial"><div class="dholera-card"><img src="assets/locations/dholera-industrial-concept.webp" alt="Concept illustration of an industrial development" width="1600" height="681" loading="lazy"><div class="dholera-card-body"><h3>Industrial Land</h3><p>Ask about potential sites and permitted industrial uses.</p><a class="button button--outline" href="contact.html?location=Dholera#enquiry-form">Ask about industrial land</a></div></div></section>
+      <section class="dholera-opportunity" data-dholera-type="villa"><div class="dholera-card"><img src="assets/properties/villas.webp" alt="Illustrative modern villa" width="800" height="450" loading="lazy"><div class="dholera-card-body"><h3>Villa Plots</h3><p>Request availability and confirm what can be built on each plot.</p><a class="button button--outline" href="contact.html?location=Dholera&amp;type=Plot#enquiry-form">Ask about villa plots</a></div></div></section>
     </div>
     <template id="dholera-project-card">
       <article class="offer-card">
@@ -184,8 +186,9 @@
     </template>
   </section>
 
-  <section class="container contact-cta contact-cta--compact" aria-labelledby="visit-title">
-    <div><h2 id="visit-title">Plan Your Dholera Visit</h2><p>Explore the location, understand the development plans, and discuss suitable property opportunities with our team.</p></div>
+  <section class="container dholera-visit" aria-labelledby="visit-title">
+    <h2 id="visit-title"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> Plan Your Dholera Visit</h2>
+    <p>Explore the location, understand the development plans, and discuss suitable property opportunities with our team.</p>
     <a class="button" href="contact.html?location=Dholera&amp;intent=site-visit#enquiry-form">Book Site Visit <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
   </section>
 </main>
