@@ -431,20 +431,40 @@ p + p { margin-block-start: var(--text-gap-small); }
 }
 
 /* 15. CONTACT CTA */
-.contact-cta { position: relative; isolation: isolate; display: grid; grid-template-columns: 19% 36% 1fr; align-items: center; padding-block: clamp(40px, 3.2vw, 48px); margin-top: var(--section-gap); border: 1px solid #fae6d9; border-radius: 28px; overflow: hidden; background: linear-gradient(110deg, #fceee5, #fce9da); }
-.architecture { fill: none; stroke: var(--brand-orange); stroke-width: 1; }
-.architecture--building { width: 64%; max-height: 90%; justify-self: center; opacity: .75; }
-.architecture--skyline { position: absolute; top: 50%; right: 0; translate: 0 -50%; width: 27%; opacity: .45; z-index: -1; }
-.contact-copy { padding: .4em 3% .4em 9%; position: relative; }
-.contact-copy::before, .contact-copy::after { content: ''; width: 1px; height: 53%; position: absolute; top: 24%; background: var(--brand-orange); }
-.contact-copy::before { left: 0; }
-.contact-copy::after { right: 0; }
-.contact-copy h2 { font-size: clamp(1.35rem, 2.3vw, 2.06rem); }
-.contact-copy p { margin-top: 16px; font-size: clamp(.68rem, 1.05vw, .91rem); }
-.contact-action { padding-left: 7%; }
-
-@media (768px <= width < 1024px) {
-  .contact-cta { padding-block: clamp(32px, 4vw, 40px); }
+.contact-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(max-content, 3fr);
+  align-items: center;
+  gap: 24px;
+  margin-top: var(--section-gap);
+  padding: clamp(65px, 5vw, 75px) clamp(60px, 5vw, 70px);
+  border-radius: 30px;
+  background: #fff0e6;
+  color: var(--ink);
+}
+.inner-page .contact-cta { margin-bottom: var(--text-gap-medium); }
+.contact-cta h2 { font-size: clamp(36px, 2.8vw, 40px); line-height: 1.2; }
+.contact-cta p { margin-top: 18px; font-size: clamp(17px, 1.3vw, 18px); line-height: 1.6; }
+.contact-cta > .button {
+  justify-self: end;
+  gap: .5em;
+  padding: 16px clamp(28px, 2.5vw, 34px);
+  border-radius: 15px;
+  background: var(--brand-orange);
+  color: #fff;
+  font-size: 16px;
+  white-space: normal;
+}
+.contact-cta > .button:hover { background: color-mix(in srgb, var(--brand-orange), black 14%); box-shadow: none; }
+@media (769px <= width <= 1024px) {
+  .contact-cta { padding: 50px clamp(32px, 5vw, 52px); }
+  .contact-cta h2 { font-size: clamp(30px, 3.3vw, 34px); }
+}
+@media (max-width: 768px) {
+  .contact-cta { grid-template-columns: minmax(0, 1fr); padding: clamp(26px, 5vw, 30px); border-radius: 22px; }
+  .contact-cta h2 { font-size: clamp(26px, 5.2vw, 28px); }
+  .contact-cta p { font-size: clamp(15px, 3vw, 16px); }
+  .contact-cta > .button { justify-self: start; max-width: 100%; }
 }
 
 /* 16. FOOTER */
@@ -678,36 +698,6 @@ p + p { margin-block-start: var(--text-gap-small); }
   .search-tabs button:last-child[aria-pressed="true"] { border-top-right-radius: var(--mobile-hero-rounding); }
   .search-controls { gap: clamp(7px, 2.2vw, 13px); padding: clamp(8px, 2vw, 13px); }
   .search-submit { min-width: 44px; min-height: 44px; border-radius: 9px; padding: 0; font-size: .85rem; }
-}
-
-/* Mobile contact banner and shared footer */
-@media (max-width: 767px) {
-  .contact-cta {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 18px;
-    margin-top: 20px;
-    padding: clamp(28px, 6vw, 32px) clamp(22px, 5.9vw, 34px);
-  }
-
-  .contact-copy, .contact-action { padding: 0; }
-  .contact-copy::before, .contact-copy::after, .contact-copy .desktop-break { display: none; }
-  .contact-copy h2 { max-width: 21ch; font-size: clamp(1.4rem, 6.2vw, 1.95rem); }
-  .contact-copy p { max-width: 41ch; font-size: .875rem; }
-  .contact-action .button { min-height: 44px; padding-inline: 1.2rem; font-size: .875rem; }
-
-  .contact-cta .architecture {
-    position: absolute;
-    z-index: -1;
-    top: auto;
-    bottom: 0;
-    translate: none;
-    pointer-events: none;
-  }
-
-  .architecture--building { width: 17%; right: 24%; opacity: .2; }
-  .architecture--skyline { width: 37%; right: 0; opacity: .29; }
-
-
 }
 
 /* Remaining mobile layout */
@@ -1194,11 +1184,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 .market-highlight h3 { font-size: clamp(.95rem, 1.45vw, 1.19rem); letter-spacing: -.03em; }
 .market-highlight p { margin-top: var(--text-gap-tight); font-size: clamp(.75rem, .92vw, .9rem); line-height: var(--detail-line-height); }
 
-.market-cta {
-  background: linear-gradient(90deg, #ba3b04 0%, #d64c0fdc 48%, #a134258a 100%),
-    url('assets/properties/residential-hero.webp') right 67% / cover;
-}
-.market-cta .button { border-radius: 99px; }
 
 @media (max-width: 850px) {
   .market-layout { grid-template-columns: minmax(0, 1fr); }
@@ -1297,8 +1282,6 @@ p + p { margin-block-start: var(--text-gap-small); }
 .about-team-card ul { display: grid; gap: 5px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #e9e2df; }
 .about-team-card li { font-size: clamp(.72rem, .94vw, .83rem); line-height: var(--detail-line-height); }
 
-.about-page-cta { background: linear-gradient(90deg, #b84108 0%, #d94c0cdd 56%, #b2390bd9 100%), url('assets/properties/residential-hero.webp') right 67% / cover; }
-.about-page-cta .button { border-radius: 99px; }
 
 @media (max-width: 900px) {
   .about-services, .about-team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
