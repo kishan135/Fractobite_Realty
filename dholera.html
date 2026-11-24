@@ -10,9 +10,11 @@
   <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css?v=dholera-navigation">
-  <link rel="stylesheet" href="dholera.css?v=editorial-layout">
+  <link rel="stylesheet" href="dholera.css?v=price-chart">
   <script defer src="project-data.js"></script>
   <script defer src="script.js?v=dholera-navigation"></script>
+  <script defer src="dholera-price-data.js"></script>
+  <script defer src="dholera-price-chart.js"></script>
 </head>
 <body>
 <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -120,17 +122,20 @@
     </header>
     <figure class="dholera-chart">
       <figcaption>
-        <strong>Demonstration chart · Sample index only</strong>
-        <p>Illustrative values only. They do not represent historical prices or a forecast. The sample starts at 100 in 2021.</p>
+        <div class="dholera-chart-header">
+          <strong><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> Indicative Price — ₹ per Sq. Yard</strong>
+          <ul class="dholera-chart-legend" aria-label="Chart legend">
+            <li>Announcement Era</li>
+            <li>Construction Era</li>
+          </ul>
+        </div>
+        <p id="dholera-chart-disclaimer">Illustrative Price Scenario — Not Verified Historical Prices</p>
       </figcaption>
-      <ol class="dholera-bars" aria-label="Illustrative index values by year">
-        <li style="--bar: 100"><span class="dholera-bar"><span>100</span></span><span>2021</span></li>
-        <li style="--bar: 115"><span class="dholera-bar"><span>115</span></span><span>2022</span></li>
-        <li style="--bar: 130"><span class="dholera-bar"><span>130</span></span><span>2023</span></li>
-        <li style="--bar: 142"><span class="dholera-bar"><span>142</span></span><span>2024</span></li>
-        <li style="--bar: 160"><span class="dholera-bar"><span>160</span></span><span>2025</span></li>
-      </ol>
-      <p class="dholera-note">Actual land prices vary by zoning, title, approvals, location, and property characteristics.</p>
+      <div class="dholera-chart-scroll" tabindex="0" role="region" aria-label="Illustrative price chart">
+        <svg id="dholera-price-plot" viewBox="0 0 748 211" role="img" aria-labelledby="dholera-plot-title" aria-describedby="dholera-chart-disclaimer dholera-plot-description"></svg>
+      </div>
+      <noscript><p>The chart requires JavaScript to display its example values.</p></noscript>
+      <p class="dholera-note">Figures are examples, not market records or a forecast. Actual prices vary by zoning, title, approvals, location, and property characteristics.</p>
     </figure>
   </section>
 
