@@ -9,12 +9,13 @@
   <link rel="preload" href="assets/fonts/poppins-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/poppins-700.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="style.css?v=shared-hero-frame">
-  <link rel="stylesheet" href="dholera.css?v=compact-info-frame">
+  <link rel="stylesheet" href="style.css?v=typography-system">
+  <link rel="stylesheet" href="dholera.css?v=typography-system">
   <script defer src="project-data.js"></script>
   <script defer src="script.js?v=dholera-navigation"></script>
   <script defer src="dholera-price-data.js"></script>
   <script defer src="dholera-price-chart.js"></script>
+  <script defer src="dholera-government-videos.js"></script>
 </head>
 <body>
 <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -89,38 +90,45 @@
   <section class="container dholera-section dholera-updates" aria-labelledby="updates-title">
     <header class="dholera-section-heading dholera-updates-heading">
       <h2 id="updates-title">Government Vision &amp; Updates</h2>
-      <p>Explore government announcements and infrastructure initiatives shaping the development of Dholera SIR.</p>
-      <a class="text-link" href="#official-resources">View Official Resources <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+      <p>Key announcements and policy support from the Government of India and Government of Gujarat for Dholera SIR.</p>
+      <a class="text-link" href="#official-resources">View All Updates <svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
     </header>
-    <div class="dholera-grid dholera-grid--two">
-      <article class="dholera-card">
-        <img src="assets/about/skyline-1.webp" alt="Illustrative modern buildings" width="800" height="450" loading="lazy">
-        <div class="dholera-card-body">
-          <p class="eyebrow">Draft · Source confirmation pending</p>
-          <h3>Semiconductor initiatives</h3>
-          <p>Check government releases for announced facilities, approvals, and implementation milestones.</p>
-          <a class="text-link" href="https://www.pib.gov.in/" target="_blank" rel="noopener noreferrer">Browse Press Information Bureau releases ↗</a>
+    <div class="dholera-video-grid" id="dholera-government-videos"></div>
+    <noscript><p>Enable JavaScript to view the video cards, or browse the <a href="#official-resources">official resources</a>.</p></noscript>
+    <template id="dholera-government-video-card">
+      <article class="dholera-video-card">
+        <button class="dholera-video-thumbnail" type="button" disabled>
+          <img alt="" width="320" height="180" loading="lazy" referrerpolicy="no-referrer">
+          <span class="dholera-video-play" aria-hidden="true">
+            <svg viewBox="0 0 20 20" width="18" height="18"><path fill="currentColor" d="M5 2.5v15L17 10Z"/></svg>
+          </span>
+          <span class="dholera-video-illustration" hidden>Illustrative preview</span>
+        </button>
+        <div class="dholera-video-copy">
+          <p class="dholera-video-status eyebrow" hidden>Coming Soon</p>
+          <h3></h3>
+          <p class="dholera-video-description"></p>
         </div>
       </article>
-      <article class="dholera-card">
-        <img src="assets/locations/dholera-planning.webp" alt="Illustrative network of planned roads and development parcels" width="800" height="450" loading="lazy">
-        <div class="dholera-card-body">
-          <p class="eyebrow">Draft · Source confirmation pending</p>
-          <h3>Industrial and infrastructure planning</h3>
-          <p>Consult official planning material for project scope, phasing, and updates to regional infrastructure.</p>
-          <a class="text-link" href="https://www.nicdc.in/" target="_blank" rel="noopener noreferrer">Browse NICDC project information ↗</a>
-        </div>
-      </article>
-    </div>
+    </template>
+    <dialog class="dholera-video-dialog" id="dholera-video-dialog" aria-labelledby="dholera-video-title">
+      <div class="dholera-video-toolbar">
+        <h2 id="dholera-video-title"></h2>
+        <form method="dialog"><button class="button button--outline" type="submit" autofocus>Close</button></form>
+      </div>
+      <div class="dholera-video-player"></div>
+      <a class="text-link" target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a>
+    </dialog>
   </section>
 
-  <section class="container dholera-section dholera-facts" aria-labelledby="facts-title">
+  <section class="container dholera-section dholera-facts" aria-labelledby="facts-title" aria-describedby="dholera-facts-note">
     <h2 class="dholera-visually-hidden" id="facts-title">Dholera at a Glance</h2>
+    <p id="dholera-facts-note">Reference figures · Pending official verification</p>
     <dl class="dholera-grid">
-      <div><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><dt>Region</dt><dd>Dholera, Gujarat</dd></div>
-      <div><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><dt>Designation</dt><dd>Special Investment Region</dd></div>
-      <div><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><dt>Planning focus</dt><dd>Industrial and urban development</dd></div>
-      <div><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg><dt>Development phase</dt><dd>Confirm site-specific status with official sources.</dd></div>
+      <div><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><dt>920 Sq. Km.</dt><dd>Total Planned Region</dd></div>
+      <div><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><dt>22.54 Sq. Km.</dt><dd>Activation Area</dd></div>
+      <div><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><dt>₹91,000 Cr+</dt><dd>Tata Semiconductor Project</dd></div>
+      <div><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 8 12 3l10 5H2Zm2 12h16M2 22h20M6 10v8m4-8v8m4-8v8m4-8v8"/></svg><dt>Govt. Initiative</dt><dd>NICDC programme information</dd></div>
     </dl>
   </section>
 
@@ -178,9 +186,9 @@
   <section class="container dholera-section dholera-rail" id="official-resources" aria-labelledby="resources-title">
     <header class="dholera-section-heading"><h2 id="resources-title">Official Resources</h2></header>
     <div class="dholera-grid dholera-grid--three">
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><h3>Industrial Corridors</h3><a class="text-link" href="https://www.nicdc.in/" target="_blank" rel="noopener noreferrer">Visit NICDC ↗</a></article>
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><h3>Government of Gujarat</h3><a class="text-link" href="https://gujaratindia.gov.in/" target="_blank" rel="noopener noreferrer">Visit the Gujarat portal ↗</a></article>
-      <article class="dholera-card dholera-card-body"><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg><h3>Government Releases</h3><a class="text-link" href="https://www.pib.gov.in/" target="_blank" rel="noopener noreferrer">Visit the Press Information Bureau ↗</a></article>
+      <a class="dholera-card dholera-card-body" href="https://www.nicdc.in/" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><h3>Industrial Corridors</h3></a>
+      <a class="dholera-card dholera-card-body" href="https://gujaratindia.gov.in/" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg><h3>Government of Gujarat</h3></a>
+      <a class="dholera-card dholera-card-body" href="https://www.pib.gov.in/" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#icon-info"/></svg><h3>Government Releases</h3></a>
     </div>
   </section>
 
