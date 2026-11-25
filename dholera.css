@@ -1,5 +1,5 @@
 .dholera-page {
-  --dholera-section-gap: clamp(22px, 2.5vw, 36px);
+  --dholera-section-gap: clamp(40px, 4vw, 60px);
   --dholera-surface: #fff5eb;
   --dholera-line: #ebd8cb;
   padding-bottom: var(--section-gap);
@@ -21,7 +21,7 @@
 }
 .dholera-hero > div { align-self: center; }
 .dholera-tagline { color: var(--brand-orange); font-size: clamp(2rem, 3.4vw, 3rem); }
-.dholera-hero .hero-description { max-width: 36ch; }
+.dholera-hero .hero-description { max-width: 36ch; margin-top: var(--text-gap-medium); }
 .dholera-actions { display: flex; flex-wrap: wrap; gap: var(--text-gap-small); margin-top: var(--text-gap-medium); }
 .dholera-actions .button, .dholera-opportunity .button { min-height: 44px; white-space: normal; }
 .dholera-hero-photo {
@@ -51,7 +51,7 @@
 }
 
 .dholera-section { margin-top: var(--dholera-section-gap); }
-.dholera-section-heading { margin-bottom: var(--text-gap-medium); }
+.dholera-section-heading { margin-bottom: clamp(20px, 2vw, 24px); }
 .dholera-section-heading p:not(.eyebrow) { margin-top: var(--text-gap-small); max-width: 68ch; }
 .dholera-section-heading .eyebrow { margin-bottom: var(--text-gap-tight); }
 .dholera-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--text-gap-medium); }
@@ -76,20 +76,20 @@
   margin-bottom: 18px;
 }
 #updates-title { font-family: inherit; font-weight: 700; }
-.dholera-video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(18px, 3vw, 44px); }
+.dholera-video-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
 .dholera-video-card { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: clamp(12px, 1.4vw, 20px); min-width: 0; }
 .dholera-video-card + .dholera-video-card::before {
   content: "";
   position: absolute;
   top: 10%;
   bottom: 10%;
-  left: calc(clamp(18px, 3vw, 44px) / -2);
+  left: calc(clamp(20px, 3vw, 40px) / -2);
   width: 1px;
   background: var(--dholera-line);
 }
 .dholera-video-thumbnail { position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 14px; overflow: hidden; background: var(--paper); }
 .dholera-video-thumbnail:disabled { cursor: default; }
-.dholera-video-thumbnail img { aspect-ratio: 16 / 9; height: auto; object-fit: cover; }
+.dholera-video-thumbnail img { width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover; }
 .dholera-video-play {
   position: absolute;
   inset: 50% auto auto 50%;
@@ -120,7 +120,7 @@
 .dholera-video-dialog > .text-link { margin-top: 10px; min-height: 32px; }
 html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 
-.dholera-facts { margin-top: 24px; padding: 12px clamp(10px, 1.2vw, 18px); border-radius: 22px; }
+.dholera-facts { margin-top: 20px; padding: 10px clamp(10px, 1.2vw, 18px); border-radius: 22px; }
 .dholera-facts dl { margin: 0; gap: 0; }
 .dholera-facts dl > div { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-content: center; align-items: center; min-width: 0; padding: 4px clamp(9px, 1.1vw, 16px); }
 .dholera-facts dl > div + div { border-left: 1px solid var(--dholera-line); }
@@ -134,6 +134,9 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   gap: var(--text-gap-large);
   align-items: center;
 }
+.dholera-trends { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: clamp(28px, 3vw, 40px); align-items: start; }
+.dholera-trends .dholera-section-heading { align-self: center; }
+.dholera-trends .dholera-section-heading > p:not(.eyebrow) { line-height: 1.65; }
 .dholera-rail { grid-template-columns: minmax(0, 1fr) minmax(0, 4.7fr); }
 .dholera-trends .dholera-section-heading, .dholera-rail .dholera-section-heading { margin: 0; }
 .dholera-trends :is(h2 em, .eyebrow) { color: var(--brand-orange); font-style: normal; }
@@ -174,10 +177,10 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   align-items: center;
   gap: clamp(20px, 1.9vw, 28px);
 }
-.dholera-info.dholera-rail {
-  grid-template-columns: 17.5% minmax(0, 1fr);
+.dholera-info.dholera-rail, #official-resources {
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 3fr);
   align-items: center;
-  gap: clamp(20px, 1.9vw, 28px);
+  gap: 32px;
 }
 .dholera-page :is(#overview-title, #why-title, #developments-title, #resources-title) {
   font-size: calc(var(--text-h2) * .89);
@@ -185,16 +188,15 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   overflow-wrap: normal;
   word-break: normal;
 }
-.dholera-overview > p { border-left: 1px solid var(--dholera-line); padding-left: var(--text-gap-medium); }
+.dholera-overview > p { border-left: 1px solid var(--dholera-line); padding-left: var(--text-gap-medium); line-height: 1.65; }
 .dholera-overview figure { position: relative; margin: 0; }
 .dholera-overview img { height: auto; aspect-ratio: 3.25; border-radius: 20px; object-fit: cover; }
-.dholera-info .dholera-grid { gap: clamp(16px, 1.2vw, 20px); }
+.dholera-info .dholera-grid, #official-resources .dholera-grid { gap: clamp(16px, 1.2vw, 20px); align-items: stretch; }
 .dholera-info .dholera-card { border-radius: 20px; }
 .dholera-info .dholera-card-body { align-items: center; justify-content: center; padding: 16px 12px; text-align: center; }
 .dholera-info .dholera-card-body h3 { font-size: var(--text-card-title);  line-height: var(--line-height-card); }
-[aria-labelledby="why-title"] .dholera-card-body { min-height: clamp(112px, 10vw, 150px); gap: 10px; }
+[aria-labelledby="why-title"] .dholera-card-body { min-height: 130px; gap: 10px; }
 [aria-labelledby="why-title"] .icon { font-size: clamp(1.75rem, 2.8vw, 2.4rem); }
-.dholera-info #developments-title { font-size: var(--text-h2); }
 [aria-labelledby="developments-title"] .dholera-card > img { aspect-ratio: 2.15; }
 #opportunities > .dholera-section-heading { text-align: center; }
 #opportunities .offer-card { display: flex; flex-direction: column; transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
@@ -210,16 +212,15 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 #opportunities .dholera-project-action { margin-top: auto; }
 #opportunities .dholera-project-image-link:focus-visible, #opportunities .dholera-project-title-link:focus-visible { outline: 2px solid var(--brand-orange); outline-offset: -2px; }
 
-#official-resources { grid-template-columns: minmax(190px, 1fr) minmax(0, 4.7fr); align-items: center; }
 #official-resources .dholera-card {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 120px;
-  padding: 12px 8px;
+  min-height: 130px;
+  padding: 16px 12px;
   text-align: center;
 }
-#official-resources .dholera-card h3 { font-size: clamp(.85rem, 1.2vw, var(--text-card-title)); }
+#official-resources .dholera-card h3 { font-size: var(--text-card-title); }
 .dholera-opportunity .dholera-card-body {
   align-items: center;
   gap: 16px;
@@ -232,6 +233,10 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   .dholera-grid:not(.dholera-grid--two, .dholera-grid--three) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dholera-facts dl > div:nth-child(3) { border-left: 0; }
   .dholera-facts dl > div:nth-child(n+3) { border-top: 1px solid var(--dholera-line); padding-top: 10px; margin-top: 10px; }
+}
+@media (max-width: 1199px) {
+  .dholera-info.dholera-rail, #official-resources { grid-template-columns: minmax(0, 1fr); }
+  #main-content .dholera-info.dholera-rail > .dholera-grid, #official-resources > .dholera-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 960px) {
   #official-resources, .dholera-info.dholera-rail, .dholera-overview { grid-template-columns: minmax(0, 1fr); }
@@ -248,6 +253,10 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   .dholera-grid--two, .dholera-grid--three, .dholera-grid:not(.dholera-facts dl, #official-resources .dholera-grid) { grid-template-columns: minmax(0, 1fr); }
   .dholera-facts dl > div { grid-template-columns: auto minmax(0, 1fr); }
   .dholera-overview img { aspect-ratio: 2.15; }
+}
+@media (max-width: 767px) {
+  #main-content .dholera-info.dholera-rail > .dholera-grid, #official-resources > .dholera-grid { grid-template-columns: minmax(0, 1fr); }
+  .dholera-page .contact-cta--compact { padding: clamp(24px, 5vw, 30px); }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   #opportunities #dholera-listings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
