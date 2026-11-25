@@ -134,6 +134,17 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   gap: var(--text-gap-large);
   align-items: center;
 }
+.dholera-trends {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2.9fr);
+  gap: clamp(32px, 3vw, 40px);
+  padding-block: clamp(48px, 4vw, 64px);
+}
+.dholera-trends .dholera-section-heading > p:not(.eyebrow) {
+  max-width: none;
+  margin-top: 14px;
+  font-size: var(--text-body);
+  line-height: 1.7;
+}
 .dholera-rail { grid-template-columns: minmax(0, 1fr) minmax(0, 4.7fr); }
 .dholera-trends .dholera-section-heading, .dholera-rail .dholera-section-heading { margin: 0; }
 .dholera-trends :is(h2 em, .eyebrow) { color: var(--brand-orange); font-style: normal; }
@@ -141,8 +152,8 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   min-width: 0;
   margin: 0;
   padding: var(--text-gap-medium) var(--text-gap-large);
-  border-radius: 26px;
-  background: radial-gradient(ellipse at 19% 92%, #fae9da 0%, transparent 58%), #fff8f1;
+  border-radius: 20px;
+  background: #fffaf5;
 }
 .dholera-chart-header, .dholera-chart-header strong, .dholera-chart-legend, .dholera-chart-legend li {
   display: flex;
@@ -154,19 +165,23 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 .dholera-chart-legend { flex-wrap: wrap; list-style: none; padding: 0; margin: 0; font-size: .8rem; }
 .dholera-chart-legend li::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #122942; }
 .dholera-chart-legend li:first-child::before { background: var(--brand-orange); }
-#dholera-chart-disclaimer { font-size: .8rem; font-weight: 600; margin-top: 6px; }
+#dholera-chart-disclaimer { font-size: .8rem; font-weight: 600; line-height: 1.5; margin-top: 8px; }
 .dholera-chart-scroll { overflow-x: auto; margin-block: 10px 6px; }
 .dholera-chart-scroll:focus-visible { outline-offset: -2px; }
-#dholera-price-plot { display: block; width: 100%; min-width: 620px; }
-.dholera-baseline { stroke: #cfc6be; stroke-width: 1.25; }
+#dholera-price-plot { display: block; width: 100%; min-width: 760px; }
+.dholera-grid-line { stroke: #dedbd8; stroke-width: 1; }
+.dholera-axis-label, .dholera-axis-unit { fill: var(--ink); font-size: 12px; }
+.dholera-axis-unit { font-weight: 600; }
 .dholera-bar { fill: #122942; }
-.dholera-bar--announcement, #dholera-trend-arrow { fill: var(--brand-orange); }
+.dholera-bar--announcement { fill: var(--brand-orange); }
 .dholera-trend { fill: none; stroke: var(--brand-orange); stroke-width: 2.4; stroke-linejoin: round; }
 .dholera-trend-marker { fill: white; stroke: var(--brand-orange); stroke-width: 2; }
 .dholera-value, .dholera-year { fill: var(--ink); text-anchor: middle; }
-.dholera-value { font-size: 17px; font-weight: 700; }
+.dholera-value { font-size: 12px; font-weight: 700; }
 .dholera-value--announcement { fill: #b83908; }
-.dholera-year { font-size: 14px; }
+.dholera-year { font-size: 12px; }
+.dholera-data-point:focus-visible { outline: none; }
+.dholera-data-point:focus-visible .dholera-bar { stroke: var(--brand-orange); stroke-width: 3; }
 .dholera-info { margin-top: clamp(38px, 3.3vw, 52px); }
 .dholera-overview {
   display: grid;
@@ -223,6 +238,9 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 @media (max-width: 960px) {
   .dholera-overview { grid-template-columns: minmax(0, 1fr); }
   .dholera-overview > p { border: 0; padding: 0; }
+}
+@media (max-width: 1100px) {
+  .dholera-trends { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 768px) {
   .dholera-hero, .dholera-trends, .dholera-overview, .dholera-rail { grid-template-columns: minmax(0, 1fr); }
