@@ -139,6 +139,7 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 .dholera-rail { grid-template-columns: minmax(0, 1fr) minmax(0, 4.7fr); }
 .dholera-trends .dholera-section-heading, .dholera-rail .dholera-section-heading { margin: 0; }
 .dholera-trends :is(h2 em, .eyebrow) { color: var(--brand-orange); font-style: normal; }
+.dholera-trends { grid-template-columns: minmax(0, 1fr) minmax(0, 470px); }
 .dholera-chart {
   min-width: 0;
   margin: 0;
@@ -154,9 +155,10 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 .dholera-chart-header { justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; }
 .dholera-chart-header .icon { box-sizing: content-box; padding: 5px; border-radius: 50%; color: #fff; background: var(--brand-orange); }
 #dholera-chart-disclaimer { font-size: .8rem; font-weight: 600; margin-top: 6px; }
-.dholera-chart-plot { position: relative; margin-block: 6px 4px; }
-#dholera-price-plot { display: block; width: 100%; height: auto; overflow: visible; }
-.dholera-area { fill: url(#dholera-area-gradient); }
+.dholera-chart-plot { position: relative; width: min(100%, 400px); margin: 6px auto 4px; }
+#dholera-price-plot { display: block; width: 100%; height: auto; overflow: visible; font-family: var(--font-primary); }
+.dholera-gridline { stroke: var(--dholera-line); stroke-width: 1; stroke-dasharray: 3 5; }
+.dholera-axis-label { fill: var(--ink); font-size: 12px; }
 .dholera-trend { fill: none; stroke: var(--brand-orange); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .dholera-trend-marker { fill: white; stroke: var(--brand-orange); stroke-width: 2.5; cursor: pointer; }
 .dholera-trend-marker:is(:hover, :focus-visible) { r: 7; outline: none; stroke-width: 3; }
@@ -165,7 +167,6 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 .dholera-chart-tooltip { position: absolute; z-index: 2; transform: translateX(-50%); max-width: min(240px, 90%); padding: 6px 9px; border-radius: 7px; background: var(--ink); color: white; font-size: 12px; line-height: 1.35; pointer-events: none; text-align: center; }
 .dholera-chart-tooltip[hidden] { display: none; }
 .dholera-chart .dholera-note { font-size: .75rem; line-height: 1.4; }
-@media (max-width: 540px) { .dholera-year:nth-last-child(2), .dholera-year:nth-last-child(4) { display: none; } }
 @media (prefers-reduced-motion: reduce) { .dholera-trend-marker { transition: none; } }
 .dholera-info { margin-top: clamp(38px, 3.3vw, 52px); }
 .dholera-overview {
