@@ -3,11 +3,12 @@
 
   const chart = document.querySelector('#dholera-price-plot');
   const tooltip = document.querySelector('#dholera-chart-tooltip');
-  const baseline = 179;
+  const plotHeight = 400;
+  const baseline = 365;
   const points = dholeraPriceDemo.map((record, index) => ({
     ...record,
     x: 42 + index * 73,
-    y: baseline - record.value / 13000 * 126,
+    y: baseline - record.value / 13000 * 285,
   }));
 
   function svgElement(name, attributes, text) {
@@ -42,7 +43,7 @@
     const width = chart.getBoundingClientRect().width;
     const x = point.x / 748 * width;
     tooltip.style.left = `${Math.max(tooltip.offsetWidth / 2 + 4, Math.min(width - tooltip.offsetWidth / 2 - 4, x))}px`;
-    tooltip.style.top = `${Math.max(0, point.y / 214 * chart.getBoundingClientRect().height - tooltip.offsetHeight - 8)}px`;
+    tooltip.style.top = `${Math.max(0, point.y / plotHeight * chart.getBoundingClientRect().height - tooltip.offsetHeight - 8)}px`;
   }
   for (const point of points) {
     const marker = svgElement('circle', { class: 'dholera-trend-marker', cx: point.x, cy: point.y, r: 5, tabindex: 0, role: 'button', 'aria-label': `${point.year}: illustrative price ₹${rupees.format(point.value)} per square yard` });
@@ -57,7 +58,7 @@
   for (const point of points) {
     const compact = point.value < 1000 ? point.value : `${point.value / 1000}k`;
     chart.append(
-      svgElement('text', { class: 'dholera-year', x: point.x, y: 201 }, point.year),
+      svgElement('text', { class: 'dholera-year', x: point.x, y: 389 }, point.year),
       svgElement('text', { class: `dholera-value dholera-value--${point.era}`, x: point.x, y: point.y - 13 }, `₹${compact}`),
     );
   }
