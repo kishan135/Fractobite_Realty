@@ -155,6 +155,15 @@ const projectDemoDetails = (() => {
       overview: 'Greenview arranges sample apartment buildings so living rooms and balconies can look towards planted courtyards rather than the service approach. A continuous path links the entrances, play space, and community room without requiring residents to cross the main parking aisle. The example two-bedroom homes make practical use of smaller footprints, while selected three-bedroom layouts add a flexible room for work or visiting family. Landscape edges create places to sit as well as a buffer around pedestrian routes. The concept helps demonstrate how shared greenery and accessible circulation can shape everyday apartment living.',
       propertyType: '2 & 3 BHK apartments', sizes: '1,040–1,730 sq. ft.', status: 'Site development', possession: 'Q4 2028', distances: [5, 11, 25, 9],
     }),
+    ...Object.fromEntries([
+      ['dholera-greenfield-plots', 'properties/plots', 'Illustrative aerial view of plotted land'],
+      ['dholera-industrial-park', 'locations/dholera-industrial-concept', 'Illustrative industrial district concept'],
+      ['dholera-premium-villa-plots', 'properties/villas', 'Illustrative villa and landscaped grounds'],
+    ].map(([id, path, alt]) => [id, {
+      category: 'dholera',
+      location: 'Dholera, Gujarat',
+      heroImages: [{ src: `assets/${path}.webp`, alt, illustrative: true }],
+    }])),
   };
 })();
 
@@ -193,6 +202,27 @@ const propertyProjects = (() => {
       photo('locations/growth-corridors', 'Illustrative residential towers beside landscaped grounds')),
   };
 
+  const dholeraDemoProjects = {
+    'dholera-greenfield-plots': {
+      name: 'Dholera Greenfield Plots', category: null, propertyType: 'Residential Plots',
+      location: 'Dholera, Gujarat', isDemo: true,
+      description: 'Planned residential plot opportunities in the Dholera region.',
+      cardImage: photo('properties/plots', 'Illustrative aerial view of plotted land'),
+    },
+    'dholera-industrial-park': {
+      name: 'Dholera Industrial Park', category: null, propertyType: 'Industrial Land',
+      location: 'Dholera, Gujarat', isDemo: true,
+      description: 'Illustrative industrial land opportunities near planned development corridors.',
+      cardImage: photo('locations/dholera-industrial-concept', 'Illustrative industrial district concept'),
+    },
+    'dholera-premium-villa-plots': {
+      name: 'Dholera Premium Villa Plots', category: null, propertyType: 'Villa Plots',
+      location: 'Dholera, Gujarat', isDemo: true,
+      description: 'Illustrative premium villa plot opportunities in the Dholera region.',
+      cardImage: photo('properties/villas', 'Illustrative villa and landscaped grounds'),
+    },
+  };
+
   // Keep confirmed facts here. Illustrative detail fields belong in projectDemoDetails.
   return {
     'balaji-upvan': {
@@ -221,6 +251,7 @@ const propertyProjects = (() => {
       description: 'A specific Mirrikh Group project has yet to be identified. Project details will appear here once confirmed.',
     },
     ...demoProjects,
+    ...dholeraDemoProjects,
   };
 })();
 

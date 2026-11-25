@@ -351,22 +351,27 @@
   function initializeDholeraListings() {
     const template = document.querySelector('#dholera-project-card');
     if (!template) return;
-
-    const listings = Object.entries(propertyProjects).filter(([, project]) =>
-      project.name && !project.isDemo && /^Dholera(?: SIR)?(?:,|$)/i.test(project.location ?? ''));
-    const propertyTypes = {
-      residential: /^residential plots?$/i,
-      industrial: /^industrial (?:land|plots?)$/i,
-      villa: /^villa plots?$/i,
-    };
-    document.querySelectorAll('[data-dholera-type]').forEach((section) => {
-      const type = propertyTypes[section.dataset.dholeraType];
-      const matches = listings.filter(([, project]) => type.test(project.propertyType ?? ''));
-      if (!matches.length) return;
-
-      const heading = section.querySelector('h3');
-      section.replaceChildren(heading, ...matches.map(([id, project]) => catalogCard(template, id, project)));
+    const ids = ['dholera-greenfield-plots', 'dholera-industrial-park', 'dholera-premium-villa-plots'];
+    const cards = ids.map((id) => {
+      const project = propertyProjects[id];
+      const card = template.content.firstElementChild.cloneNode(true);
+      const url = projectDetailUrl(id);
+      const imageLink = card.querySelector('.dholera-project-image-link');
+      imageLink.href = url;
+      imageLink.setAttribute('aria-label', `View Project: ${project.name}`);
+      const image = card.querySelector('img');
+      image.src = project.cardImage.src;
+      image.alt = project.cardImage.alt;
+      card.querySelector('.dholera-project-type').textContent = project.propertyType;
+      const titleLink = card.querySelector('.dholera-project-title-link');
+      titleLink.href = url;
+      titleLink.textContent = project.name;
+      card.querySelector('.dholera-project-location span').textContent = project.location;
+      card.querySelector('.dholera-project-description').textContent = project.description;
+      card.querySelector('.dholera-project-action').href = url;
+      return card;
     });
+    document.querySelector('#dholera-listings').replaceChildren(...cards);
   }
 
   function initializeCatalog() {

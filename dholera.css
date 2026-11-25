@@ -13,18 +13,21 @@
 
 .dholera-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.95fr);
+  grid-template-columns: var(--hero-copy-width) minmax(0, 1fr);
   align-items: stretch;
-  gap: clamp(12px, 1.75vw, 24px);
+  gap: var(--hero-column-gap);
+  min-height: clamp(365px, 35.8vw, 515px);
+  padding-block: clamp(24px, 3vw, 44px) clamp(20px, 2vw, 30px);
 }
-.dholera-hero > div { align-self: center; padding-block: clamp(18px, 2.5vw, 38px); }
-.dholera-tagline { color: var(--brand-orange); }
+.dholera-hero > div { align-self: center; }
+.dholera-tagline { color: var(--brand-orange); font-size: clamp(2rem, 3.4vw, 3rem); }
 .dholera-hero .hero-description { max-width: 36ch; }
 .dholera-actions { display: flex; flex-wrap: wrap; gap: var(--text-gap-small); margin-top: var(--text-gap-medium); }
 .dholera-actions .button, .dholera-opportunity .button { min-height: 44px; white-space: normal; }
 .dholera-hero-photo {
-  block-size: clamp(320px, 37vw, 356px);
-  align-self: start;
+  block-size: 100%;
+  min-block-size: clamp(450px, 32vw, 460px);
+  align-self: stretch;
   margin: 0;
 }
 .dholera-hero-photo img {
@@ -34,10 +37,6 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
-}
-@media (min-width: 1024px) {
-  .dholera-hero { grid-template-columns: var(--hero-copy-width) minmax(0, 1fr); column-gap: var(--hero-column-gap); }
-  .dholera-hero-photo { block-size: clamp(356px, calc(30vw + 49px), 475px); }
 }
 .dholera-page figure:has(> img) figcaption { font-size: .72rem; }
 .dholera-hero-photo figcaption, .dholera-overview figcaption {
@@ -180,8 +179,11 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
   align-items: center;
   gap: clamp(20px, 1.9vw, 28px);
 }
-.dholera-info h2:not(.contact-cta h2) {
-  overflow-wrap: anywhere;
+.dholera-page :is(#overview-title, #why-title, #developments-title, #resources-title) {
+  font-size: calc(var(--text-h2) * .89);
+  line-height: 1.2;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .dholera-overview > p { border-left: 1px solid var(--dholera-line); padding-left: var(--text-gap-medium); }
 .dholera-overview figure { position: relative; margin: 0; }
@@ -194,8 +196,19 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 [aria-labelledby="why-title"] .icon { font-size: clamp(1.75rem, 2.8vw, 2.4rem); }
 .dholera-info #developments-title { font-size: var(--text-h2); }
 [aria-labelledby="developments-title"] .dholera-card > img { aspect-ratio: 2.15; }
-.dholera-opportunity { display: flex; flex-direction: column; gap: var(--text-gap-small); min-width: 0; }
-.dholera-opportunity :is(.dholera-card, .offer-card) { flex: 1; }
+#opportunities > .dholera-section-heading { text-align: center; }
+#opportunities .offer-card { display: flex; flex-direction: column; transition: border-color .22s ease, box-shadow .22s ease, transform .22s ease; }
+#opportunities .offer-card:hover, #opportunities .offer-card:focus-within { border-color: var(--brand-orange); box-shadow: 0 7px 18px #30251d1c; transform: translateY(-2px); }
+#opportunities .dholera-project-image-link { display: block; overflow: hidden; }
+#opportunities .offer-image img { display: block; aspect-ratio: 1.77; }
+#opportunities .dholera-project-body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; gap: 8px; padding: clamp(15px, 1.6vw, 22px); }
+#opportunities .dholera-project-type { color: var(--brand-orange); font-size: var(--text-body-small); font-weight: 600; }
+#opportunities .dholera-project-body h3 { font-size: var(--text-card-title); line-height: var(--line-height-card); }
+#opportunities .dholera-project-location { display: flex; align-items: center; gap: 5px; font-size: var(--text-body-small); }
+#opportunities .dholera-project-location .icon { flex: none; color: var(--brand-orange); }
+#opportunities .dholera-project-description { font-size: var(--text-card-description); line-height: var(--detail-line-height); }
+#opportunities .dholera-project-action { margin-top: auto; }
+#opportunities .dholera-project-image-link:focus-visible, #opportunities .dholera-project-title-link:focus-visible { outline: 2px solid var(--brand-orange); outline-offset: -2px; }
 
 #official-resources { grid-template-columns: minmax(190px, 1fr) minmax(0, 4.7fr); align-items: center; }
 #official-resources .dholera-card {
@@ -227,13 +240,17 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 @media (max-width: 768px) {
   .dholera-hero, .dholera-trends, .dholera-overview, .dholera-rail { grid-template-columns: minmax(0, 1fr); }
   .dholera-hero > div { padding-bottom: 0; }
-  .dholera-hero-photo { block-size: auto; aspect-ratio: 2 / 1; }
+  .dholera-hero { min-height: 0; row-gap: clamp(12px, 3.6vw, 24px); padding-block: clamp(17px, 5vw, 29px) 0; }
+  .dholera-hero-photo { block-size: auto; min-block-size: 0; aspect-ratio: 2 / 1; }
   .dholera-info { margin-top: 30px; }
   .dholera-video-grid { grid-template-columns: minmax(0, 1fr); }
   .dholera-video-card + .dholera-video-card::before { content: none; }
   .dholera-grid--two, .dholera-grid--three, .dholera-grid:not(.dholera-facts dl, #official-resources .dholera-grid) { grid-template-columns: minmax(0, 1fr); }
   .dholera-facts dl > div { grid-template-columns: auto minmax(0, 1fr); }
   .dholera-overview img { aspect-ratio: 2.15; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  #opportunities #dholera-listings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 360px) {
   #official-resources .dholera-grid { grid-template-columns: minmax(0, 1fr); }
