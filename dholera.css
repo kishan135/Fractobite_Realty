@@ -207,6 +207,13 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 }
 .dholera-feature-section + .dholera-feature-section { border-top: 1px solid var(--dholera-line); }
 .dholera-feature-section .dholera-section-heading { margin: 0; align-self: center; }
+.dholera-feature-section .dholera-section-heading > p {
+  margin-top: 14px;
+  max-width: none;
+  color: #4f536b;
+  font-size: var(--text-body);
+  line-height: 1.65;
+}
 .dholera-feature-section > .dholera-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
 .dholera-feature-section .dholera-card { height: 100%; border-radius: 20px; }
 .dholera-feature-section .dholera-card-body { align-items: center; justify-content: center; gap: 10px; padding: 16px 12px; text-align: center; }
