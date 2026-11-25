@@ -1180,7 +1180,8 @@ p + p { margin-block-start: var(--text-gap-small); }
 .market-highlight > a { display: block; height: 100%; }
 .market-highlight > a:focus-visible { outline-offset: -3px; }
 .market-highlight img { width: 100%; height: auto; aspect-ratio: 2.75; object-fit: cover; }
-.market-highlight-body { display: grid; grid-template-columns: 1em minmax(0, 1fr) auto; align-items: start; gap: 8px; padding: 10px clamp(10px, 1.25vw, 18px); }
+.market-highlight-body { display: grid; grid-template-columns: 1em minmax(0, 1fr) auto; align-items: start; column-gap: 9px; padding: 10px clamp(10px, 1.25vw, 18px); }
+.market-highlight-body > .icon { align-self: start; margin-top: calc((var(--text-card-title) * var(--line-height-card) - 1em) / 2); }
 .market-highlight-body .circle { align-self: center; }
 .market-highlight h3 { font-size: var(--text-card-title); letter-spacing: 0em;  line-height: var(--line-height-card); }
 .market-highlight p { margin-top: var(--text-gap-tight); font-size: var(--text-body-small); line-height: var(--detail-line-height); }
