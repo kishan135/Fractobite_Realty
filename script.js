@@ -3,8 +3,8 @@
 
   // Reference contact placeholders. Replace these with verified details before publication.
   const contact = {
-    phone: '+91 98765 43210',
-    email: 'info@fractobiterealty.com',
+    phone: '+91 7572955757',
+    email: 'fractobiterealty@gmail.com',
   };
 
   const slides = [
@@ -291,29 +291,126 @@
     });
   }
 
-  function initializeCategoryCarousel() {
-    const cards = document.querySelector('.property-cards');
-    if (!cards) return;
-    const previous = document.querySelector('.previous');
-    const next = document.querySelector('.next');
+  function initializeHomepageProjects() {
+    const track = document.querySelector('#property-cards');
+    if (!track) return;
+    const dots = document.querySelector('.property-dots');
+    const ids = ['balaji-upvan', 'balaji-upvan-5-star-villa', 'aakruti-green'];
+    const originals = ids.map((id) => {
+      const project = propertyProjects[id];
+      const preview = projectDemoDetails[id];
+      const url = projectDetailUrl(id);
+      const card = document.createElement('article');
+      card.className = 'property-card';
+      const imageLink = document.createElement('a');
+      imageLink.className = 'property-card-image-link';
+      imageLink.href = url;
+      imageLink.setAttribute('aria-label', `View Project: ${project.name}`);
+      const image = document.createElement('img');
+      image.className = 'property-image';
+      image.src = project.cardImage.src;
+      image.alt = project.cardImage.alt;
+      image.loading = 'lazy';
+      imageLink.append(image);
+      const body = document.createElement('div');
+      body.className = 'property-card-content';
+      const title = document.createElement('h3');
+      const titleLink = document.createElement('a');
+      titleLink.href = url;
+      titleLink.textContent = project.name;
+      title.append(titleLink);
+      const location = document.createElement('p');
+      location.className = 'property-card-location';
+      location.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>';
+      location.append(document.createTextNode(project.location || 'Location to be confirmed'));
+      const description = document.createElement('p');
+      description.className = 'property-card-description';
+      description.textContent = project.description || preview?.description || 'Project details to be confirmed.';
+      const note = document.createElement('p');
+      note.className = 'property-card-note';
+      note.textContent = 'Illustrative image and description';
+      const action = document.createElement('a');
+      action.className = 'button button--outline';
+      action.href = url;
+      action.textContent = 'View Project';
+      body.append(title, location, description, note, action);
+      card.append(imageLink, body);
+      return card;
+    });
+    track.replaceChildren(...originals);
 
-    function updateControls() {
-      previous.disabled = cards.scrollLeft < 2;
-      next.disabled = cards.scrollLeft >= cards.scrollWidth - cards.clientWidth - 2;
-    }
-
-    function move(direction) {
-      const first = cards.firstElementChild;
-      const step = first.getBoundingClientRect().width + parseFloat(getComputedStyle(cards).columnGap);
-      const position = Math.round(cards.scrollLeft / step);
-      cards.scrollTo({ left: (position + direction) * step, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-    }
-
-    previous.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
-    cards.addEventListener('scroll', updateControls, { passive: true });
-    new ResizeObserver(updateControls).observe(cards);
-    updateControls();
+    const mobile = window.matchMedia('(max-width: 767px)');
+    let clones = [];
+    let index = 0;
+    let timer;
+    let resumeTimer;
+    let visible = false;
+    let interacting = false;
+    const centerLeft = (card) => card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+    const activeDot = () => dots.querySelectorAll('button').forEach((dot, position) => {
+      dot.setAttribute('aria-current', String(position === index));
+    });
+    const move = (target, smooth = true) => {
+      const card = target < 0 ? clones[0] : target >= originals.length ? clones[1] : originals[target];
+      if (!card) return;
+      track.scrollTo({ left: centerLeft(card), behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant' });
+      activeDot();
+    };
+    const stop = () => { clearInterval(timer); timer = undefined; };
+    const start = () => {
+      stop();
+      if (mobile.matches && !reducedMotion.matches && visible && !interacting && !document.hidden) {
+        timer = setInterval(() => { index += 1; move(index); }, 2000);
+      }
+    };
+    const settle = () => {
+      if (!mobile.matches) return;
+      const step = originals[1].offsetLeft - originals[0].offsetLeft;
+      const raw = Math.round((track.scrollLeft - centerLeft(originals[0])) / step);
+      if (raw >= originals.length) { index = 0; move(index, false); }
+      else if (raw < 0) { index = originals.length - 1; move(index, false); }
+      else index = raw;
+      activeDot();
+    };
+    const reset = () => {
+      stop(); clearTimeout(resumeTimer);
+      clones.forEach((node) => node.remove());
+      clones = [];
+      dots.hidden = !mobile.matches;
+      if (!mobile.matches) { track.scrollLeft = 0; return; }
+      const copy = (node) => { const clone = node.cloneNode(true); clone.setAttribute('aria-hidden', 'true'); clone.inert = true; return clone; };
+      clones = [copy(originals.at(-1)), copy(originals[0])];
+      track.prepend(clones[0]); track.append(clones[1]);
+      index = 0;
+      move(index, false);
+      start();
+    };
+    dots.replaceChildren(...originals.map((card, position) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label', `Show ${card.querySelector('h3').textContent}`);
+      button.addEventListener('click', () => {
+        interacting = true; stop(); clearTimeout(resumeTimer);
+        index = position; move(index); resume();
+      });
+      return button;
+    }));
+    const resume = () => {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { interacting = false; settle(); start(); }, 2500);
+    };
+    track.addEventListener('scrollend', settle);
+    track.addEventListener('pointerdown', () => { interacting = true; stop(); clearTimeout(resumeTimer); });
+    track.addEventListener('pointerup', resume);
+    track.addEventListener('pointercancel', resume);
+    track.addEventListener('focusin', () => { interacting = true; stop(); });
+    track.addEventListener('focusout', resume);
+    document.addEventListener('visibilitychange', start);
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }).observe(track);
+    mobile.addEventListener('change', reset);
+    reducedMotion.addEventListener('change', start);
+    window.addEventListener('resize', () => { if (mobile.matches) move(index, false); });
+    reset();
   }
 
   function selectFromUrl(select, name) {
@@ -989,14 +1086,13 @@
   <div class="container footer-grid">
     <div class="footer-brand">
       <a class="brand brand--footer" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite-official.jpg" alt="Fractobite Realty" width="1240" height="1240"></a>
-      <p class="footer-brand-description">Your trusted real estate advisory partner across Gujarat.</p>
     </div>
-    <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="locations.html">Locations</a><a href="about.html">About Us</a></div>
-    <div><h2>Our Services</h2><a href="properties.html?type=Buy">Residential Homes</a><a href="properties.html?type=Plot">Plots &amp; Land</a><a href="properties.html?type=Villa">Villas &amp; Luxury Homes</a><a href="about.html#about-services-title">Real Estate Advisory</a></div>
+    <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="about.html">About Us</a></div>
+    <div class="footer-services"><h2>Our Services</h2><a class="footer-detail-row" href="properties.html?type=Buy"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Residential Homes</span></a><a class="footer-detail-row" href="properties.html?type=Plot"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><span>Plots &amp; Land</span></a><a class="footer-detail-row" href="properties.html?type=Villa"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span>Villas &amp; Luxury Homes</span></a><a class="footer-detail-row" href="about.html#about-services-title"><svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg><span>Real Estate Advisory</span></a></div>
     <div class="footer-contact"><h2>Get in Touch</h2>
-      <a data-phone data-contact-text href="tel:+919876543210"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 98765 43210</span></a>
-      <a data-email href="mailto:info@fractobiterealty.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>info@fractobiterealty.com</span></a>
-      <p><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> <span>Ahmedabad, Gujarat</span></p>
+      <a data-phone data-contact-text href="tel:+917572955757"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 7572955757</span></a>
+      <a data-email href="mailto:fractobiterealty@gmail.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>fractobiterealty@gmail.com</span></a>
+      <p><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> <span>Bodakdev, Ahmedabad</span></p>
     </div>
     <div><h2>Follow Us</h2><div class="social-links">
       <a href="https://www.instagram.com/fractobiterealty/" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#icon-instagram"/></svg></a>
@@ -1085,13 +1181,90 @@
     });
   }
 
+  function initializePrimeLocationsCarousel() {
+    const track = document.querySelector('.location-options');
+    if (!track) return;
+    const dots = document.querySelector('.location-dots');
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const originals = [...track.children];
+    let timer, resumeTimer, visible = false, interacting = false, index = 0, clones = [];
+    const centerLeft = (card) => card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+    const activeDot = () => dots.querySelectorAll('button').forEach((dot, position) => {
+      dot.setAttribute('aria-current', String(position === index));
+    });
+    const move = (position, smooth = true) => {
+      const card = position < 0 ? clones[0] : position >= originals.length ? clones[1] : originals[position];
+      if (!card) return;
+      track.scrollTo({ left: centerLeft(card), behavior: smooth && !reduced.matches ? 'smooth' : 'instant' });
+      activeDot();
+    };
+    const stop = () => { clearInterval(timer); timer = undefined; };
+    const start = () => {
+      stop();
+      if (mobile.matches && !reduced.matches && visible && !interacting && !document.hidden)
+        timer = setInterval(() => { index += 1; move(index); }, 1500);
+    };
+    const reset = () => {
+      stop(); clearTimeout(resumeTimer);
+      clones.forEach(node => node.remove()); clones = [];
+      dots.hidden = !mobile.matches;
+      if (!mobile.matches) { track.scrollLeft = 0; return; }
+      const clone = node => {
+        const copy = node.cloneNode(true);
+        copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
+        copy.querySelectorAll('[id]').forEach(item => item.removeAttribute('id'));
+        copy.querySelectorAll('[aria-labelledby], [aria-describedby]').forEach(item => {
+          item.removeAttribute('aria-labelledby'); item.removeAttribute('aria-describedby');
+        });
+        return copy;
+      };
+      clones = [clone(originals.at(-1)), clone(originals[0])];
+      track.prepend(clones[0]); track.append(clones[1]);
+      index = 0; move(index, false); start();
+    };
+    const settle = () => {
+      if (!mobile.matches) return;
+      const step = originals[1].offsetLeft - originals[0].offsetLeft;
+      const raw = Math.round((track.scrollLeft - centerLeft(originals[0])) / step);
+      if (raw >= originals.length) { index = 0; move(index, false); }
+      else if (raw < 0) { index = originals.length - 1; move(index, false); }
+      else index = raw;
+      activeDot();
+    };
+    dots.replaceChildren(...originals.map((card, position) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label', `Show ${card.querySelector('strong').textContent}`);
+      button.addEventListener('click', () => {
+        interacting = true; stop(); clearTimeout(resumeTimer);
+        index = position; move(index); resume();
+      });
+      return button;
+    }));
+    track.addEventListener('scrollend', settle);
+    track.addEventListener('pointerdown', () => { interacting = true; stop(); clearTimeout(resumeTimer); });
+    const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { interacting = false; settle(); start(); }, 2500); };
+    track.addEventListener('pointerup', resume);
+    track.addEventListener('pointercancel', resume);
+    track.addEventListener('focusin', () => { interacting = true; stop(); });
+    track.addEventListener('focusout', resume);
+    document.addEventListener('visibilitychange', start);
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }).observe(track);
+    mobile.addEventListener('change', reset);
+    reduced.addEventListener('change', start);
+    window.addEventListener('resize', () => { if (mobile.matches) move(index, false); });
+    reset();
+  }
+
   initializeFooter();
+  initializePrimeLocationsCarousel();
   initializeContactLinks();
   initializeMobileNavigation();
   initializeHeroSlider();
   initializeCatalogCarousel();
   initializePropertySearch();
-  initializeCategoryCarousel();
+  initializeHomepageProjects();
   initializeCatalog();
   initializeDholeraListings();
   initializeMobilePropertySliders();
