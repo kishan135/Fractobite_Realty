@@ -294,6 +294,7 @@
   function initializeHomepageProjects() {
     const track = document.querySelector('#property-cards');
     if (!track) return;
+    const dots = document.querySelector('.property-dots');
     const ids = ['balaji-upvan', 'balaji-upvan-5-star-villa', 'aakruti-green'];
     const originals = ids.map((id) => {
       const project = propertyProjects[id];
@@ -345,28 +346,37 @@
     let resumeTimer;
     let visible = false;
     let interacting = false;
-    const step = () => originals[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap);
+    const centerLeft = (card) => card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+    const activeDot = () => dots.querySelectorAll('button').forEach((dot, position) => {
+      dot.setAttribute('aria-current', String(position === index));
+    });
     const move = (target, smooth = true) => {
-      track.scrollTo({ left: (target + 1) * step(), behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant' });
+      const card = target < 0 ? clones[0] : target >= originals.length ? clones[1] : originals[target];
+      if (!card) return;
+      track.scrollTo({ left: centerLeft(card), behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant' });
+      activeDot();
     };
     const stop = () => { clearInterval(timer); timer = undefined; };
     const start = () => {
       stop();
       if (mobile.matches && !reducedMotion.matches && visible && !interacting && !document.hidden) {
-        timer = setInterval(() => { index += 1; move(index); }, 2500);
+        timer = setInterval(() => { index += 1; move(index); }, 2000);
       }
     };
     const settle = () => {
       if (!mobile.matches) return;
-      const raw = Math.round(track.scrollLeft / step()) - 1;
+      const step = originals[1].offsetLeft - originals[0].offsetLeft;
+      const raw = Math.round((track.scrollLeft - centerLeft(originals[0])) / step);
       if (raw >= originals.length) { index = 0; move(index, false); }
       else if (raw < 0) { index = originals.length - 1; move(index, false); }
       else index = raw;
+      activeDot();
     };
     const reset = () => {
       stop(); clearTimeout(resumeTimer);
       clones.forEach((node) => node.remove());
       clones = [];
+      dots.hidden = !mobile.matches;
       if (!mobile.matches) { track.scrollLeft = 0; return; }
       const copy = (node) => { const clone = node.cloneNode(true); clone.setAttribute('aria-hidden', 'true'); clone.inert = true; return clone; };
       clones = [copy(originals.at(-1)), copy(originals[0])];
@@ -375,6 +385,16 @@
       move(index, false);
       start();
     };
+    dots.replaceChildren(...originals.map((card, position) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label', `Show ${card.querySelector('h3').textContent}`);
+      button.addEventListener('click', () => {
+        interacting = true; stop(); clearTimeout(resumeTimer);
+        index = position; move(index); resume();
+      });
+      return button;
+    }));
     const resume = () => {
       clearTimeout(resumeTimer);
       resumeTimer = setTimeout(() => { interacting = false; settle(); start(); }, 2500);

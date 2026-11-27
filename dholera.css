@@ -58,7 +58,7 @@
 .dholera-grid--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .dholera-grid--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .dholera-card, .dholera-facts, .dholera-chart {
-  border: 1px solid var(--dholera-line);
+  border: 1px solid var(--site-card-border);
   border-radius: 16px;
   background: var(--dholera-surface);
   box-shadow: 0 3px 10px #3820160c;
