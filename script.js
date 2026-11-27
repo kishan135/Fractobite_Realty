@@ -4,7 +4,7 @@
   // Reference contact placeholders. Replace these with verified details before publication.
   const contact = {
     phone: '+91 98765 43210',
-    email: 'info@fractobiterealty.com',
+    email: 'fractobiterealty@gmail.com',
   };
 
   const slides = [
@@ -1091,8 +1091,8 @@
     <div><h2>Our Services</h2><a href="properties.html?type=Buy">Residential Homes</a><a href="properties.html?type=Plot">Plots &amp; Land</a><a href="properties.html?type=Villa">Villas &amp; Luxury Homes</a><a href="about.html#about-services-title">Real Estate Advisory</a></div>
     <div class="footer-contact"><h2>Get in Touch</h2>
       <a data-phone data-contact-text href="tel:+919876543210"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 98765 43210</span></a>
-      <a data-email href="mailto:info@fractobiterealty.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>info@fractobiterealty.com</span></a>
-      <p><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> <span>Ahmedabad, Gujarat</span></p>
+      <a data-email href="mailto:fractobiterealty@gmail.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>fractobiterealty@gmail.com</span></a>
+      <p><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> <span>804, Shivalik Shilp 2, Ahmedabad</span></p>
     </div>
     <div><h2>Follow Us</h2><div class="social-links">
       <a href="https://www.instagram.com/fractobiterealty/" aria-label="Instagram"><svg class="icon" aria-hidden="true"><use href="#icon-instagram"/></svg></a>
