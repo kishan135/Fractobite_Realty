@@ -2143,6 +2143,8 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
   .site-footer .footer-contact span { min-width: 0; overflow-wrap: anywhere; }
   .site-footer .footer-grid > :is(.footer-services, .footer-contact) { align-items: stretch; }
   .site-footer .footer-grid > :is(.footer-services, .footer-contact) h2 { align-self: center; margin-bottom: 15px; font-size: 19px; }
+  .site-footer .footer-grid > div:last-child { padding-bottom: 0; }
+  .site-footer .footer-bottom { margin-top: 24px; }
   .site-footer .footer-grid > .footer-services > .footer-detail-row,
   .site-footer .footer-grid > .footer-contact > :is(a, p) {
     display: grid;
