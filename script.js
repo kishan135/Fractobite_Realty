@@ -1088,7 +1088,7 @@
       <a class="brand brand--footer" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite-official.jpg" alt="Fractobite Realty" width="1240" height="1240"></a>
     </div>
     <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="about.html">About Us</a></div>
-    <div><h2>Our Services</h2><a href="properties.html?type=Buy">Residential Homes</a><a href="properties.html?type=Plot">Plots &amp; Land</a><a href="properties.html?type=Villa">Villas &amp; Luxury Homes</a><a href="about.html#about-services-title">Real Estate Advisory</a></div>
+    <div class="footer-services"><h2>Our Services</h2><a class="footer-detail-row" href="properties.html?type=Buy"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Residential Homes</span></a><a class="footer-detail-row" href="properties.html?type=Plot"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><span>Plots &amp; Land</span></a><a class="footer-detail-row" href="properties.html?type=Villa"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span>Villas &amp; Luxury Homes</span></a><a class="footer-detail-row" href="about.html#about-services-title"><svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg><span>Real Estate Advisory</span></a></div>
     <div class="footer-contact"><h2>Get in Touch</h2>
       <a data-phone data-contact-text href="tel:+917572955757"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 7572955757</span></a>
       <a data-email href="mailto:fractobiterealty@gmail.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>fractobiterealty@gmail.com</span></a>

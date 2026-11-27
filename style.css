@@ -552,6 +552,7 @@ p + p { margin-block-start: var(--text-gap-small); }
 .footer-grid h2 { color: var(--brand-orange); font-size: var(--text-footer-heading); line-height: var(--subheading-line-height); margin-bottom: 12px; }
 .footer-grid a:not(.brand, .social-links a), .footer-contact p { display: block; margin-top: 10px; overflow-wrap: anywhere; }
 .footer-grid a:not(.brand, .social-links a):hover { color: var(--brand-orange); text-decoration: underline; }
+.footer-services .icon { display: none; }
 .footer-contact :is(a, p):not(.brand) { display: flex; align-items: baseline; gap: 8px; max-width: 100%; }
 .footer-contact span { min-width: 0; }
 .footer-contact .icon { color: var(--brand-orange); align-self: center; }
@@ -2140,4 +2141,42 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
   .site-footer .footer-grid > .footer-contact > :is(a, p) + :is(a, p) { margin-top: 4px; }
   .site-footer .footer-contact .icon { width: 19px; height: 19px; justify-self: center; }
   .site-footer .footer-contact span { min-width: 0; overflow-wrap: anywhere; }
+  .site-footer .footer-grid > :is(.footer-services, .footer-contact) { align-items: stretch; }
+  .site-footer .footer-grid > :is(.footer-services, .footer-contact) h2 { align-self: center; margin-bottom: 15px; font-size: 19px; }
+  .site-footer .footer-grid > .footer-services > .footer-detail-row,
+  .site-footer .footer-grid > .footer-contact > :is(a, p) {
+    display: grid;
+    grid-template-columns: 24px 1px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 18px;
+    width: min(100%, 320px);
+    min-height: 24px;
+    margin-inline: auto;
+    padding: 0;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.55;
+  }
+  .site-footer .footer-grid > .footer-services > .footer-detail-row::before,
+  .site-footer .footer-grid > .footer-contact > :is(a, p)::before {
+    content: '';
+    grid-column: 2;
+    grid-row: 1;
+    width: 1px;
+    height: 22px;
+    background: var(--brand-orange);
+  }
+  .site-footer .footer-grid > .footer-services > .footer-detail-row + .footer-detail-row,
+  .site-footer .footer-grid > .footer-contact > :is(a, p) + :is(a, p) { margin-top: 16px; }
+  .site-footer .footer-grid > :is(.footer-services, .footer-contact) :is(a, p) > .icon {
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    width: 20px;
+    height: 20px;
+    justify-self: center;
+    color: var(--brand-orange);
+  }
+  .site-footer .footer-grid > :is(.footer-services, .footer-contact) :is(a, p) > span { grid-column: 3; grid-row: 1; min-width: 0; overflow-wrap: anywhere; }
 }
