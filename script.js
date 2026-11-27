@@ -482,9 +482,9 @@
     const type = selectFromUrl(form.elements.type, 'type');
     const location = selectFromUrl(form.elements.location, 'location');
     const market = location && location !== 'Across Gujarat' ? location : '';
-    const categories = { Plot: 'plots', Villa: 'villas', Buy: 'residential' };
+    const categories = { Plot: 'plots', Villa: 'villas', Studio: 'studios' };
     const projects = Object.entries(propertyProjects).filter(([, project]) =>
-      project.name && (SHOW_DEMO_PROJECT_DETAILS || !project.isDemo));
+      project.name && project.category !== 'residential' && (SHOW_DEMO_PROJECT_DETAILS || !project.isDemo));
     const featured = document.querySelector('#featured-projects');
     const featuredTemplate = document.querySelector('#featured-card-template');
     const offerTemplate = document.querySelector('#offer-card-template');
@@ -1088,7 +1088,7 @@
       <a class="brand brand--footer" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite-official.jpg" alt="Fractobite Realty" width="1240" height="1240"></a>
     </div>
     <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="about.html">About Us</a></div>
-    <div class="footer-services"><h2>Our Services</h2><a class="footer-detail-row" href="properties.html?type=Buy"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>Residential Homes</span></a><a class="footer-detail-row" href="properties.html?type=Plot"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><span>Plots &amp; Land</span></a><a class="footer-detail-row" href="properties.html?type=Villa"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span>Villas &amp; Luxury Homes</span></a><a class="footer-detail-row" href="about.html#about-services-title"><svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg><span>Real Estate Advisory</span></a></div>
+    <div class="footer-services"><h2>Our Services</h2><a class="footer-detail-row" href="properties.html?type=Plot"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg><span>Plots &amp; Land</span></a><a class="footer-detail-row" href="properties.html?type=Villa"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span>Villas &amp; Luxury Homes</span></a><a class="footer-detail-row" href="properties.html?type=Studio"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span>Studios</span></a><a class="footer-detail-row" href="about.html#about-services-title"><svg class="icon" aria-hidden="true"><use href="#icon-hand"/></svg><span>Real Estate Advisory</span></a></div>
     <div class="footer-contact"><h2>Get in Touch</h2>
       <a data-phone data-contact-text href="tel:+917572955757"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 7572955757</span></a>
       <a data-email href="mailto:fractobiterealty@gmail.com"><svg class="icon" aria-hidden="true"><use href="#icon-mail"/></svg> <span>fractobiterealty@gmail.com</span></a>

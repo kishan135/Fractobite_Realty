@@ -31,6 +31,15 @@ const projectDemoDetails = (() => {
       ['about/skyline-3', 'Contemporary apartment architecture'],
       ['projects/garden', 'Community garden and walking path'],
     ],
+    studios: [
+      ['about/skyline-3', 'Contemporary apartment architecture'],
+      ['properties/residential', 'Modern apartment buildings at sunset'],
+      ['about/skyline-2', 'Modern urban apartment towers'],
+      ['properties/residential-hero', 'Apartment community exterior'],
+      ['about/skyline-1', 'Contemporary apartment towers'],
+      ['projects/garden', 'Landscaped community garden'],
+      ['locations/growth-corridors', 'Urban buildings beside landscaped grounds'],
+    ],
   };
 
   const features = {
@@ -55,6 +64,13 @@ const projectDemoDetails = (() => {
         ['leaf', 'Landscaped Gardens'], ['road', 'Parking Facilities'], ['shield', 'Controlled Entry']],
       sizeLabel: 'Unit Area',
     },
+    studios: {
+      highlights: [['building', 'Studio Living Concept'], ['home', 'Flexible Interior Layout'],
+        ['road', 'Urban Access Concept'], ['layers', 'Shared Spaces Concept']],
+      amenities: [['building', 'Studio Layout'], ['leaf', 'Shared Open Space'], ['road', 'Pedestrian Access'],
+        ['lamp', 'Common Lighting'], ['shield', 'Entry Concept'], ['home', 'Flexible Living']],
+      sizeLabel: 'Studio Size',
+    },
   };
 
   function sample({ category, photoStart, location, description, overview, propertyType, sizes, status, possession, distances }) {
@@ -76,9 +92,9 @@ const projectDemoDetails = (() => {
       overviewImage: images[3],
       gallery: images.slice(1),
       specifications: { sizeLabel, sizes, status, possession },
-      connectivity: ['Major road', 'Railway station', 'Airport', 'Town centre'].map((label, index) => ({
+      connectivity: distances ? ['Major road', 'Railway station', 'Airport', 'Town centre'].map((label, index) => ({
         label, detail: `Approx. ${distances[index]} km`, glyph: ['road', 'building', 'arrow', 'pin'][index],
-      })),
+      })) : [],
     };
   }
 
@@ -155,6 +171,24 @@ const projectDemoDetails = (() => {
       overview: 'Greenview arranges sample apartment buildings so living rooms and balconies can look towards planted courtyards rather than the service approach. A continuous path links the entrances, play space, and community room without requiring residents to cross the main parking aisle. The example two-bedroom homes make practical use of smaller footprints, while selected three-bedroom layouts add a flexible room for work or visiting family. Landscape edges create places to sit as well as a buffer around pedestrian routes. The concept helps demonstrate how shared greenery and accessible circulation can shape everyday apartment living.',
       propertyType: '2 & 3 BHK apartments', sizes: '1,040–1,730 sq. ft.', status: 'Site development', possession: 'Q4 2028', distances: [5, 11, 25, 9],
     }),
+    'urban-nest-studios': sample({
+      category: 'studios', photoStart: 0, location: 'Location to be confirmed',
+      description: 'Illustrative compact studio living concept with flexible open-plan space.',
+      overview: 'Urban Nest Studios is a demo concept illustrating an open-plan studio layout. Images and features are illustrative; the project location, availability, and specifications have not been verified.',
+      propertyType: 'Studio apartment concept', sizes: 'To be confirmed', status: 'Demo concept', possession: 'To be confirmed', distances: null,
+    }),
+    'metro-loft-studios': sample({
+      category: 'studios', photoStart: 1, location: 'Location to be confirmed',
+      description: 'Illustrative modern studio concept for streamlined urban living.',
+      overview: 'Metro Loft Studios is a demo concept showing a compact apartment approach. Images and features are illustrative; no location, availability, or project specifications are confirmed.',
+      propertyType: 'Studio apartment concept', sizes: 'To be confirmed', status: 'Demo concept', possession: 'To be confirmed', distances: null,
+    }),
+    'skyline-studio-collection': sample({
+      category: 'studios', photoStart: 2, location: 'Location to be confirmed',
+      description: 'Illustrative studio apartment concept with a contemporary city setting.',
+      overview: 'Skyline Studio Collection is a demo concept for modern studio apartments. Images and features are illustrative; the project location, availability, and specifications await confirmation.',
+      propertyType: 'Studio apartment concept', sizes: 'To be confirmed', status: 'Demo concept', possession: 'To be confirmed', distances: null,
+    }),
     ...Object.fromEntries([
       ['dholera-greenfield-plots', 'properties/plots', 'Illustrative aerial view of plotted land'],
       ['dholera-industrial-park', 'locations/dholera-industrial-concept', 'Illustrative industrial district concept'],
@@ -200,6 +234,12 @@ const propertyProjects = (() => {
       photo('about/skyline-1', 'Illustrative high-rise residential skyline')),
     'greenview-apartments': demo('Greenview Apartments', 'residential', 'Residential apartments',
       photo('locations/growth-corridors', 'Illustrative residential towers beside landscaped grounds')),
+    'urban-nest-studios': demo('Urban Nest Studios', 'studios', 'Studio apartment concept',
+      photo('about/skyline-3', 'Illustrative modern apartment architecture')),
+    'metro-loft-studios': demo('Metro Loft Studios', 'studios', 'Studio apartment concept',
+      photo('properties/residential', 'Illustrative contemporary apartment buildings')),
+    'skyline-studio-collection': demo('Skyline Studio Collection', 'studios', 'Studio apartment concept',
+      photo('about/skyline-2', 'Illustrative urban apartment towers')),
   };
 
   const dholeraDemoProjects = {
