@@ -1084,7 +1084,54 @@
     });
   }
 
+  function initializePrimeLocationsCarousel() {
+    const track = document.querySelector('.location-options');
+    if (!track) return;
+    const mobile = window.matchMedia('(max-width: 767px)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const originals = [...track.children];
+    let timer, resumeTimer, visible = true, interacting = false, index = 0, clones = [];
+    const step = () => originals[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap || 0);
+    const move = (position, smooth = true) => track.scrollTo({ left: (position + 1) * step(), behavior: smooth ? 'smooth' : 'instant' });
+    const stop = () => { clearInterval(timer); timer = undefined; };
+    const start = () => {
+      stop();
+      if (mobile.matches && !reduced.matches && visible && !interacting && !document.hidden)
+        timer = setInterval(() => { index += 1; move(index); }, 1500);
+    };
+    const reset = () => {
+      stop(); clearTimeout(resumeTimer);
+      clones.forEach(node => node.remove()); clones = [];
+      if (!mobile.matches) { track.scrollLeft = 0; return; }
+      const clone = node => { const copy = node.cloneNode(true); copy.setAttribute('aria-hidden', 'true'); copy.inert = true; return copy; };
+      clones = [clone(originals.at(-1)), clone(originals[0])];
+      track.prepend(clones[0]); track.append(clones[1]);
+      index = 0; move(index, false); start();
+    };
+    const settle = () => {
+      if (!mobile.matches) return;
+      const raw = Math.round(track.scrollLeft / step()) - 1;
+      if (raw >= originals.length) { index = 0; move(index, false); }
+      else if (raw < 0) { index = originals.length - 1; move(index, false); }
+      else index = raw;
+    };
+    track.addEventListener('scrollend', settle);
+    track.addEventListener('pointerdown', () => { interacting = true; stop(); clearTimeout(resumeTimer); });
+    const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { interacting = false; settle(); start(); }, 2500); };
+    track.addEventListener('pointerup', resume);
+    track.addEventListener('pointercancel', resume);
+    track.addEventListener('focusin', () => { interacting = true; stop(); });
+    track.addEventListener('focusout', resume);
+    document.addEventListener('visibilitychange', start);
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }).observe(track);
+    mobile.addEventListener('change', reset);
+    reduced.addEventListener('change', start);
+    window.addEventListener('resize', () => { if (mobile.matches) move(index, false); });
+    reset();
+  }
+
   initializeFooter();
+  initializePrimeLocationsCarousel();
   initializeContactLinks();
   initializeMobileNavigation();
   initializeHeroSlider();

@@ -2050,3 +2050,27 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
 @media (hover: none) and (pointer: coarse) {
   .location-card .circle { background: #fff; color: var(--brand-orange); }
 }
+
+@media (max-width: 767px) {
+  .prime-locations-copy { text-align: center; padding-inline: 4px; }
+  .prime-locations .eyebrow { margin-bottom: 10px; }
+  .prime-locations-copy > p:not(.eyebrow) { max-width: 36ch; margin: 12px auto 0; }
+  .prime-locations-copy > .button { display: none; }
+  .location-options {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x pan-y;
+  }
+  .location-options::-webkit-scrollbar { display: none; }
+  .location-options > li { flex: 0 0 min(88%, 360px); scroll-snap-align: start; }
+  .location-card { min-height: 0; }
+  .location-card img { height: 185px; aspect-ratio: auto; object-fit: cover; }
+  .location-card-body { grid-template-columns: 20px minmax(0, 1fr); grid-template-rows: auto auto; min-height: 92px; align-content: center; padding: 14px 16px; }
+  .location-card strong { grid-area: 1 / 2; font-size: 18px; }
+  .location-card small { grid-area: 2 / 2; font-size: 14px; }
+  .location-card .circle { display: none; }
+}
