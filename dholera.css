@@ -256,7 +256,7 @@ html:has(.dholera-video-dialog[open]) { overflow: hidden; }
 }
 @media (max-width: 767px) {
   #main-content .dholera-info.dholera-rail > .dholera-grid, #official-resources > .dholera-grid { grid-template-columns: minmax(0, 1fr); }
-  .dholera-page .contact-cta--compact { padding: clamp(24px, 5vw, 30px); }
+  .dholera-page .contact-cta--compact { padding: 30px 23px; }
 }
 @media (min-width: 768px) and (max-width: 1023px) {
   #opportunities #dholera-listings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
