@@ -82,6 +82,32 @@
           <button class="hero-autoplay" type="button" aria-label="Pause automatic villa photos" hidden>Ⅱ</button>
         </div>
       </div>
+      <form class="property-search" id="property-search" action="properties.html" method="get">
+        <input type="hidden" name="type" value="Buy">
+        <div class="search-tabs" role="group" aria-label="Property type">
+          <button type="button" data-type="Buy" aria-pressed="true"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg> Buy</button>
+          <button type="button" data-type="Plot" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-layers"/></svg> Plot</button>
+          <button type="button" data-type="Villa" aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg> Villa</button>
+        </div>
+        <div class="search-controls">
+          <label class="search-location">
+            <span class="dropdown">
+              <svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>
+              <select name="location" aria-label="Property location" required>
+                <option value="">Enter Location (e.g. Ahmedabad)</option>
+                <option>Ahmedabad</option>
+                <option>Dholera</option>
+                <option>GIFT City</option>
+                <option>Gandhinagar</option>
+                <option>Surat</option>
+                <option>Vadodara</option>
+                <option>Across Gujarat</option>
+              </select>
+            </span>
+          </label>
+          <button class="button search-submit" type="submit" aria-label="Search properties"><svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg></button>
+        </div>
+      </form>
     </div>
   </section>
 

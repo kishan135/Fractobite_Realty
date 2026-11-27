@@ -225,12 +225,13 @@ p + p { margin-block-start: var(--text-gap-small); }
 /* 06. HERO */
 .hero, .dholera-hero {
   --hero-copy-width: min(36.96vw, 541.8px);
-  --hero-column-gap: clamp(32px, 3vw, 40px);
+  /* Account for the homepage search panel's 96% width when setting clearance. */
+  --hero-column-gap: calc(clamp(32px, 3vw, 40px) - var(--hero-copy-width) * .04);
 }
 .hero-inner {
   display: grid;
   grid-template-columns: var(--hero-copy-width) minmax(0, 1fr);
-  grid-template-areas: 'copy visual';
+  grid-template-areas: 'copy visual' 'search visual';
   column-gap: var(--hero-column-gap);
   align-content: center;
   min-height: clamp(365px, 35.8vw, 515px);
@@ -279,6 +280,17 @@ p + p { margin-block-start: var(--text-gap-small); }
 .hero-dots .hero-autoplay { width: 28px; min-height: 28px; margin-left: 5px; border: 1px solid #ffffffb3; border-radius: 50%; background: #151a26d9; color: #fff; font-size: .72rem; }
 .hero-autoplay::after { display: none; }
 .hero-dots .hero-autoplay[hidden] { display: none; }
+
+/* 08. SEARCH INTERFACE */
+.property-search { grid-area: search; position: relative; z-index: 1; align-self: start; width: 96%; margin-top: var(--text-gap-section); border-radius: 13px; background: #fff; box-shadow: 0 10px 27px #46302118; }
+.search-tabs { display: grid; grid-template-columns: repeat(3, 1fr); }
+.search-tabs button { display: flex; align-items: center; justify-content: center; gap: .55em; border: 0; border-radius: 12px 12px 0 0; background: linear-gradient(#fff, #f4f1f0); padding: .88em .15em; font-size: var(--text-button); line-height: var(--button-line-height); font-weight: var(--weight-bold); }
+.search-tabs .icon { font-size: 1.5em; }
+.search-tabs button[aria-pressed="true"] { color: #fff; background: var(--brand-orange); }
+.search-controls { display: flex; gap: var(--text-gap-medium); padding: clamp(8px, 1vw, 14px); }
+.search-location { flex: 1; min-width: 0; }
+.search-submit { border-radius: 8px; padding: .55em 1.1em; }
+.search-submit .icon { font-size: 1.4em; }
 
 /* 09. BENEFITS STRIP */
 :is(.benefits, .prime-locations) {
@@ -686,13 +698,14 @@ p + p { margin-block-start: var(--text-gap-small); }
 
   .hero {
     --mobile-hero-gap: clamp(12px, 3.6vw, 24px);
+    --mobile-hero-rounding: clamp(16px, 4.2vw, 28px);
   }
 
   .hero-inner {
     width: 96%;
     min-height: 0;
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'copy' 'visual';
+    grid-template-areas: 'copy' 'visual' 'search';
     row-gap: var(--mobile-hero-gap);
     padding-block: clamp(17px, 5vw, 29px) 0;
   }
@@ -718,6 +731,22 @@ p + p { margin-block-start: var(--text-gap-small); }
   .hero-dots button[aria-pressed="true"]::after { box-shadow: 0 0 0 1px #fff; background: var(--brand-orange); }
   .hero-dots .hero-autoplay { width: 25px; min-height: 25px; margin-left: 3px; }
 
+  .property-search { width: 94.5%; margin: 0 auto; border-radius: var(--mobile-hero-rounding); }
+  .search-tabs { border-radius: var(--mobile-hero-rounding) var(--mobile-hero-rounding) 0 0; background: #f7f5f4; }
+  .search-tabs button {
+    min-height: 42px;
+    border-radius: 0;
+    gap: clamp(4px, 1.5vw, 10px);
+    font-size: var(--text-button);
+  }
+  .search-tabs button + button { border-left: 1px solid #ebe7e5; }
+  .search-tabs button:first-child { border-top-left-radius: var(--mobile-hero-rounding); }
+  .search-tabs button:last-child { border-top-right-radius: var(--mobile-hero-rounding); }
+  .search-tabs button[aria-pressed="true"] { background: var(--brand-orange); border-top-left-radius: 12px; border-top-right-radius: 12px; }
+  .search-tabs button:first-child[aria-pressed="true"] { border-top-left-radius: var(--mobile-hero-rounding); }
+  .search-tabs button:last-child[aria-pressed="true"] { border-top-right-radius: var(--mobile-hero-rounding); }
+  .search-controls { gap: clamp(7px, 2.2vw, 13px); padding: clamp(8px, 2vw, 13px); }
+  .search-submit { min-width: 44px; min-height: 44px; border-radius: 9px; padding: 0; font-size: var(--text-button); }
 }
 
 /* Remaining mobile layout */
@@ -1923,7 +1952,7 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
     .site-nav.is-open { animation: motion-rise var(--motion-duration) var(--motion-ease); }
   }
 
-  :is(.button, .circle, .site-nav a, .location-card, .phone-button, .menu-button, .social-links a, .social-links button, .text-link, summary) {
+  :is(.button, .circle, .search-tabs button, .site-nav a, .location-card, .phone-button, .menu-button, .social-links a, .social-links button, .text-link, summary) {
     transition-property: color, background-color, border-color, box-shadow, filter;
     transition-duration: var(--motion-duration);
     transition-timing-function: var(--motion-ease);
@@ -2082,7 +2111,6 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
   .site-footer .footer-brand { margin: 0; }
   .site-footer .brand--footer { width: min(100%, 200px); }
   .site-footer .footer-grid h2 { margin-bottom: 9px; }
-  .site-footer .footer-grid > div:last-child h2 { margin-bottom: 22px; }
   .site-footer .footer-grid a:not(.brand, .social-links a),
   .site-footer .footer-contact p { margin-top: 9px; }
   .site-footer .footer-contact :is(a, p) { justify-content: center; text-align: center; }
