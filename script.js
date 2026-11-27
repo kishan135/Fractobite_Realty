@@ -989,9 +989,8 @@
   <div class="container footer-grid">
     <div class="footer-brand">
       <a class="brand brand--footer" href="index.html" aria-label="Fractobite Realty home"><img src="assets/logo/fractobite-official.jpg" alt="Fractobite Realty" width="1240" height="1240"></a>
-      <p class="footer-brand-description">Your trusted real estate advisory partner across Gujarat.</p>
     </div>
-    <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="locations.html">Locations</a><a href="about.html">About Us</a></div>
+    <div><h2>Quick Links</h2><a href="index.html">Home</a><a href="properties.html">Properties</a><a href="about.html">About Us</a></div>
     <div><h2>Our Services</h2><a href="properties.html?type=Buy">Residential Homes</a><a href="properties.html?type=Plot">Plots &amp; Land</a><a href="properties.html?type=Villa">Villas &amp; Luxury Homes</a><a href="about.html#about-services-title">Real Estate Advisory</a></div>
     <div class="footer-contact"><h2>Get in Touch</h2>
       <a data-phone data-contact-text href="tel:+919876543210"><svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg> <span>+91 98765 43210</span></a>
