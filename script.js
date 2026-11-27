@@ -1164,12 +1164,21 @@
   function initializePrimeLocationsCarousel() {
     const track = document.querySelector('.location-options');
     if (!track) return;
+    const dots = document.querySelector('.location-dots');
     const mobile = window.matchMedia('(max-width: 767px)');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const originals = [...track.children];
-    let timer, resumeTimer, visible = true, interacting = false, index = 0, clones = [];
-    const step = () => originals[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap || 0);
-    const move = (position, smooth = true) => track.scrollTo({ left: (position + 1) * step(), behavior: smooth ? 'smooth' : 'instant' });
+    let timer, resumeTimer, visible = false, interacting = false, index = 0, clones = [];
+    const centerLeft = (card) => card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+    const activeDot = () => dots.querySelectorAll('button').forEach((dot, position) => {
+      dot.setAttribute('aria-current', String(position === index));
+    });
+    const move = (position, smooth = true) => {
+      const card = position < 0 ? clones[0] : position >= originals.length ? clones[1] : originals[position];
+      if (!card) return;
+      track.scrollTo({ left: centerLeft(card), behavior: smooth && !reduced.matches ? 'smooth' : 'instant' });
+      activeDot();
+    };
     const stop = () => { clearInterval(timer); timer = undefined; };
     const start = () => {
       stop();
@@ -1179,19 +1188,40 @@
     const reset = () => {
       stop(); clearTimeout(resumeTimer);
       clones.forEach(node => node.remove()); clones = [];
+      dots.hidden = !mobile.matches;
       if (!mobile.matches) { track.scrollLeft = 0; return; }
-      const clone = node => { const copy = node.cloneNode(true); copy.setAttribute('aria-hidden', 'true'); copy.inert = true; return copy; };
+      const clone = node => {
+        const copy = node.cloneNode(true);
+        copy.setAttribute('aria-hidden', 'true'); copy.inert = true;
+        copy.querySelectorAll('[id]').forEach(item => item.removeAttribute('id'));
+        copy.querySelectorAll('[aria-labelledby], [aria-describedby]').forEach(item => {
+          item.removeAttribute('aria-labelledby'); item.removeAttribute('aria-describedby');
+        });
+        return copy;
+      };
       clones = [clone(originals.at(-1)), clone(originals[0])];
       track.prepend(clones[0]); track.append(clones[1]);
       index = 0; move(index, false); start();
     };
     const settle = () => {
       if (!mobile.matches) return;
-      const raw = Math.round(track.scrollLeft / step()) - 1;
+      const step = originals[1].offsetLeft - originals[0].offsetLeft;
+      const raw = Math.round((track.scrollLeft - centerLeft(originals[0])) / step);
       if (raw >= originals.length) { index = 0; move(index, false); }
       else if (raw < 0) { index = originals.length - 1; move(index, false); }
       else index = raw;
+      activeDot();
     };
+    dots.replaceChildren(...originals.map((card, position) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label', `Show ${card.querySelector('strong').textContent}`);
+      button.addEventListener('click', () => {
+        interacting = true; stop(); clearTimeout(resumeTimer);
+        index = position; move(index); resume();
+      });
+      return button;
+    }));
     track.addEventListener('scrollend', settle);
     track.addEventListener('pointerdown', () => { interacting = true; stop(); clearTimeout(resumeTimer); });
     const resume = () => { clearTimeout(resumeTimer); resumeTimer = setTimeout(() => { interacting = false; settle(); start(); }, 2500); };

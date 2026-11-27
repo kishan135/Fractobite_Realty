@@ -2072,3 +2072,55 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
   .location-card small { grid-area: 2 / 2; font-size: 14px; }
   .location-card .circle { display: none; }
 }
+
+/* Mobile Prime Locations: center each card with matching previews on both sides. */
+@media (max-width: 767px) {
+  .prime-locations .location-options {
+    gap: 12px;
+    scroll-padding-inline: 11%;
+    scroll-behavior: smooth;
+  }
+  .prime-locations .location-options > li {
+    flex: 0 0 78%;
+    scroll-snap-align: center;
+  }
+  .prime-locations .location-card { border-radius: 20px; }
+  .prime-locations .location-card-body { min-height: 100px; }
+  .prime-locations .location-dots:not([hidden]) {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    margin-top: -3px;
+  }
+  .location-dots button {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+  .location-dots button::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 99px;
+    background: #c9c4c1;
+  }
+  .location-dots button[aria-current="true"]::after { width: 18px; background: var(--brand-orange); }
+
+  .site-footer::before { display: none; }
+  .site-footer .footer-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+  .site-footer .footer-grid > div { grid-column: 1; width: 100%; }
+  .site-footer .footer-grid > div:nth-child(2) { display: none; }
+  .site-footer .footer-brand { margin: 0; }
+  .site-footer .brand--footer { width: min(100%, 200px); }
+  .site-footer .footer-grid h2 { margin-bottom: 9px; }
+  .site-footer .footer-grid a:not(.brand, .social-links a),
+  .site-footer .footer-contact p { margin-top: 9px; }
+  .site-footer .footer-contact :is(a, p) { justify-content: center; text-align: center; }
+  .site-footer .footer-bottom { margin-top: 30px; }
+}
