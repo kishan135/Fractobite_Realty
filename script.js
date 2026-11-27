@@ -291,29 +291,106 @@
     });
   }
 
-  function initializeCategoryCarousel() {
-    const cards = document.querySelector('.property-cards');
-    if (!cards) return;
-    const previous = document.querySelector('.previous');
-    const next = document.querySelector('.next');
+  function initializeHomepageProjects() {
+    const track = document.querySelector('#property-cards');
+    if (!track) return;
+    const ids = ['balaji-upvan', 'balaji-upvan-5-star-villa', 'aakruti-green'];
+    const originals = ids.map((id) => {
+      const project = propertyProjects[id];
+      const preview = projectDemoDetails[id];
+      const url = projectDetailUrl(id);
+      const card = document.createElement('article');
+      card.className = 'property-card';
+      const imageLink = document.createElement('a');
+      imageLink.className = 'property-card-image-link';
+      imageLink.href = url;
+      imageLink.setAttribute('aria-label', `View Project: ${project.name}`);
+      const image = document.createElement('img');
+      image.className = 'property-image';
+      image.src = project.cardImage.src;
+      image.alt = project.cardImage.alt;
+      image.loading = 'lazy';
+      imageLink.append(image);
+      const body = document.createElement('div');
+      body.className = 'property-card-content';
+      const title = document.createElement('h3');
+      const titleLink = document.createElement('a');
+      titleLink.href = url;
+      titleLink.textContent = project.name;
+      title.append(titleLink);
+      const location = document.createElement('p');
+      location.className = 'property-card-location';
+      location.innerHTML = '<svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>';
+      location.append(document.createTextNode(project.location || 'Location to be confirmed'));
+      const description = document.createElement('p');
+      description.className = 'property-card-description';
+      description.textContent = project.description || preview?.description || 'Project details to be confirmed.';
+      const note = document.createElement('p');
+      note.className = 'property-card-note';
+      note.textContent = 'Illustrative image and description';
+      const action = document.createElement('a');
+      action.className = 'button button--outline';
+      action.href = url;
+      action.textContent = 'View Project';
+      body.append(title, location, description, note, action);
+      card.append(imageLink, body);
+      return card;
+    });
+    track.replaceChildren(...originals);
 
-    function updateControls() {
-      previous.disabled = cards.scrollLeft < 2;
-      next.disabled = cards.scrollLeft >= cards.scrollWidth - cards.clientWidth - 2;
-    }
-
-    function move(direction) {
-      const first = cards.firstElementChild;
-      const step = first.getBoundingClientRect().width + parseFloat(getComputedStyle(cards).columnGap);
-      const position = Math.round(cards.scrollLeft / step);
-      cards.scrollTo({ left: (position + direction) * step, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-    }
-
-    previous.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
-    cards.addEventListener('scroll', updateControls, { passive: true });
-    new ResizeObserver(updateControls).observe(cards);
-    updateControls();
+    const mobile = window.matchMedia('(max-width: 767px)');
+    let clones = [];
+    let index = 0;
+    let timer;
+    let resumeTimer;
+    let visible = false;
+    let interacting = false;
+    const step = () => originals[0].getBoundingClientRect().width + parseFloat(getComputedStyle(track).gap);
+    const move = (target, smooth = true) => {
+      track.scrollTo({ left: (target + 1) * step(), behavior: smooth && !reducedMotion.matches ? 'smooth' : 'instant' });
+    };
+    const stop = () => { clearInterval(timer); timer = undefined; };
+    const start = () => {
+      stop();
+      if (mobile.matches && !reducedMotion.matches && visible && !interacting && !document.hidden) {
+        timer = setInterval(() => { index += 1; move(index); }, 2500);
+      }
+    };
+    const settle = () => {
+      if (!mobile.matches) return;
+      const raw = Math.round(track.scrollLeft / step()) - 1;
+      if (raw >= originals.length) { index = 0; move(index, false); }
+      else if (raw < 0) { index = originals.length - 1; move(index, false); }
+      else index = raw;
+    };
+    const reset = () => {
+      stop(); clearTimeout(resumeTimer);
+      clones.forEach((node) => node.remove());
+      clones = [];
+      if (!mobile.matches) { track.scrollLeft = 0; return; }
+      const copy = (node) => { const clone = node.cloneNode(true); clone.setAttribute('aria-hidden', 'true'); clone.inert = true; return clone; };
+      clones = [copy(originals.at(-1)), copy(originals[0])];
+      track.prepend(clones[0]); track.append(clones[1]);
+      index = 0;
+      move(index, false);
+      start();
+    };
+    const resume = () => {
+      clearTimeout(resumeTimer);
+      resumeTimer = setTimeout(() => { interacting = false; settle(); start(); }, 2500);
+    };
+    track.addEventListener('scrollend', settle);
+    track.addEventListener('pointerdown', () => { interacting = true; stop(); clearTimeout(resumeTimer); });
+    track.addEventListener('pointerup', resume);
+    track.addEventListener('pointercancel', resume);
+    track.addEventListener('focusin', () => { interacting = true; stop(); });
+    track.addEventListener('focusout', resume);
+    document.addEventListener('visibilitychange', start);
+    new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; start(); }).observe(track);
+    mobile.addEventListener('change', reset);
+    reducedMotion.addEventListener('change', start);
+    window.addEventListener('resize', () => { if (mobile.matches) move(index, false); });
+    reset();
   }
 
   function selectFromUrl(select, name) {
@@ -1137,7 +1214,7 @@
   initializeHeroSlider();
   initializeCatalogCarousel();
   initializePropertySearch();
-  initializeCategoryCarousel();
+  initializeHomepageProjects();
   initializeCatalog();
   initializeDholeraListings();
   initializeMobilePropertySliders();
