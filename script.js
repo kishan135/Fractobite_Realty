@@ -120,6 +120,8 @@
         }
 
         image.src = incoming.src;
+        image.removeAttribute('srcset');
+        image.removeAttribute('sizes');
         image.alt = slides[index];
         activeSlide = index;
         indicators.forEach((item, position) => item.setAttribute('aria-pressed', String(position === index)));

@@ -1,32 +1,32 @@
 /* 01. LOCAL FONTS */
-/* Preloaded in each page head. Hold glyph paint briefly while Poppins loads. */
+/* Preloaded in each page head. Show fallback glyphs while Poppins loads. */
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-400.woff2') format('woff2');
   font-style: normal;
   font-weight: 400;
-  font-display: block;
+  font-display: swap;
 }
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-500.woff2') format('woff2');
   font-style: normal;
   font-weight: 500;
-  font-display: block;
+  font-display: swap;
 }
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-600.woff2') format('woff2');
   font-style: normal;
   font-weight: 600;
-  font-display: block;
+  font-display: swap;
 }
 @font-face {
   font-family: Poppins;
   src: url('assets/fonts/poppins-700.woff2') format('woff2');
   font-style: normal;
   font-weight: 700;
-  font-display: block;
+  font-display: swap;
 }
 
 /* Approximate Poppins metrics while the browser reserves space for its glyphs. */
@@ -1923,7 +1923,7 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
   /* Intro text rises with the page and fades in as a short sequence. */
   .motion-intro:not(:focus-within) > :is(h1, p) {
     animation: motion-fade var(--motion-duration) var(--motion-ease)
-      calc(var(--motion-order, 0) * var(--motion-stagger)) backwards;
+      calc(var(--motion-order, 0) * var(--motion-stagger));
   }
 
   .motion-intro > h1 { --motion-order: 1; }
@@ -1931,7 +1931,7 @@ html:has(.project-image-dialog[open]) { overflow: hidden; scrollbar-gutter: stab
 
   .motion-reveal:not(:focus-within) {
     animation: motion-rise var(--motion-duration) var(--motion-ease)
-      calc(var(--motion-order, 0) * var(--motion-stagger)) backwards;
+      calc(var(--motion-order, 0) * var(--motion-stagger));
   }
 
   .market-entry, .market-highlight, .market-highlight .circle {
