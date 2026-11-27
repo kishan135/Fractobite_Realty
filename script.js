@@ -103,6 +103,10 @@
         if (index === activeSlide) return;
 
         const incoming = new Image();
+        if (index === 0) {
+          incoming.srcset = 'assets/hero/villa-1-mobile.webp 860w, assets/hero/villa-1-1200.webp 1200w, assets/hero/villa-1.webp 1420w';
+          incoming.sizes = '(max-width: 767px) 96vw, (max-width: 1200px) 56vw, 900px';
+        }
         incoming.src = `assets/hero/villa-${index + 1}.webp`;
         await incoming.decode();
         if (currentRequest !== requestId) return;
@@ -119,9 +123,15 @@
           previous.addEventListener('animationend', () => previous.remove(), { once: true });
         }
 
-        image.src = incoming.src;
-        image.removeAttribute('srcset');
-        image.removeAttribute('sizes');
+        if (index === 0) {
+          image.srcset = incoming.srcset;
+          image.sizes = incoming.sizes;
+          image.src = incoming.src;
+        } else {
+          image.removeAttribute('srcset');
+          image.removeAttribute('sizes');
+          image.src = incoming.src;
+        }
         image.alt = slides[index];
         activeSlide = index;
         indicators.forEach((item, position) => item.setAttribute('aria-pressed', String(position === index)));
