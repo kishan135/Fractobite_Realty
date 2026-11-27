@@ -278,19 +278,6 @@
     updateAutoplay();
   }
 
-  function initializePropertySearch() {
-    const search = document.querySelector('#property-search');
-    if (!search) return;
-
-    const tabs = [...search.querySelectorAll('[data-type]')];
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        search.elements.type.value = tab.dataset.type;
-        tabs.forEach((item) => item.setAttribute('aria-pressed', String(item === tab)));
-      });
-    });
-  }
-
   function initializeHomepageProjects() {
     const track = document.querySelector('#property-cards');
     if (!track) return;
@@ -1263,7 +1250,6 @@
   initializeMobileNavigation();
   initializeHeroSlider();
   initializeCatalogCarousel();
-  initializePropertySearch();
   initializeHomepageProjects();
   initializeCatalog();
   initializeDholeraListings();
